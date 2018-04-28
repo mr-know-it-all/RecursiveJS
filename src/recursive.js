@@ -133,18 +133,19 @@ function fill(element, count) {
 }
 
 // quickSort :: Filterable f => f a -> f a
-function quickSort(xs) {
-  return (function quickSort([x, ...xs]) {
-    return x === undefined && [] || [
-      ...quickSort(filter(y => y <= x, xs)),
-      x,
-      ...quickSort(filter(y => y > x, xs))
-    ];
-  })(xs);
+function quickSort([x, ...xs]) {
+  return x === undefined && [] || [
+    ...quickSort(filter(y => y <= x, xs)),
+    x,
+    ...quickSort(filter(y => y > x, xs))
+  ];
 }
+
 // take :: (Number, [a]) -> [a]
-function take(count, [x, ...xs], acc = []) {
-  return count === 0 && acc || take(count - 1, xs, [...acc, x]);
+function take(count, xs) {
+  return (function take(count, [x, ...xs], acc = []) {
+    return count === 0 && acc || take(count - 1, xs, [...acc, x]);
+  })(count, xs);
 }
 
 // takeWhile :: (a -> Boolean, [a]) -> [a]
