@@ -692,8 +692,24 @@ function serialize(x) {
   return JSON.stringify(x);
 }
 
+function isPrimitiveType(a) {
+  return find(x => x === typeof a, ['null', 'undefined', 'boolean', 'number', 'string', 'symbol']);
+}
+
+function equals(a, b) {
+  return typeof a !== typeof b ? false : (
+    isPrimitiveType(a) ? a === b : (
+      'to be continued'
+    )
+  );
+}
+
 function expect(name, expectation, actual) {
   console.log(`RUNNING: ${name}`);
+  // console.log(
+  //   '->', serialize(expectation) === serialize(actual),
+  //   '::', equals(expectation, actual)
+  // );
   if (serialize(expectation) === serialize(actual)) {
     testsState.testPassed();
     console.log('TEST passed!');
