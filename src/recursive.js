@@ -36,7 +36,7 @@ module.exports = {
   reduceWhile,
   reverse,
   some,
-  symmetricDifference,
+  symetricDifference,
   take,
   takeWhile,
   uncurryN,
@@ -336,8 +336,8 @@ function some(fn, xs) {
   })(fn, xs);
 }
 
-// symmetricDifference :: [*] -> [*] -> [*]
-function symmetricDifference(__xs, __ys) {
+// symetricDifference :: [*] -> [*] -> [*]
+function symetricDifference(__xs, __ys) {
   return (function diff([x, ...xs], ys, acc = [], done = false) {
     return (
       x === undefined && done && acc ||

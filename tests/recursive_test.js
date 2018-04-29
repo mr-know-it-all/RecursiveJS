@@ -36,7 +36,7 @@ const {
   reduceWhile,
   reverse,
   some,
-  symmetricDifference,
+  symetricDifference,
   take,
   takeWhile,
   uncurryN,
@@ -108,6 +108,22 @@ async function runTests() {
     expect('composeP', 'John 42 NY', composeP);
   });
 
+  // concat test
+  compose(
+    () => {
+      expect(
+        'concat test', [1, 2, 3, 4],
+        concat([1, 2], [3, 4])
+      );
+    },
+    () => {
+      expect(
+        'concat test', [1, 2, 3, 4],
+        concat([1, 2, 3], 4)
+      );
+    }
+  )();
+
   // curry test
   let curryFunction = function(a, b, c, d) {
     return a + b + c + d;
@@ -133,87 +149,71 @@ async function runTests() {
     }
   )();
 
-  // reverse test
-  expect('reverse', [3, 2, 1], reverse([1, 2, 3]));
+  // every test
+  const everyArrayTrue = [false, false, false, true];
+  const everyArrayFalse = [false, false, false, false, false];
+
+  compose (
+    () => {
+      expect('every', true, every(x => x !== true, everyArrayFalse));
+    },
+    () => {
+      expect('every', false, every(x => x !== true, everyArrayTrue));
+    }
+  )();
+
+  // fill test
+  const fillArray = [1, 1, 1, 1, 1, 1];
+  const fillArrayObjects = [{a: 1 }, {a: 1}, {a: 1}, {a: 1}, {a: 1}];
+
+  compose (
+    () => {
+      expect('fill', fillArrayObjects, fill({
+        a: 1
+      }, 5));
+    },
+    () => {
+      expect('fill', fillArray, fill(1, 6));
+    }
+  )();
+
+  // filter test
+  expect('filter', [2, 4, 6], filter(x => x % 2 === 0, [1, 2, 3, 4, 5, 6]));
+
+  // find test
+  compose(
+    () => {
+      expect('find', false, find(x => x === 42, [1, 2, 3, 4, 16]));
+    },
+    () => {
+      expect('find', 4, find(x => x === 4, [1, 2, 3, 4]));
+    }
+  )();
 
   // forEach test
-  let arrayForEach = [1, 2, 3];
+  const arrayForEach = [1, 2, 3];
   forEach((x, index) => x * 2, arrayForEach);
   expect("forEach", [2, 4, 6], arrayForEach);
 
-  // length test
-  let arrayLength = [1, 2, 3, 4, 5];
-  expect('length', 5, length(arrayLength));
+  // includes test
+  compose(
+    () => {
+      expect(
+        'includes test',
+        false,
+        includes('d value', ['a value', 'b value', 'c value'])
+      );
+    },
+    () => {
+      expect(
+        'includes test',
+        true,
+        includes('a value', ['a value', 'b value', 'c value'])
+      );
+    }
+  )();
 
-  // reduce test
-  let arrayReduce = [1, 2, 3, 4, 5];
-  expect('reduce', 15, reduce((acc, v) => acc + v, arrayReduce, 0));
-
-  // map test
-  let mapArray = [1, 2, 3, 4];
-  expect('map', [1, 2, 3, 4], mapArray);
-  expect('map', [2, 3, 4, 5], map(x => x + 1, mapArray));
-
-
-  // filter test
-  let filterArray = [1, 2, 3, 4, 5, 6];
-  expect('filter', [2, 4, 6], filter(x => x % 2 === 0, filterArray));
-
-  // some test
-  let someArrayTrue = [false, false, false, true];
-  let someArrayFalse = [false, false, false, false];
-
-  expect('some', true, some(x => x === true, someArrayTrue));
-  expect('some', false, some(x => x === true, someArrayFalse));
-
-  // every test
-  let everyArrayTrue = [false, false, false, true];
-  let everyArrayFalse = [false, false, false, false, false];
-
-  expect('every', false, every(x => x !== true, everyArrayTrue));
-  expect('every', true, every(x => x !== true, everyArrayFalse));
-
-  // find test
-  let findArray = [1, 2, 3, 4];
-
-  expect('find', 4, find(x => x === 4, findArray));
-  expect('find', false, find(x => x === 42, findArray));
-
-  // fill test
-  let fillArray = [1, 1, 1, 1, 1, 1];
-  let fillArrayObjects = [{
-    a: 1
-  }, {
-    a: 1
-  }, {
-    a: 1
-  }, {
-    a: 1
-  }, {
-    a: 1
-  }];
-
-  expect('fill', fillArray, fill(1, 6));
-  expect('fill', fillArrayObjects, fill({
-    a: 1
-  }, 5));
-
-  // quickSort test
-  let quickSortArray = [7, 2, 1, 3, 5, 4, 6, 9, 8];
-
-  expect('quickSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], quickSort(quickSortArray));
-
-  // take test
-  let takeArray = [1, 2, 3, 4, 5, 6, 7];
-
-  expect('take', [1, 2, 3], take(3, takeArray));
-
-  // takeWhile test
-  let takeWhileArray = [1, 2, 3, 4, 5, 6, 7];
-
-  expect('takeWhile', [1, 2, 3, 4, 5], takeWhile(x => x <= 5, takeWhileArray));
-
-  // innerJoin test - inspired by Ramda
+  // innerJoin test
   let innerJoinResult = innerJoin(
     (user, id) => user.id === id, [{
       id: 1,
@@ -247,39 +247,27 @@ async function runTests() {
   // intersection test
   expect('intersection', [3, 4], intersection([4, 3, 1, 2, 3, 4, 3, 3], [7, 6, 5, 4, 3, 3]));
 
-  // uniqueBy test
-  expect('uniqueBy', [1, 2, 3], uniqueBy(x => x, [1, 2, 1, 2, 3, 3, 3, 1]));
-  expect(
-    'unique', [{
-      id: 1
-    }, {
-      id: 2
-    }, {
-      id: 3
-    }],
-    uniqueBy(({
-      id
-    }) => id, [{
-      id: 1
-    }, {
-      id: 1
-    }, {
-      id: 2
-    }, {
-      id: 2
-    }, {
-      id: 3
-    }, {
-      id: 3
-    }])
-  );
-
   // juxt test
   expect('juxt', [1, 9], juxt([Math.min, Math.max], [9, 1, 3, 1, 2, 3, 4, 5, 6]));
 
+  // length test
+  expect('length', 5, length([1, 2, 3, 4, 5]));
+
+  // map test
+  let mapArray = [1, 2, 3, 4];
+
+  compose(
+    () => {
+      expect('map', [1, 2, 3, 4], mapArray);
+    },
+    () => {
+      expect('map', [2, 3, 4, 5], map(x => x + 1, mapArray));
+    }
+  )();
+
   // memoize test
   let callCount = 0;
-  let memoizeList = [
+  const memoizeList = [
     [4, 2],
     [5, 1],
     [4, 2],
@@ -290,9 +278,7 @@ async function runTests() {
   const adder = (x, y) => (callCount++, x + y);
   const memoizedAdder = memoize(adder);
 
-  map(([x, y]) => {
-    memoizedAdder(x, y);
-  }, memoizeList);
+  map(([x, y]) => {memoizedAdder(x, y);}, memoizeList);
 
   expect(
     'memoize',
@@ -300,7 +286,306 @@ async function runTests() {
     compose(length, () => uniqueBy(([x, y]) => `${x}${y}`, memoizeList))()
   );
 
-  let people = [{
+  // merge test
+  expect(
+    'merge', {
+      age: '27',
+      city: 'NY',
+      alias: 'aka',
+      name: 'John'
+    },
+    merge({
+      age: '21',
+      alias: 'aka',
+      city: 'WS',
+      name: 'John'
+    }, {
+      age: '27',
+      city: 'NY'
+    })
+  );
+
+  // mergeWith test
+  expect(
+    'mergeWith test', {
+      c: [1, 2, 3, 4],
+      b: 2,
+      a: 1
+    },
+    mergeWith(concat, {
+      c: [1, 2],
+      a: 1
+    }, {
+      c: [3, 4],
+      b: 2
+    })
+  );
+
+  // objectEntries test
+  expect(
+    'objectEntries test',
+    [['a', 'a value'], ['b', 'b value'], ['c', 'c value']],
+    objectEntries({a: 'a value', b: 'b value', c: 'c value'})
+  );
+
+  // objectValues test
+  expect(
+    'objectValues test',
+    ['a value', 'b value', 'c value'],
+    objectValues({a: 'a value', b: 'b value', c: 'c value'})
+  );
+
+  // omit test
+  expect(
+    'omit', {
+      alias: 'aka',
+      name: 'John'
+    },
+    omit(
+      ['age', 'city'], {
+        age: '21',
+        alias: 'aka',
+        city: 'WS',
+        name: 'John'
+      }
+    )
+  );
+
+  // partition test
+  compose(
+    () => {
+      expect(
+        'partition test', [
+          [1, 2, 3],
+          ['one', 'two', 'three']
+        ],
+        partition(isInteger, [1, 'one', 2, 'two', 3, 'three'])
+      );
+    },
+    () => {
+      expect(
+        'partition test', [
+          [2, 4, 6, 8],
+          [1, 3, 5, 7]
+        ],
+        partition(isEven, [1, 2, 3, 4, 5, 6, 7, 8])
+      );
+    }
+  )();
+
+  // path test
+  compose(
+    () => {
+      expect(
+        'path test', [42],
+        path([0, 1, 2, 3, 4], [
+          [
+            [],
+            [
+              [],
+              [],
+              [
+                [],
+                [],
+                [],
+                [
+                  [],
+                  [],
+                  [],
+                  [],
+                  [42]
+                ]
+              ]
+            ]
+          ]
+        ])
+      );
+    },
+    () => {
+      expect(
+        'path test',
+        undefined,
+        path(['a', 'e', 'c', 'd'], {
+          a: {
+            b: {
+              c: 42
+            }
+          }
+        })
+      );
+    },
+    () => {
+      expect(
+        'path test',
+        42,
+        path(['a', 'b', 'c'], {
+          a: {
+            b: {
+              c: 42
+            }
+          }
+        })
+      );
+    }
+  )();
+
+  // pathOr test
+  compose(
+    () => {
+      expect(
+        'pathOr test',
+        'N/A',
+        pathOr('N/A', ['a', 'e', 'c', 'd'], {
+          a: {
+            b: {
+              c: 42
+            }
+          }
+        })
+      );
+    },
+    () => {
+      expect(
+        'pathOr test', [42],
+        pathOr('N/A', [0, 1, 2, 3, 4], [
+          [
+            [],
+            [
+              [],
+              [],
+              [
+                [],
+                [],
+                [],
+                [
+                  [],
+                  [],
+                  [],
+                  [],
+                  [42]
+                ]
+              ]
+            ]
+          ]
+        ])
+      );
+    }
+  )();
+
+  // pathSatisfies test
+  compose(
+    () => {
+      expect(
+        'pathSatisfies test',
+        true,
+        pathSatisfies(curry(every)(isEven), [0, 1, 2, 3, 4], [
+          [
+            [],
+            [
+              [],
+              [],
+              [
+                [],
+                [],
+                [],
+                [
+                  [],
+                  [],
+                  [],
+                  [],
+                  [42, 2, 4, 6]
+                ]
+              ]
+            ]
+          ]
+        ])
+      );
+    },
+    () => {
+      expect(
+        'pathSatisfies test',
+        false,
+        pathSatisfies(curry(every)(isEven), [0, 1, 2, 3, 4], [
+          [
+            [],
+            [
+              [],
+              [],
+              [
+                [],
+                [],
+                [],
+                [
+                  [],
+                  [],
+                  [],
+                  [],
+                  [42, 2, 4, 6, 1]
+                ]
+              ]
+            ]
+          ]
+        ])
+      );
+    }
+  )();
+
+  // pick test
+  expect(
+    'pick', {
+      age: '21',
+      city: 'WS'
+    },
+    pick(
+      ['age', 'city'], {
+        age: '21',
+        alias: 'aka',
+        city: 'WS',
+        name: 'John'
+      }
+    )
+  );
+
+  // pluck test
+  compose(
+    () => {
+      expect(
+        'pluck', ['21', '22', '23'],
+        pluck(
+          'age', [{
+            age: '21',
+            alias: 'aka1',
+            city: 'WS1',
+            name: 'John1'
+          }, {
+            age: '22',
+            alias: 'aka2',
+            city: 'WS2',
+            name: 'John2'
+          }, {
+            age: '23',
+            alias: 'aka3',
+            city: 'WS3',
+            name: 'John3'
+          }]
+        )
+      );
+    },
+    () => {
+      expect(
+        'pluck', [1, 2, 3, 4],
+        pluck(0, [
+          [1, 42],
+          [2, 42],
+          [3, 42],
+          [4, 42]
+        ])
+      );
+    }
+  )();
+
+  // project test
+  const people = [{
     name: 'John',
     age: 30,
     city: 'NY',
@@ -331,363 +616,134 @@ async function runTests() {
     project(['name', 'age'], people)
   );
 
-  // zip test
-  expect(
-    'zip', [
-      [1, 'a'],
-      [2, 'b'],
-      [3, 'c']
-    ],
-    zip([1, 2, 3], ['a', 'b', 'c', 'd', 'e'])
-  );
+  // quickSort test
+  expect('quickSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], quickSort([7, 2, 1, 3, 5, 4, 6, 9, 8]));
 
-  // merge test
-  expect(
-    'merge', {
-      age: '27',
-      city: 'NY',
-      alias: 'aka',
-      name: 'John'
-    },
-    merge({
-      age: '21',
-      alias: 'aka',
-      city: 'WS',
-      name: 'John'
-    }, {
-      age: '27',
-      city: 'NY'
-    })
-  );
-
-  // omit test
-  expect(
-    'omit', {
-      alias: 'aka',
-      name: 'John'
-    },
-    omit(
-      ['age', 'city'], {
-        age: '21',
-        alias: 'aka',
-        city: 'WS',
-        name: 'John'
-      }
-    )
-  );
-
-  // pick test
-  expect(
-    'pick', {
-      age: '21',
-      city: 'WS'
-    },
-    pick(
-      ['age', 'city'], {
-        age: '21',
-        alias: 'aka',
-        city: 'WS',
-        name: 'John'
-      }
-    )
-  );
-
-  // pluck test
-  expect(
-    'pluck', ['21', '22', '23'],
-    pluck(
-      'age', [{
-        age: '21',
-        alias: 'aka1',
-        city: 'WS1',
-        name: 'John1'
-      }, {
-        age: '22',
-        alias: 'aka2',
-        city: 'WS2',
-        name: 'John2'
-      }, {
-        age: '23',
-        alias: 'aka3',
-        city: 'WS3',
-        name: 'John3'
-      }]
-    )
-  );
-
-  // pluck test
-  expect(
-    'pluck', [1, 2, 3, 4],
-    pluck(0, [
-      [1, 42],
-      [2, 42],
-      [3, 42],
-      [4, 42]
-    ])
-  );
+  // reduce test
+  expect('reduce', 15, reduce((acc, v) => acc + v, [1, 2, 3, 4, 5], 0));
 
   // reduceWhile test
   const add = (x, y) => x + y;
   const reduceWhileList1 = [5, 4, 3, 2, 1];
-  expect(
-    'reduceWhile',
-    12,
-    reduceWhile(largerThanTwo, add, reduceWhileList1, 0)
-  );
-
-  // reduceWhile test
   const reduceWhileList2 = [1, 2, 3, 4, 5, 'six', 7, 8];
+
+  compose(
+    () => {
+      expect(
+        'reduceWhile',
+        15,
+        reduceWhile(isInteger, add, reduceWhileList2, 0)
+      );
+
+    },
+    () => {
+      expect(
+        'reduceWhile',
+        12,
+        reduceWhile(largerThanTwo, add, reduceWhileList1, 0)
+      );
+    }
+  )();
+
+  // reverse test
+  expect('reverse', [3, 2, 1], reverse([1, 2, 3]));
+
+  // some test
+  const someArrayTrue = [false, false, false, true];
+  const someArrayFalse = [false, false, false, false];
+
+  compose(
+    () => {
+      expect('some', false, some(x => x === true, someArrayFalse));
+    },
+    () => {
+      expect('some', true, some(x => x === true, someArrayTrue));
+    }
+  )();
+
+  // symetricDifference test
   expect(
-    'reduceWhile',
-    15,
-    reduceWhile(isInteger, add, reduceWhileList2, 0)
+    'symetricDifference', [1, 2, 7, 6, 5, 42],
+    symetricDifference([1, 2, 3, 4], [7, 6, 5, 4, 3, 42])
   );
 
-  // symmetricDifference test
-  expect(
-    'symmetricDifference', [1, 2, 7, 6, 5, 42],
-    symmetricDifference([1, 2, 3, 4], [7, 6, 5, 4, 3, 42])
-  );
+  // take test
+  expect('take', [1, 2, 3], take(3, [1, 2, 3, 4, 5, 6, 7]));
 
-  // partition test
-  expect(
-    'partition test', [
-      [2, 4, 6, 8],
-      [1, 3, 5, 7]
-    ],
-    partition(isEven, [1, 2, 3, 4, 5, 6, 7, 8])
-  );
-
-  // partition test
-  expect(
-    'partition test', [
-      [1, 2, 3],
-      ['one', 'two', 'three']
-    ],
-    partition(isInteger, [1, 'one', 2, 'two', 3, 'three'])
-  );
-
-  // path test
-  expect(
-    'path test',
-    42,
-    path(['a', 'b', 'c'], {
-      a: {
-        b: {
-          c: 42
-        }
-      }
-    })
-  );
-
-  // path test
-  expect(
-    'path test',
-    undefined,
-    path(['a', 'e', 'c', 'd'], {
-      a: {
-        b: {
-          c: 42
-        }
-      }
-    })
-  );
-
-  // path test
-  expect(
-    'path test', [42],
-    path([0, 1, 2, 3, 4], [
-      [
-        [],
-        [
-          [],
-          [],
-          [
-            [],
-            [],
-            [],
-            [
-              [],
-              [],
-              [],
-              [],
-              [42]
-            ]
-          ]
-        ]
-      ]
-    ])
-  );
+  // takeWhile test
+  expect('takeWhile', [1, 2, 3, 4, 5], takeWhile(x => x <= 5, [1, 2, 3, 4, 5, 6, 7]));
 
   // uncurryN test
-  const curriedAdderFunc = a => b => c => d => {
-    return a + b + c + d;
-  };
+  const curriedAdderFunc = a => b => c => d => a + b + c + d;
   const uncurriedAdderFunc = uncurryN(4, curriedAdderFunc);
 
-  try {
-    uncurriedAdderFunc(1)(2)(3)(4);
-  } catch (e) {
-    expect(
-      'uncurryN test',
-      'the function curriedAdderFunc expects 4 arguments and it was called with only 1',
-      e
-    );
-  }
-
-  expect(
-    'uncurryN test',
-    50,
-    uncurriedAdderFunc(11, 12, 13, 14)
-  );
-
-  // concat test
-  expect(
-    'concat test', [1, 2, 3, 4],
-    concat([1, 2], [3, 4])
-  );
-
-  expect(
-    'concat test', [1, 2, 3, 4],
-    concat([1, 2, 3], 4)
-  );
-
-  // mergeWith test
-  expect(
-    'mergeWith test', {
-      c: [1, 2, 3, 4],
-      b: 2,
-      a: 1
+  compose(
+    () => {
+      expect(
+        'uncurryN test',
+        50,
+        uncurriedAdderFunc(11, 12, 13, 14)
+      );
     },
-    mergeWith(concat, {
-      c: [1, 2],
-      a: 1
-    }, {
-      c: [3, 4],
-      b: 2
-    })
-  );
-
-  // pathOr test
-  expect(
-    'pathOr test',
-    'N/A',
-    pathOr('N/A', ['a', 'e', 'c', 'd'], {
-      a: {
-        b: {
-          c: 42
-        }
+    () => {
+      try {
+        uncurriedAdderFunc(1)(2)(3)(4);
+      } catch (e) {
+        expect(
+          'uncurryN test',
+          'the function curriedAdderFunc expects 4 arguments and it was called with only 1',
+          e
+        );
       }
-    })
-  );
+    }
+  )();
 
-  // pathOr test
+  // uniqueBy test
+  expect('uniqueBy', [1, 2, 3], uniqueBy(x => x, [1, 2, 1, 2, 3, 3, 3, 1]));
   expect(
-    'pathOr test', [42],
-    pathOr('N/A', [0, 1, 2, 3, 4], [
-      [
-        [],
-        [
-          [],
-          [],
-          [
-            [],
-            [],
-            [],
-            [
-              [],
-              [],
-              [],
-              [],
-              [42]
-            ]
-          ]
-        ]
-      ]
-    ])
-  );
-
-  // pathSatisfies test
-  expect(
-    'pathSatisfies test',
-    true,
-    pathSatisfies(curry(every)(isEven), [0, 1, 2, 3, 4], [
-      [
-        [],
-        [
-          [],
-          [],
-          [
-            [],
-            [],
-            [],
-            [
-              [],
-              [],
-              [],
-              [],
-              [42, 2, 4, 6]
-            ]
-          ]
-        ]
-      ]
-    ])
-  );
-
-  // pathSatisfies test
-  expect(
-    'pathSatisfies test',
-    false,
-    pathSatisfies(curry(every)(isEven), [0, 1, 2, 3, 4], [
-      [
-        [],
-        [
-          [],
-          [],
-          [
-            [],
-            [],
-            [],
-            [
-              [],
-              [],
-              [],
-              [],
-              [42, 2, 4, 6, 1]
-            ]
-          ]
-        ]
-      ]
-    ])
+    'unique',
+    [{id: 1}, {id: 2}, {id: 3}],
+    uniqueBy(
+      ({id}) => id,
+      [{id: 1}, {id: 1}, {id: 2}, {id: 2}, {id: 3}, {id: 3}]
+    )
   );
 
   // unless test
-  expect(
-    'unless test',
-    42,
-    unless(x => !Number.isNaN(x), x => x * 2 + 16 * 2 - 2 * 2)(7)
-  );
-
-  // unless test
-  expect(
-    'unless test',
-    null,
-    unless(x => !Number.isNaN(x), x => x * 2 + 16 * 2 - 2 * 2)({} - 42)
-  );
-
-  // until test
-  expect(
-    'until',
-    11,
-    until(x => x > 10, x => x + 1, 0)
-  );
+  compose(
+    () => {
+      expect(
+        'unless test',
+        null,
+        unless(x => !Number.isNaN(x), x => x * 2 + 16 * 2 - 2 * 2)({} - 42)
+      );
+    },
+    () => {
+      expect(
+        'unless test',
+        42,
+        unless(x => !Number.isNaN(x), x => x * 2 + 16 * 2 - 2 * 2)(7)
+      );
+    }
+  )();
 
   // until test
-  expect(
-    'until',
-    128,
-    until(x => x > 100, x => x * 2, 1)
-  );
+  compose(
+    () => {
+      expect(
+        'until',
+        128,
+        until(x => x > 100, x => x * 2, 1)
+      );
+    },
+    () => {
+      expect(
+        'until',
+        11,
+        until(x => x > 10, x => x + 1, 0)
+      );
+    }
+  )();
 
   // xprod test
   expect(
@@ -700,6 +756,16 @@ async function runTests() {
     xprod([1, 2], ['a', 'b'])
   )
 
+  // zip test
+  expect(
+    'zip', [
+      [1, 'a'],
+      [2, 'b'],
+      [3, 'c']
+    ],
+    zip([1, 2, 3], ['a', 'b', 'c', 'd', 'e'])
+  );
+
   // zipObj test
   expect(
     'zipObj test', {
@@ -709,35 +775,6 @@ async function runTests() {
     },
     zipObj(['a', 'b', 'c', 'd', 'e'], [1, 2, 3])
   )
-
-  // objectValues test
-  expect(
-    'objectValues test',
-    ['a value', 'b value', 'c value'],
-    objectValues({a: 'a value', b: 'b value', c: 'c value'})
-  );
-
-  // objectEntries test
-  expect(
-    'objectEntries test',
-    [['a', 'a value'], ['b', 'b value'], ['c', 'c value']],
-    objectEntries({a: 'a value', b: 'b value', c: 'c value'})
-  );
-
-  // includes test
-  expect(
-    'includes test',
-    true,
-    includes('a value', ['a value', 'b value', 'c value'])
-  );
-
-  // includes test
-  expect(
-    'includes test',
-    false,
-    includes('d value', ['a value', 'b value', 'c value'])
-  );
-
 
   logTestsStatus(testsState);
 }
