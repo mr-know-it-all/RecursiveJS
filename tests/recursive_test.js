@@ -15,6 +15,7 @@ const {
   includes,
   innerJoin,
   intersection,
+  intersperse,
   juxt,
   length,
   map,
@@ -246,6 +247,9 @@ async function runTests() {
 
   // intersection test
   expect('intersection', [3, 4], intersection([4, 3, 1, 2, 3, 4, 3, 3], [7, 6, 5, 4, 3, 3]));
+
+  // intersperse test
+  expect('intersperse', [1, '#', 2, '#', 3, '#', 4], intersperse('#', [1, 2, 3, 4]));
 
   // juxt test
   expect('juxt', [1, 9], juxt([Math.min, Math.max], [9, 1, 3, 1, 2, 3, 4, 5, 6]));

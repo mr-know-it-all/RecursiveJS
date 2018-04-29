@@ -15,6 +15,7 @@ module.exports = {
   includes,
   innerJoin,
   intersection,
+  intersperse,
   juxt,
   length,
   map,
@@ -158,6 +159,15 @@ function intersection(xs, ys) {
       )
     );
   })(xs, ys);
+}
+
+// intersperse (a, [a]) -> [a]
+function intersperse(n, xs) {
+  return (
+    function intersperse(n, [x, ...xs], acc = []) {
+      return x === undefined ? acc : intersperse(n, xs, length(acc) > 0 ? [...acc, n, x] : [...acc, x])
+    }
+  )(n, xs);
 }
 
 // juxt :: ([* -> a], [*]) -> [a]
