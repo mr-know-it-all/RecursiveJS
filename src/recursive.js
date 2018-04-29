@@ -1,89 +1,78 @@
 'use strict';
 
 module.exports = {
-  reverse,
-  forEach,
-  length,
-  reduce,
-  map,
-  curry,
+  allPass,
   compose,
-  filter,
-  some,
-  every,
-  find,
-  fill,
-  quickSort,
-  take,
-  takeWhile,
   composeP,
+  concat,
+  curry,
+  deepFlat,
+  every,
+  fill,
+  filter,
+  find,
+  forEach,
+  includes,
   innerJoin,
   intersection,
-  uniqueBy,
   juxt,
-  project,
-  zip,
+  length,
+  map,
   memoize,
-  allPass,
   merge,
-  symmetricDifference,
-  reduceWhile,
-  pluck,
-  pick,
-  omit,
-  uncurryN,
-  path,
-  partition,
-  concat,
   mergeWith,
+  objectEntries,
+  objectValues,
+  omit,
+  partition,
+  path,
   pathOr,
   pathSatisfies,
+  pick,
+  pluck,
+  project,
+  quickSort,
+  reduce,
+  reduceWhile,
+  reverse,
+  some,
+  symmetricDifference,
+  take,
+  takeWhile,
+  uncurryN,
+  uniqueBy,
   unless,
   until,
   xprod,
-  zipObj,
-  deepFlat,
-  objectValues,
-  objectEntries,
-  includes
+  zip,
+  zipObj
 };
 
-// reverse :: [a] -> [a]
-function reverse(xs) {
-  return (function reverse([x, ...xs], acc = []) {
-    return x === undefined ? acc : reverse(xs, [x, ...acc]);
-  })(xs);
+// allPass :: ([a -> Boolean], [a]) -> Boolean
+function allPass(ps, [x, ...xs]) {
+  return (
+    x === undefined ? true :
+    some(p => !p(x), ps) ? false :
+    allPass(ps, xs)
+  );
 }
 
-// forEach :: (a -> b, [a]) -> ()
-function forEach(fn, xs) {
-  return (function forEach(fn, xs, index = 0) {
-    if(index < length(xs)) {
-      xs[index] = fn(xs[index], index);
-      return forEach(fn, xs, index + 1);
-    }
-  })(fn, xs);
+// concat :: ([a], [a]) -> [a]
+function concat(xs, ys) {
+  return [...xs, ...(Array.isArray(ys) && ys || [ys])];
 }
 
-// length :: [a] -> Number
-function length(xs) {
-  return (function length([x, ...xs], count = 0) {
-    return x === undefined ? count : length(xs, count + 1);
-  })(xs);
+// compose :: (c -> d, ..., b -> c, a -> b) -> (x -> (a -> b -> c -> d))
+function compose(...fns) {
+  return value => reduce((acc, fn) => fn(acc), reverse(fns), value);
 }
 
-// reduce :: ((a, b) -> a, [b], a) -> a
-function reduce(fn, xs, acc) {
-  return (function reduce(fn, [x, ...xs], acc) {
-    return x === undefined && acc || reduce(fn, xs, fn(acc, x));
-  })(fn, xs, acc);
-}
-
-// map :: (a -> b, [a]) -> [b]
-function map(fn, xs) {
-  return (function map(fn, [x, ...xs], acc = []) {
-    return x === undefined && acc || map(fn, xs, [...acc, fn(x)]);
-  })(fn, xs);
+// composeP :: ((y -> Promise z), (x -> Promise y), ..., (a -> Promise b)) -> (a -> Promise z)
+function composeP(...fns) {
+  return initialValue =>
+    (async function applyFunc([fn, ...fns], value) {
+      return fn ? applyFunc(fns, await (fn(value))) : value;
+    })(reverse(fns), initialValue);
 }
 
 // curry :: (* -> a) → (* -> a)
@@ -96,36 +85,21 @@ function curry(fn) {
   return applyArgs;
 }
 
-// compose :: (c -> d, ..., b -> c, a -> b) -> (x -> (a -> b -> c -> d))
-function compose(...fns) {
-  return value => reduce((acc, fn) => fn(acc), reverse(fns), value);
-}
-
-// filter :: (a -> Boolean, [a]) -> [a]
-function filter(fn, xs) {
-  return (function filter(fn, [x, ...xs], acc = []) {
-    return x === undefined && acc || filter(fn, xs, fn(x) && [...acc, x] || acc);
-  })(fn, xs);
-}
-
-// some :: (a -> Boolean, [a]) -> Boolean
-function some(fn, xs) {
-  return (function some(fn, [x, ...xs]) {
-    return x === undefined ? false : fn(x) || some(fn, xs);
-  })(fn, xs);
+// deepFlat :: [[[*]]] -> [*]
+function deepFlat(xs) {
+  return (function deepFlat([x, ...xs], acc = []) {
+    return (
+      x === undefined ?
+        acc :
+        Array.isArray(x) && deepFlat([...x, ...xs], acc) || deepFlat(xs, [...acc, x])
+    );
+  })(xs);
 }
 
 // every :: (a -> Boolean, [a]) -> Boolean
 function every(fn, xs) {
   return (function every(fn, [x, ...xs]) {
     return x === undefined || (!fn(x) ? false : every(fn, xs));
-  })(fn, xs);
-}
-
-// find :: (a -> Boolean, [a]) -> a | false
-function find(fn, xs) {
-  return (function find(fn, [x, ...xs]) {
-    return x === undefined ? false : fn(x) ? x : find(fn, xs);
   })(fn, xs);
 }
 
@@ -136,35 +110,33 @@ function fill(element, count) {
   })(element, count);
 }
 
-// quickSort :: Filterable f => f a -> f a
-function quickSort([x, ...xs]) {
-  return x === undefined && [] || [
-    ...quickSort(filter(y => y <= x, xs)),
-    x,
-    ...quickSort(filter(y => y > x, xs))
-  ];
-}
-
-// take :: (Number, [a]) -> [a]
-function take(count, xs) {
-  return (function take(count, [x, ...xs], acc = []) {
-    return count === 0 && acc || take(count - 1, xs, [...acc, x]);
-  })(count, xs);
-}
-
-// takeWhile :: (a -> Boolean, [a]) -> [a]
-function takeWhile(fn, xs) {
-  return (function takeWhile(fn, [x, ...xs], acc = []) {
-    return (x === undefined || !fn(x)) && acc || takeWhile(fn, xs, [...acc, x]);
+// filter :: (a -> Boolean, [a]) -> [a]
+function filter(fn, xs) {
+  return (function filter(fn, [x, ...xs], acc = []) {
+    return x === undefined && acc || filter(fn, xs, fn(x) && [...acc, x] || acc);
   })(fn, xs);
 }
 
-// composeP :: ((y -> Promise z), (x -> Promise y), ..., (a -> Promise b)) -> (a -> Promise z)
-function composeP(...fns) {
-  return initialValue =>
-    (async function applyFunc([fn, ...fns], value) {
-      return fn ? applyFunc(fns, await (fn(value))) : value;
-    })(reverse(fns), initialValue);
+// find :: (a -> Boolean, [a]) -> a | false
+function find(fn, xs) {
+  return (function find(fn, [x, ...xs]) {
+    return x === undefined ? false : fn(x) ? x : find(fn, xs);
+  })(fn, xs);
+}
+
+// forEach :: (a -> b, [a]) -> ()
+function forEach(fn, xs) {
+  return (function forEach(fn, xs, index = 0) {
+    if(index < length(xs)) {
+      xs[index] = fn(xs[index], index);
+      return forEach(fn, xs, index + 1);
+    }
+  })(fn, xs);
+}
+
+// includes :: (a, [a]) -> Boolean
+function includes(a, [x, ...xs]) {
+  return x === undefined ? false : a === x ? true : includes(a, xs);
 }
 
 // innerJoin :: (((a, b) -> Boolean), [a], [b]) -> [a]
@@ -188,23 +160,25 @@ function intersection(xs, ys) {
   })(xs, ys);
 }
 
-// uniqueBy :: (a -> a, [a]) -> [a]
-function uniqueBy(fn, xs) {
-  return (function uniqueBy(fn, [x, ...xs], acc = [x]) {
-    return (
-      x === undefined && acc || uniqueBy(
-        fn,
-        xs, !find(y => fn(y) === fn(x), acc) && [...acc, x] || acc
-      )
-    );
-  })(fn, xs);
-}
-
 // juxt :: ([* -> a], [*]) -> [a]
 function juxt(fns, xs) {
   return (function juxt([fn, ...fns], xs, acc = []) {
     return fn === undefined && acc || juxt(fns, xs, [...acc, fn(...xs)]);
   })(fns, xs);
+}
+
+// length :: [a] -> Number
+function length(xs) {
+  return (function length([x, ...xs], count = 0) {
+    return x === undefined ? count : length(xs, count + 1);
+  })(xs);
+}
+
+// map :: (a -> b, [a]) -> [b]
+function map(fn, xs) {
+  return (function map(fn, [x, ...xs], acc = []) {
+    return x === undefined && acc || map(fn, xs, [...acc, fn(x)]);
+  })(fn, xs);
 }
 
 // memoize :: (* -> a) -> a
@@ -219,37 +193,6 @@ function memoize(fn) {
   })(fn);
 }
 
-// project :: ([Key], [{Key: v}]) -> [{Key: v}]
-function project(xs, yss) {
-  return (function project(xs, [ys, ...yss], acc = []) {
-    return ys === undefined ? acc : project(xs, yss, [
-      ...acc, reduce((acc, x) => {
-        if (ys[x]) acc[x] = ys[x];
-        return acc;
-      }, xs, {})
-    ]);
-  })(xs, yss);
-}
-
-// allPass :: ([a -> Boolean], [a]) -> Boolean
-function allPass(ps, [x, ...xs]) {
-  return (
-    x === undefined ? true :
-    some(p => !p(x), ps) ? false :
-    allPass(ps, xs)
-  );
-}
-
-// zip :: ([a], [b]) -> [a, b]
-function zip(xs, ys) {
-  return (function zip([x, ...xs], [y, ...ys], acc = []) {
-    return (
-      (x === undefined || y === undefined) && acc ||
-      zip(xs, ys, [...acc, [x, y]])
-    );
-  })(xs, ys);
-}
-
 // merge :: ({Key: v}, {Key: v}) -> {Key: v}
 function merge(xo, yo) {
   return (
@@ -261,6 +204,14 @@ function merge(xo, yo) {
   );
 }
 
+// mergeWith :: (((a, a) -> a), {a}, {a}) -> {a}
+function mergeWith(fn, xo, yo) {
+  return (
+    reduce(
+      (acc, v) => (acc[v[0]] = acc[v[0]] ? fn(v[1], acc[v[0]]) : v[1], acc), [...objectEntries(yo), ...objectEntries(xo)], {})
+  );
+}
+
 // omit :: ([String], {String: *}) -> {String: *}
 function omit(xs, xo) {
   return objectEntries(xo).reduce(
@@ -268,35 +219,26 @@ function omit(xs, xo) {
   );
 }
 
-// pick :: ([Key], {Key: v}) -> {Key: v}
-function pick(xs, xo) {
-  return objectEntries(xo).reduce(
-    (acc, v) => !find(x => x === v[0], xs) && acc || (acc[v[0]] = v[1], acc), {}
-  );
+// objectValues :: {Key: *} -> [[Key, *]]
+function objectEntries(xo) {
+  return (function objectEntries(xo, index = 0, acc = []) {
+    return Object.keys(xo)[index] === undefined ? acc : objectEntries(
+      xo,
+      index + 1,
+      [...acc, [Object.keys(xo)[index], xo[Object.keys(xo)[index]]]]);
+  })(xo);
 }
 
-// pluck :: Functor f => (Key, f {Key: v}) -> f v
-function pluck(prop, xs) {
-  return (function pluck(prop, [x, ...xs], acc = []) {
-    return x === undefined && acc || pluck(prop, xs, x[prop] && [...acc, x[prop]] || acc);
-  })(prop, xs);
+// objectValues :: {Key: *} -> [*]
+function objectValues(xo) {
+  return (function objectValues(xo, index = 0, acc = []) {
+    return Object.keys(xo)[index] === undefined ? acc : objectValues(
+      xo,
+      index + 1,
+      [...acc, xo[Object.keys(xo)[index]]]);
+  })(xo);
 }
 
-// reduceWhile :: (((a, b) -> Boolean), ((a, b) -> a), [b]) -> a
-function reduceWhile(pred, fn, [x, ...xs], acc) {
-  return x === undefined || !pred(x) && acc || reduceWhile(pred, fn, xs, fn(acc, x));
-}
-
-// symmetricDifference :: [*] -> [*] -> [*]
-function symmetricDifference(__xs, __ys) {
-  return (function diff([x, ...xs], ys, acc = [], done = false) {
-    return (
-      x === undefined && done && acc ||
-      x === undefined && !done && diff(__ys, __xs, acc, true) ||
-      diff(xs, ys, !find(y => y === x, ys) && [...acc, x] || acc, done)
-    );
-  })(__xs, __ys);
-}
 
 // partition :: ((a -> Boolean), [a]) -> [[a], [a]]
 function partition(pred, xs) {
@@ -323,6 +265,102 @@ function path([x, ...xs], xo) {
   );
 }
 
+// pathOr :: (a, [Key], {a}) -> a
+function pathOr(dflt, xs, xo) {
+  return path(xs, xo) || dflt;
+}
+
+// pathSatisfies :: ((a -> Boolean), [Key], {a}) -> Boolean
+function pathSatisfies(fn, xs, xo, data) {
+  return (data = path(xs, xo), data && fn(data));
+}
+
+// pick :: ([Key], {Key: v}) -> {Key: v}
+function pick(xs, xo) {
+  return objectEntries(xo).reduce(
+    (acc, v) => !find(x => x === v[0], xs) && acc || (acc[v[0]] = v[1], acc), {}
+  );
+}
+
+// pluck :: Functor f => (Key, f {Key: v}) -> f v
+function pluck(prop, xs) {
+  return (function pluck(prop, [x, ...xs], acc = []) {
+    return x === undefined && acc || pluck(prop, xs, x[prop] && [...acc, x[prop]] || acc);
+  })(prop, xs);
+}
+
+// project :: ([Key], [{Key: v}]) -> [{Key: v}]
+function project(xs, yss) {
+  return (function project(xs, [ys, ...yss], acc = []) {
+    return ys === undefined ? acc : project(xs, yss, [
+      ...acc, reduce((acc, x) => {
+        if (ys[x]) acc[x] = ys[x];
+        return acc;
+      }, xs, {})
+    ]);
+  })(xs, yss);
+}
+
+// quickSort :: Filterable f => f a -> f a
+function quickSort([x, ...xs]) {
+  return x === undefined && [] || [
+    ...quickSort(filter(y => y <= x, xs)),
+    x,
+    ...quickSort(filter(y => y > x, xs))
+  ];
+}
+
+// reduce :: ((a, b) -> a, [b], a) -> a
+function reduce(fn, xs, acc) {
+  return (function reduce(fn, [x, ...xs], acc) {
+    return x === undefined && acc || reduce(fn, xs, fn(acc, x));
+  })(fn, xs, acc);
+}
+
+// reduceWhile :: (((a, b) -> Boolean), ((a, b) -> a), [b]) -> a
+function reduceWhile(pred, fn, [x, ...xs], acc) {
+  return x === undefined || !pred(x) && acc || reduceWhile(pred, fn, xs, fn(acc, x));
+}
+
+// reverse :: [a] -> [a]
+function reverse(xs) {
+  return (function reverse([x, ...xs], acc = []) {
+    return x === undefined ? acc : reverse(xs, [x, ...acc]);
+  })(xs);
+}
+
+// some :: (a -> Boolean, [a]) -> Boolean
+function some(fn, xs) {
+  return (function some(fn, [x, ...xs]) {
+    return x === undefined ? false : fn(x) || some(fn, xs);
+  })(fn, xs);
+}
+
+// symmetricDifference :: [*] -> [*] -> [*]
+function symmetricDifference(__xs, __ys) {
+  return (function diff([x, ...xs], ys, acc = [], done = false) {
+    return (
+      x === undefined && done && acc ||
+      x === undefined && !done && diff(__ys, __xs, acc, true) ||
+      diff(xs, ys, !find(y => y === x, ys) && [...acc, x] || acc, done)
+    );
+  })(__xs, __ys);
+}
+
+// take :: (Number, [a]) -> [a]
+function take(count, xs) {
+  return (function take(count, [x, ...xs], acc = []) {
+    return count === 0 && acc || take(count - 1, xs, [...acc, x]);
+  })(count, xs);
+}
+
+// takeWhile :: (a -> Boolean, [a]) -> [a]
+function takeWhile(fn, xs) {
+  return (function takeWhile(fn, [x, ...xs], acc = []) {
+    return (x === undefined || !fn(x)) && acc || takeWhile(fn, xs, [...acc, x]);
+  })(fn, xs);
+}
+
 // uncurryN :: (Number, (a -> b)) -> (a -> c | throw)
 function uncurryN(arity, fn) {
   return (...args) => {
@@ -333,27 +371,16 @@ function uncurryN(arity, fn) {
   };
 }
 
-// concat :: ([a], [a]) -> [a]
-function concat(xs, ys) {
-  return [...xs, ...(Array.isArray(ys) && ys || [ys])];
-}
-
-// mergeWith :: (((a, a) -> a), {a}, {a}) -> {a}
-function mergeWith(fn, xo, yo) {
-  return (
-    reduce(
-      (acc, v) => (acc[v[0]] = acc[v[0]] ? fn(v[1], acc[v[0]]) : v[1], acc), [...objectEntries(yo), ...objectEntries(xo)], {})
-  );
-}
-
-// pathOr :: (a, [Key], {a}) -> a
-function pathOr(dflt, xs, xo) {
-  return path(xs, xo) || dflt;
-}
-
-// pathSatisfies :: ((a -> Boolean), [Key], {a}) -> Boolean
-function pathSatisfies(fn, xs, xo, data) {
-  return (data = path(xs, xo), data && fn(data));
+// uniqueBy :: (a -> a, [a]) -> [a]
+function uniqueBy(fn, xs) {
+  return (function uniqueBy(fn, [x, ...xs], acc = [x]) {
+    return (
+      x === undefined && acc || uniqueBy(
+        fn,
+        xs, !find(y => fn(y) === fn(x), acc) && [...acc, x] || acc
+      )
+    );
+  })(fn, xs);
 }
 
 // unless :: (a -> Boolean, a -> a) -> a -> a | null
@@ -373,45 +400,19 @@ function xprod(xs, ys) {
   })(xs, ys);
 }
 
+// zip :: ([a], [b]) -> [a, b]
+function zip(xs, ys) {
+  return (function zip([x, ...xs], [y, ...ys], acc = []) {
+    return (
+      (x === undefined || y === undefined) && acc ||
+      zip(xs, ys, [...acc, [x, y]])
+    );
+  })(xs, ys);
+}
+
 // zipObj :: ([String], [*]) -> {String: *}
 function zipObj(xs, ys) {
   return (function zipObj([x, ...xs], [y, ...ys], acc = {}) {
     return x === undefined || y === undefined ? acc : zipObj(xs, ys, (acc[x] = y, acc))
   })(xs, ys);
-}
-
-// deepFlat :: [[[*]]] -> [*]
-function deepFlat(xs) {
-  return (function deepFlat([x, ...xs], acc = []) {
-    return (
-      x === undefined ?
-        acc :
-        Array.isArray(x) && deepFlat([...x, ...xs], acc) || deepFlat(xs, [...acc, x])
-    );
-  })(xs);
-}
-
-// objectValues :: {Key: *} -> [*]
-function objectValues(xo) {
-  return (function objectValues(xo, index = 0, acc = []) {
-    return Object.keys(xo)[index] === undefined ? acc : objectValues(
-      xo,
-      index + 1,
-      [...acc, xo[Object.keys(xo)[index]]]);
-  })(xo);
-}
-
-// objectValues :: {Key: *} -> [[Key, *]]
-function objectEntries(xo) {
-  return (function objectEntries(xo, index = 0, acc = []) {
-    return Object.keys(xo)[index] === undefined ? acc : objectEntries(
-      xo,
-      index + 1,
-      [...acc, [Object.keys(xo)[index], xo[Object.keys(xo)[index]]]]);
-  })(xo);
-}
-
-// includes :: (a, [a]) -> Boolean
-function includes(a, [x, ...xs]) {
-  return x === undefined ? false : a === x ? true : includes(a, xs);
 }
