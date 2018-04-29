@@ -37,6 +37,8 @@ const {
   reduceWhile,
   reverse,
   some,
+  strPaddEnd,
+  strPaddStart,
   symetricDifference,
   take,
   takeWhile,
@@ -662,6 +664,39 @@ async function runTests() {
     },
     () => {
       expect('some', true, some(x => x === true, someArrayTrue));
+    }
+  )();
+
+  // strPaddEnd test
+  compose(
+    () => {
+      expect('strPaddEnd', '100', strPaddEnd(0, 3, '1'));
+    },
+    () => {
+      expect('strPaddEnd', '111', strPaddEnd(0, 3, '111'));
+    },
+    () => {
+      expect('strPaddEnd', '1###', strPaddEnd('#', 4, '1'));
+    },
+    () => {
+      expect('strPaddEnd', '1#######', strPaddEnd('#', 8, '1'));
+    }
+  )();
+
+
+  // strPaddStart test
+  compose(
+    () => {
+      expect('strPaddStart', '001', strPaddStart(0, 3, '1'));
+    },
+    () => {
+      expect('strPaddStart', '111', strPaddStart(0, 3, '111'));
+    },
+    () => {
+      expect('strPaddStart', '###1', strPaddStart('#', 4, '1'));
+    },
+    () => {
+      expect('strPaddStart', '01', strPaddStart(0, 2, '1'));
     }
   )();
 

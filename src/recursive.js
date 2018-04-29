@@ -37,6 +37,8 @@ module.exports = {
   reduceWhile,
   reverse,
   some,
+  strPaddEnd,
+  strPaddStart,
   symetricDifference,
   take,
   takeWhile,
@@ -345,6 +347,17 @@ function some(fn, xs) {
     return x === undefined ? false : fn(x) || some(fn, xs);
   })(fn, xs);
 }
+
+// strPaddEnd :: (String, Number, String) -> String
+function strPaddEnd(elem, count, xs) {
+  return length(xs) >= count ? xs : strPaddEnd(elem, count, `${xs}${elem}`);
+}
+
+// strPaddStart :: (String, Number, String) -> String
+function strPaddStart(elem, count, xs) {
+  return length(xs) >= count ? xs : strPaddStart(elem, count, `${elem}${xs}`);
+}
+
 
 // symetricDifference :: [*] -> [*] -> [*]
 function symetricDifference(__xs, __ys) {
