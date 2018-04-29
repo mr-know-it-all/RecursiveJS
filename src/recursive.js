@@ -41,7 +41,8 @@ module.exports = {
   unless,
   until,
   xprod,
-  zipObj
+  zipObj,
+  deepFlat
 };
 
 // reverse :: [a] -> [a]
@@ -374,4 +375,15 @@ function zipObj(xs, ys) {
   return (function zipObj([x, ...xs], [y, ...ys], acc = {}) {
     return x === undefined || y === undefined ? acc : zipObj(xs, ys, (acc[x] = y, acc))
   })(xs, ys);
+}
+
+// deepFlat :: [[[*]]] -> [*]
+function deepFlat(xs) {
+  return (function deepFlat([x, ...xs], acc = []) {
+    return (
+      x === undefined ?
+        acc :
+        Array.isArray(x) && deepFlat([...x, ...xs], acc) || deepFlat(xs, [...acc, x])
+    );
+  })(xs);
 }
