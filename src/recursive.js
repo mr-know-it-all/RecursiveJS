@@ -42,7 +42,10 @@ module.exports = {
   until,
   xprod,
   zipObj,
-  deepFlat
+  deepFlat,
+  objectValues,
+  objectEntries,
+  includes
 };
 
 // reverse :: [a] -> [a]
@@ -253,21 +256,21 @@ function merge(xo, yo) {
     reduce(
       (acc, v) => (acc[v[0]] = v[1], acc),
       uniqueBy(
-        (x) => x[0], [...Object.entries(yo), ...Object.entries(xo)]
+        (x) => x[0], [...objectEntries(yo), ...objectEntries(xo)]
       ), {})
   );
 }
 
 // omit :: ([String], {String: *}) -> {String: *}
 function omit(xs, xo) {
-  return Object.entries(xo).reduce(
+  return objectEntries(xo).reduce(
     (acc, v) => find(x => x === v[0], xs) && acc || (acc[v[0]] = v[1], acc), {}
   );
 }
 
 // pick :: ([Key], {Key: v}) -> {Key: v}
 function pick(xs, xo) {
-  return Object.entries(xo).reduce(
+  return objectEntries(xo).reduce(
     (acc, v) => !find(x => x === v[0], xs) && acc || (acc[v[0]] = v[1], acc), {}
   );
 }
@@ -339,7 +342,7 @@ function concat(xs, ys) {
 function mergeWith(fn, xo, yo) {
   return (
     reduce(
-      (acc, v) => (acc[v[0]] = acc[v[0]] ? fn(v[1], acc[v[0]]) : v[1], acc), [...Object.entries(yo), ...Object.entries(xo)], {})
+      (acc, v) => (acc[v[0]] = acc[v[0]] ? fn(v[1], acc[v[0]]) : v[1], acc), [...objectEntries(yo), ...objectEntries(xo)], {})
   );
 }
 
@@ -386,4 +389,29 @@ function deepFlat(xs) {
         Array.isArray(x) && deepFlat([...x, ...xs], acc) || deepFlat(xs, [...acc, x])
     );
   })(xs);
+}
+
+// objectValues :: {Key: *} -> [*]
+function objectValues(xo) {
+  return (function objectValues(xo, index = 0, acc = []) {
+    return Object.keys(xo)[index] === undefined ? acc : objectValues(
+      xo,
+      index + 1,
+      [...acc, xo[Object.keys(xo)[index]]]);
+  })(xo);
+}
+
+// objectValues :: {Key: *} -> [[Key, *]]
+function objectEntries(xo) {
+  return (function objectEntries(xo, index = 0, acc = []) {
+    return Object.keys(xo)[index] === undefined ? acc : objectEntries(
+      xo,
+      index + 1,
+      [...acc, [Object.keys(xo)[index], xo[Object.keys(xo)[index]]]]);
+  })(xo);
+}
+
+// includes :: (a, [a]) -> Boolean
+function includes(a, [x, ...xs]) {
+  return x === undefined ? false : a === x ? true : includes(a, xs);
 }

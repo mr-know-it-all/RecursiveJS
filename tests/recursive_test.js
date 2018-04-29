@@ -42,7 +42,10 @@ const {
   until,
   xprod,
   zipObj,
-  deepFlat
+  deepFlat,
+  objectValues,
+  objectEntries,
+  includes
 } = require('./../src/recursive.js');
 
 const testsState = {
@@ -685,17 +688,46 @@ async function runTests() {
 
   // deepFlat test
   expect(
-    'deepFlat',
+    'deepFlat test',
     [1, 2, 3, 4, 5],
     deepFlat([1, [[[2]]], [3], [[[[[4]]]]], 5])
   );
 
   // deepFlat test
   expect(
-    'deepFlat',
+    'deepFlat test',
     [1, 2, 3, 4, 5, 6],
     deepFlat([1, [[[2]]], [[[[3]]]], [[[[[[[[[4]]]]]]]]], 5, 6])
   );
+
+  // objectValues test
+  expect(
+    'objectValues test',
+    ['a value', 'b value', 'c value'],
+    objectValues({a: 'a value', b: 'b value', c: 'c value'})
+  );
+
+  // objectEntries test
+  expect(
+    'objectEntries test',
+    [['a', 'a value'], ['b', 'b value'], ['c', 'c value']],
+    objectEntries({a: 'a value', b: 'b value', c: 'c value'})
+  );
+
+  // includes test
+  expect(
+    'includes test',
+    true,
+    includes('a value', ['a value', 'b value', 'c value'])
+  );
+
+  // includes test
+  expect(
+    'includes test',
+    false,
+    includes('d value', ['a value', 'b value', 'c value'])
+  );
+
 
   logTestsStatus(testsState);
 }
