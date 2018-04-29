@@ -313,13 +313,13 @@ function quickSort([x, ...xs]) {
 // reduce :: ((a, b) -> a, [b], a) -> a
 function reduce(fn, xs, acc) {
   return (function reduce(fn, [x, ...xs], acc) {
-    return x === undefined && acc || reduce(fn, xs, fn(acc, x));
+    return x === undefined ? acc : reduce(fn, xs, fn(acc, x));
   })(fn, xs, acc);
 }
 
 // reduceWhile :: (((a, b) -> Boolean), ((a, b) -> a), [b]) -> a
 function reduceWhile(pred, fn, [x, ...xs], acc) {
-  return x === undefined || !pred(x) && acc || reduceWhile(pred, fn, xs, fn(acc, x));
+  return x === undefined || !pred(x) ? acc : reduceWhile(pred, fn, xs, fn(acc, x));
 }
 
 // reverse :: [a] -> [a]

@@ -75,6 +75,64 @@ runTests(testsState).catch(err => {
 async function runTests() {
   testsState.resetAll();
 
+  // allPass test
+  const isEven = x => x % 2 === 0;
+  const largerThanTwo = x => x > 2;
+  const isInteger = x => Number.isInteger(x);
+
+  compose(
+    (x) => {
+      expect('allPass', true, allPass(
+        [isEven, largerThanTwo, isInteger], [4, 6, 8, 10]
+      ));
+    },
+    () => {
+      expect('allPass', false, allPass(
+        [isEven, largerThanTwo, isInteger], [4, 6, 8, 10, 'a']
+      ));
+    }
+  )();
+
+  // compose test
+  const addOne = x => x + 1;
+  const multiplyByTwo = x => x * 2;
+
+  expect('compose', multiplyByTwo(addOne(5)), compose(multiplyByTwo, addOne)(5));
+
+  // composeP test
+  const getUserName = () => new Promise(resolve => setTimeout(() => resolve('John'), 500));
+  const getUserAge = userName => new Promise(resolve => setTimeout(() => resolve(`${userName} 42`), 500));
+  const getUserCity = userNameAndAge => new Promise(resolve => setTimeout(() => resolve(`${userNameAndAge} NY`), 500));
+
+  await composeP(getUserCity, getUserAge, getUserName)().then(composeP => {
+    expect('composeP', 'John 42 NY', composeP);
+  });
+
+  // curry test
+  let curryFunction = function(a, b, c, d) {
+    return a + b + c + d;
+  };
+
+  expect('curry', curryFunction(1, 2, 3, 4), curry(curryFunction)(1)(2, 3)(4));
+
+  // deepFlat test
+  compose(
+    () => {
+      expect(
+        'deepFlat test',
+        [1, 2, 3, 4, 5, 6],
+        deepFlat([1, [[[2]]], [[[[3]]]], [[[[[[[[[4]]]]]]]]], 5, 6])
+      );
+    },
+    () => {
+      expect(
+        'deepFlat test',
+        [1, 2, 3, 4, 5],
+        deepFlat([1, [[[2]]], [3], [[[[[4]]]]], 5])
+      );
+    }
+  )();
+
   // reverse test
   expect('reverse', [3, 2, 1], reverse([1, 2, 3]));
 
@@ -96,18 +154,6 @@ async function runTests() {
   expect('map', [1, 2, 3, 4], mapArray);
   expect('map', [2, 3, 4, 5], map(x => x + 1, mapArray));
 
-  // curry test
-  let curryFunction = function(a, b, c, d) {
-    return a + b + c + d;
-  };
-
-  expect('curry', curryFunction(1, 2, 3, 4), curry(curryFunction)(1)(2, 3)(4));
-
-  // compose test
-  const addOne = x => x + 1;
-  const multiplyByTwo = x => x * 2;
-
-  expect('compose', multiplyByTwo(addOne(5)), compose(multiplyByTwo, addOne)(5));
 
   // filter test
   let filterArray = [1, 2, 3, 4, 5, 6];
@@ -166,15 +212,6 @@ async function runTests() {
   let takeWhileArray = [1, 2, 3, 4, 5, 6, 7];
 
   expect('takeWhile', [1, 2, 3, 4, 5], takeWhile(x => x <= 5, takeWhileArray));
-
-  // composeP test
-  const getUserName = () => new Promise(resolve => setTimeout(() => resolve('John'), 500));
-  const getUserAge = userName => new Promise(resolve => setTimeout(() => resolve(`${userName} 42`), 500));
-  const getUserCity = userNameAndAge => new Promise(resolve => setTimeout(() => resolve(`${userNameAndAge} NY`), 500));
-
-  await composeP(getUserCity, getUserAge, getUserName)().then(composeP => {
-    expect('composeP', 'John 42 NY', composeP);
-  });
 
   // innerJoin test - inspired by Ramda
   let innerJoinResult = innerJoin(
@@ -293,19 +330,6 @@ async function runTests() {
     }],
     project(['name', 'age'], people)
   );
-
-  // allPass test
-  const isEven = x => x % 2 === 0;
-  const largerThanTwo = x => x > 2;
-  const isInteger = x => Number.isInteger(x);
-
-  expect('allPass', true, allPass(
-    [isEven, largerThanTwo, isInteger], [4, 6, 8, 10]
-  ));
-
-  expect('allPass', false, allPass(
-    [isEven, largerThanTwo, isInteger], [4, 6, 8, 10, 'a']
-  ));
 
   // zip test
   expect(
@@ -685,20 +709,6 @@ async function runTests() {
     },
     zipObj(['a', 'b', 'c', 'd', 'e'], [1, 2, 3])
   )
-
-  // deepFlat test
-  expect(
-    'deepFlat test',
-    [1, 2, 3, 4, 5],
-    deepFlat([1, [[[2]]], [3], [[[[[4]]]]], 5])
-  );
-
-  // deepFlat test
-  expect(
-    'deepFlat test',
-    [1, 2, 3, 4, 5, 6],
-    deepFlat([1, [[[2]]], [[[[3]]]], [[[[[[[[[4]]]]]]]]], 5, 6])
-  );
 
   // objectValues test
   expect(
