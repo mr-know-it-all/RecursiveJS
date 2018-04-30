@@ -5,6 +5,7 @@ module.exports = {
   compose,
   composeP,
   concat,
+	construct,
 	converge,
   curry,
   deepFlat,
@@ -77,6 +78,11 @@ function composeP(...fns) {
 // concat :: ([a], [a]) -> [a]
 function concat(xs, ys) {
   return [...xs, ...(Array.isArray(ys) && ys || [ys])];
+}
+
+// construct :: (* -> {*}) -> (* -> {*})
+function construct(constructorFn) {
+	return (...args) => new constructorFn(...args);
 }
 
 // converge :: todo

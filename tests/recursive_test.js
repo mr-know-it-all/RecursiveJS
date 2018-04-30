@@ -5,6 +5,7 @@ const {
   compose,
   composeP,
   concat,
+	construct,
 	converge,
   curry,
   deepFlat,
@@ -128,6 +129,24 @@ async function runTests() {
       );
     }
   )();
+
+	// construct test
+	function Garden(...args) { this.plants = args; }
+	Garden.prototype.harvest = function() {
+	  return reduce(
+			(acc, v) => length(acc) === 0 ? `My harvest: ${v}` : `${acc}, ${v}`,
+			this.plants,
+			''
+		);
+	};
+	const gardenConstructor = construct(Garden);
+	const myGarden = gardenConstructor('onions', 'beans', 'tommatoes');
+
+	expect(
+		'constructor test',
+		'My harvest: onions, beans, tommatoes',
+		myGarden.harvest()
+	)
 
 	// converge test
 	compose(
