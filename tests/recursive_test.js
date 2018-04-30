@@ -5,6 +5,7 @@ const {
   compose,
   composeP,
   concat,
+	converge,
   curry,
   deepFlat,
   every,
@@ -80,6 +81,7 @@ async function runTests() {
 
   // allPass test
   const isEven = x => x % 2 === 0;
+	const isOdd = x => !isEven(x);
   const largerThanTwo = x => x > 2;
   const isInteger = x => Number.isInteger(x);
 
@@ -126,6 +128,46 @@ async function runTests() {
       );
     }
   )();
+
+	// converge test
+	compose(
+		() => {
+			expect(
+				'converge test',
+				3.5,
+				converge((x, y) => x/y, [xs => reduce((acc, v) => acc + v, xs, 0), length])([1, 2, 3, 4, 5, 6])
+			)
+		},
+		() => {
+			expect(
+				'converge test',
+				[1, 6, 21, 6],
+				converge(
+					(...args) => args,
+					[
+						xs => Math.min(...xs),
+						xs => Math.max(...xs),
+						xs => reduce((acc, v) => acc + v, xs, 0),
+						length])([1, 2, 3, 4, 5, 6
+					]
+				)
+			)
+		},
+		() => {
+			expect(
+				'converge test',
+				[1, 1, 2, 6],
+				converge(
+					(...args) => deepFlat(args),
+					[
+						curry(takeWhile)(isOdd),
+						curry(take)(2),
+						length
+					])([1, 2, 3, 4, 5, 6]
+				)
+			)
+		}
+	)();
 
   // curry test
   let curryFunction = function(a, b, c, d) {

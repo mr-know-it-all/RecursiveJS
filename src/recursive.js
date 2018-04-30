@@ -5,6 +5,7 @@ module.exports = {
   compose,
   composeP,
   concat,
+	converge,
   curry,
   deepFlat,
   every,
@@ -60,11 +61,6 @@ function allPass(ps, [x, ...xs]) {
   );
 }
 
-// concat :: ([a], [a]) -> [a]
-function concat(xs, ys) {
-  return [...xs, ...(Array.isArray(ys) && ys || [ys])];
-}
-
 // compose :: (c -> d, ..., b -> c, a -> b) -> (x -> (a -> b -> c -> d))
 function compose(...fns) {
   return value => reduce((acc, fn) => fn(acc), reverse(fns), value);
@@ -76,6 +72,16 @@ function composeP(...fns) {
     (async function applyFunc([fn, ...fns], value) {
       return fn ? applyFunc(fns, await (fn(value))) : value;
     })(reverse(fns), initialValue);
+}
+
+// concat :: ([a], [a]) -> [a]
+function concat(xs, ys) {
+  return [...xs, ...(Array.isArray(ys) && ys || [ys])];
+}
+
+// converge :: todo
+function converge(cFn, fns) {
+	return v => cFn(...map(fn => fn(v), fns));
 }
 
 // curry :: (* -> a) → (* -> a)
