@@ -11,6 +11,7 @@ module.exports = {
   deepFlat,
 	defaultTo,
 	dissoc,
+	drop,
   every,
   fill,
   filter,
@@ -121,6 +122,14 @@ function defaultTo(dflt) {
 // dissoc :: (String, {Key: v}) -> {Key: v}
 function dissoc(prop, xo) {
 	return reduce((acc, [key, value]) => key === prop ? acc : (acc[key] = value, acc), objectEntries(xo), {});
+}
+
+// drop :: (Number, [a]) -> [a]
+function drop(count, xs) {
+	const isString = typeof xs === 'string';
+	return (function drop(count, [x, ...xs]) {
+		return count - 1 === 0 ? isString ? xs.join('') : xs : drop(count - 1, xs);
+	})(count, xs)
 }
 
 // every :: (a -> Boolean, [a]) -> Boolean

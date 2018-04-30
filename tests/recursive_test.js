@@ -11,6 +11,7 @@ const {
   deepFlat,
 	defaultTo,
 	dissoc,
+	drop,
   every,
   fill,
   filter,
@@ -234,6 +235,37 @@ async function runTests() {
 		{a: 1, b: 2, c: 3},
 		dissoc('d', {a: 1, b: 2, c: 3, d: 4})
 	)
+
+	// drop test
+	compose(
+		([data]) => {
+			expect('drop', 'cd', drop(2, data));
+		},
+		data => {
+			const expected = ['abcd'];
+			expect('drop', expected, drop(2, data));
+
+			return expected;
+		},
+		data => {
+			const expected = [6, 7, 'abcd'];
+			expect('drop', expected, drop(2, data));
+
+			return expected;
+		},
+		data => {
+			const expected = [4, 5, 6, 7, 'abcd'];
+			expect('drop', expected, drop(2, data));
+
+			return expected;
+		},
+		() => {
+			const expected = [2, 3, 4, 5, 6, 7, 'abcd'];
+			expect('drop', expected, drop(1, [1, ...expected]));
+
+			return expected;
+		}
+	)();
 
   // every test
   const everyArrayTrue = [false, false, false, true];
