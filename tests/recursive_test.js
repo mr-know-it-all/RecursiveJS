@@ -9,6 +9,7 @@ const {
 	converge,
   curry,
   deepFlat,
+	defaultTo,
   every,
   fill,
   filter,
@@ -143,7 +144,7 @@ async function runTests() {
 	const myGarden = gardenConstructor('onions', 'beans', 'tommatoes');
 
 	expect(
-		'constructor test',
+		'construct test',
 		'My harvest: onions, beans, tommatoes',
 		myGarden.harvest()
 	)
@@ -212,6 +213,19 @@ async function runTests() {
       );
     }
   )();
+
+	// defaultTo test
+	compose(
+		() => {
+			expect('defaultTo', 42, defaultTo(42)(NaN))
+		},
+		() => {
+			expect('defaultTo', '42', defaultTo(42)('42'))
+		},
+		() => {
+			expect('defaultTo', NaN, defaultTo(NaN)(NaN))
+		}
+	)();
 
   // every test
   const everyArrayTrue = [false, false, false, true];
@@ -902,14 +916,14 @@ function equals(a, b) {
 }
 
 function expect(name, expectation, actual) {
-  console.log(`RUNNING: ${name}`);
+  // console.log(`RUNNING: ${name}`);
   // console.log(
   //   '->', serialize(expectation) === serialize(actual),
   //   '::', equals(expectation, actual)
   // );
   if (serialize(expectation) === serialize(actual)) {
     testsState.testPassed();
-    console.log('TEST passed!');
+    // console.log('TEST passed!');
   } else {
     testsState.testFailed();
     console.warn(`TEST >> ${name} << failed!`);

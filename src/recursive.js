@@ -9,6 +9,7 @@ module.exports = {
 	converge,
   curry,
   deepFlat,
+	defaultTo,
   every,
   fill,
   filter,
@@ -109,6 +110,11 @@ function deepFlat(xs) {
         Array.isArray(x) && deepFlat([...x, ...xs], acc) || deepFlat(xs, [...acc, x])
     );
   })(xs);
+}
+
+// defaultTo :: a -> b -> a | b
+function defaultTo(dflt) {
+	return x => x !== undefined && x !== null && !Number.isNaN(x) ? x : dflt;
 }
 
 // every :: (a -> Boolean, [a]) -> Boolean
