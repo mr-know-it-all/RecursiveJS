@@ -1,60 +1,27 @@
 'use strict';
 
-module.exports = {
+const RecursiveJS = [
   allPass,
-  compose,
-  composeP,
-  concat,
-	construct,
-	converge,
-  curry,
-  deepFlat,
-	defaultTo,
-	dissoc,
-	drop,
+  compose, composeP, concat, construct, converge, curry,
+  deepFlat, defaultTo, dissoc, drop,
   every,
-  fill,
-  filter,
-  find,
-  forEach,
-  includes,
-  innerJoin,
-  intersection,
-  intersperse,
+  fill, filter, find, forEach,
+  includes, innerJoin, intersection, intersperse,
   juxt,
   length,
-  map,
-  memoize,
-  merge,
-  mergeWith,
-  objectEntries,
-  objectValues,
-  omit,
-  partition,
-  path,
-  pathOr,
-  pathSatisfies,
-  pick,
-  pluck,
-  project,
+  map, memoize, merge, mergeWith,
+  objectEntries, objectValues, omit,
+  partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
-  reduce,
-  reduceWhile,
-  reverse,
-  some,
-  strPaddEnd,
-  strPaddStart,
-  symetricDifference,
-  take,
-  takeWhile,
-  uncurryN,
-  uniqueBy,
-  unless,
-  until,
+  reduce, reduceWhile, reverse,
+  some, strPaddEnd, strPaddStart, symetricDifference,
+  take, takeWhile,
+  uncurryN, uniqueBy, unless, until,
   xprod,
-  zip,
-  zipObj
-};
+  zip, zipObj
+];
+
+module.exports = map(fn => fn.length > 1 ? curry(fn) : fn, RecursiveJS);
 
 // allPass :: ([a -> Boolean], [a]) -> Boolean
 function allPass(ps, [x, ...xs]) {
@@ -316,8 +283,9 @@ function pathOr(dflt, xs, xo) {
 }
 
 // pathSatisfies :: ((a -> Boolean), [Key], {a}) -> Boolean
-function pathSatisfies(fn, xs, xo, data) {
-  return (data = path(xs, xo), data && fn(data));
+function pathSatisfies(fn, xs, xo) {
+  const data = path(xs, xo);
+  return data && fn(data);
 }
 
 // pick :: ([Key], {Key: v}) -> {Key: v}

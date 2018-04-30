@@ -1,60 +1,25 @@
 'use strict';
 
-const {
+const [
   allPass,
-  compose,
-  composeP,
-  concat,
-	construct,
-	converge,
-  curry,
-  deepFlat,
-	defaultTo,
-	dissoc,
-	drop,
+  compose, composeP, concat, construct, converge, curry,
+  deepFlat, defaultTo, dissoc, drop,
   every,
-  fill,
-  filter,
-  find,
-  forEach,
-  includes,
-  innerJoin,
-  intersection,
-  intersperse,
+  fill, filter, find, forEach,
+  includes, innerJoin, intersection, intersperse,
   juxt,
   length,
-  map,
-  memoize,
-  merge,
-  mergeWith,
-  objectEntries,
-  objectValues,
-  omit,
-  partition,
-  path,
-  pathOr,
-  pathSatisfies,
-  pick,
-  pluck,
-  project,
+  map, memoize, merge, mergeWith,
+  objectEntries, objectValues, omit,
+  partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
-  reduce,
-  reduceWhile,
-  reverse,
-  some,
-  strPaddEnd,
-  strPaddStart,
-  symetricDifference,
-  take,
-  takeWhile,
-  uncurryN,
-  uniqueBy,
-  unless,
-  until,
+  reduce, reduceWhile, reverse,
+  some, strPaddEnd, strPaddStart, symetricDifference,
+  take, takeWhile,
+  uncurryN, uniqueBy, unless, until,
   xprod,
-  zip,
-  zipObj
-} = require('./../src/recursive.js');
+  zip, zipObj
+] = require('./../src/recursive.js');
 
 const testsState = {
   allTests: 0,
@@ -91,14 +56,14 @@ async function runTests() {
 
   compose(
     (x) => {
-      expect('allPass', true, allPass(
-        [isEven, largerThanTwo, isInteger], [4, 6, 8, 10]
-      ));
+      expect(
+        'allPass', true, allPass([isEven, largerThanTwo, isInteger])([4, 6, 8, 10])
+      );
     },
     () => {
-      expect('allPass', false, allPass(
-        [isEven, largerThanTwo, isInteger], [4, 6, 8, 10, 'a']
-      ));
+      expect(
+        'allPass', false, allPass([isEven, largerThanTwo, isInteger], [4, 6, 8, 10, 'a'])
+      );
     }
   )();
 
@@ -122,7 +87,7 @@ async function runTests() {
     () => {
       expect(
         'concat test', [1, 2, 3, 4],
-        concat([1, 2], [3, 4])
+        concat([1, 2])([3, 4])
       );
     },
     () => {
@@ -157,7 +122,11 @@ async function runTests() {
 			expect(
 				'converge test',
 				3.5,
-				converge((x, y) => x/y, [xs => reduce((acc, v) => acc + v, xs, 0), length])([1, 2, 3, 4, 5, 6])
+				converge(
+          (x, y) => x/y
+        )(
+          [xs => reduce((acc, v) => acc + v, xs, 0), length]
+        )([1, 2, 3, 4, 5, 6])
 			)
 		},
 		() => {
@@ -170,9 +139,9 @@ async function runTests() {
 						xs => Math.min(...xs),
 						xs => Math.max(...xs),
 						xs => reduce((acc, v) => acc + v, xs, 0),
-						length])([1, 2, 3, 4, 5, 6
-					]
-				)
+						length
+          ]
+        )([1, 2, 3, 4, 5, 6])
 			)
 		},
 		() => {
@@ -182,11 +151,10 @@ async function runTests() {
 				converge(
 					(...args) => deepFlat(args),
 					[
-						curry(takeWhile)(isOdd),
-						curry(take)(2),
+						takeWhile(isOdd),
+						take(2),
 						length
-					])([1, 2, 3, 4, 5, 6]
-				)
+					])([1, 2, 3, 4, 5, 6])
 			)
 		}
 	)();
@@ -243,7 +211,7 @@ async function runTests() {
 		},
 		data => {
 			const expected = ['abcd'];
-			expect('drop', expected, drop(2, data));
+			expect('drop', expected, drop(2)(data));
 
 			return expected;
 		},
@@ -255,7 +223,7 @@ async function runTests() {
 		},
 		data => {
 			const expected = [4, 5, 6, 7, 'abcd'];
-			expect('drop', expected, drop(2, data));
+			expect('drop', expected, drop(2)(data));
 
 			return expected;
 		},
@@ -304,7 +272,7 @@ async function runTests() {
       expect('find', false, find(x => x === 42, [1, 2, 3, 4, 16]));
     },
     () => {
-      expect('find', 4, find(x => x === 4, [1, 2, 3, 4]));
+      expect('find', 4, find(x => x === 4)([1, 2, 3, 4]));
     }
   )();
 
@@ -326,7 +294,7 @@ async function runTests() {
       expect(
         'includes test',
         true,
-        includes('a value', ['a value', 'b value', 'c value'])
+        includes('a value')(['a value', 'b value', 'c value'])
       );
     }
   )();
@@ -433,13 +401,10 @@ async function runTests() {
       b: 2,
       a: 1
     },
-    mergeWith(concat, {
-      c: [1, 2],
-      a: 1
-    }, {
-      c: [3, 4],
-      b: 2
-    })
+    mergeWith(concat)(
+      {c: [1, 2], a: 1},
+      {c: [3, 4], b: 2}
+    )
   );
 
   // objectEntries test
@@ -480,7 +445,7 @@ async function runTests() {
           [1, 2, 3],
           ['one', 'two', 'three']
         ],
-        partition(isInteger, [1, 'one', 2, 'two', 3, 'three'])
+        partition(isInteger)([1, 'one', 2, 'two', 3, 'three'])
       );
     },
     () => {
@@ -499,7 +464,7 @@ async function runTests() {
     () => {
       expect(
         'path test', [42],
-        path([0, 1, 2, 3, 4], [
+        path([0, 1, 2, 3, 4])([
           [
             [],
             [
@@ -556,7 +521,7 @@ async function runTests() {
       expect(
         'pathOr test',
         'N/A',
-        pathOr('N/A', ['a', 'e', 'c', 'd'], {
+        pathOr('N/A')(['a', 'e', 'c', 'd'], {
           a: {
             b: {
               c: 42
@@ -599,7 +564,7 @@ async function runTests() {
       expect(
         'pathSatisfies test',
         true,
-        pathSatisfies(curry(every)(isEven), [0, 1, 2, 3, 4], [
+        pathSatisfies(every(isEven), [0, 1, 2, 3, 4], [
           [
             [],
             [
@@ -626,7 +591,7 @@ async function runTests() {
       expect(
         'pathSatisfies test',
         false,
-        pathSatisfies(curry(every)(isEven), [0, 1, 2, 3, 4], [
+        pathSatisfies(every(isEven))([0, 1, 2, 3, 4], [
           [
             [],
             [
@@ -672,8 +637,7 @@ async function runTests() {
     () => {
       expect(
         'pluck', ['21', '22', '23'],
-        pluck(
-          'age', [{
+        pluck('age')([{
             age: '21',
             alias: 'aka1',
             city: 'WS1',
@@ -753,7 +717,7 @@ async function runTests() {
       expect(
         'reduceWhile',
         15,
-        reduceWhile(isInteger, add, reduceWhileList2, 0)
+        reduceWhile(isInteger)(add, reduceWhileList2, 0)
       );
 
     },
@@ -775,7 +739,7 @@ async function runTests() {
 
   compose(
     () => {
-      expect('some', false, some(x => x === true, someArrayFalse));
+      expect('some', false, some(x => x === true)(someArrayFalse));
     },
     () => {
       expect('some', true, some(x => x === true, someArrayTrue));
@@ -788,13 +752,13 @@ async function runTests() {
       expect('strPaddEnd', '100', strPaddEnd(0, 3, '1'));
     },
     () => {
-      expect('strPaddEnd', '111', strPaddEnd(0, 3, '111'));
+      expect('strPaddEnd', '111', strPaddEnd(0)(3, '111'));
     },
     () => {
       expect('strPaddEnd', '1###', strPaddEnd('#', 4, '1'));
     },
     () => {
-      expect('strPaddEnd', '1#######', strPaddEnd('#', 8, '1'));
+      expect('strPaddEnd', '1#######', strPaddEnd('#')(8, '1'));
     }
   )();
 
@@ -811,7 +775,7 @@ async function runTests() {
       expect('strPaddStart', '###1', strPaddStart('#', 4, '1'));
     },
     () => {
-      expect('strPaddStart', '01', strPaddStart(0, 2, '1'));
+      expect('strPaddStart', '01', strPaddStart(0)(2, '1'));
     }
   )();
 
@@ -829,7 +793,7 @@ async function runTests() {
 
   // uncurryN test
   const curriedAdderFunc = a => b => c => d => a + b + c + d;
-  const uncurriedAdderFunc = uncurryN(4, curriedAdderFunc);
+  const uncurriedAdderFunc = uncurryN(4)(curriedAdderFunc);
 
   compose(
     () => {
