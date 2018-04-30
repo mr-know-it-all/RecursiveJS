@@ -50,7 +50,7 @@ async function runTests() {
 
   // allPass test
   const isEven = x => x % 2 === 0;
-	const isOdd = x => !isEven(x);
+  const isOdd = x => !isEven(x);
   const largerThanTwo = x => x > 2;
   const isInteger = x => Number.isInteger(x);
 
@@ -98,66 +98,62 @@ async function runTests() {
     }
   )();
 
-	// construct test
-	function Garden(...args) { this.plants = args; }
-	Garden.prototype.harvest = function() {
-	  return reduce(
-			(acc, v) => length(acc) === 0 ? `My harvest: ${v}` : `${acc}, ${v}`,
-			this.plants,
-			''
-		);
-	};
-	const gardenConstructor = construct(Garden);
-	const myGarden = gardenConstructor('onions', 'beans', 'tommatoes');
+  // construct test
+  function Garden(...args) {
+    this.plants = args;
+  }
+  Garden.prototype.harvest = function() {
+    return reduce(
+      (acc, v) => length(acc) === 0 ? `My harvest: ${v}` : `${acc}, ${v}`,
+      this.plants,
+      ''
+    );
+  };
+  const gardenConstructor = construct(Garden);
+  const myGarden = gardenConstructor('onions', 'beans', 'tommatoes');
 
-	expect(
-		'construct test',
-		'My harvest: onions, beans, tommatoes',
-		myGarden.harvest()
-	)
+  expect(
+    'construct test',
+    'My harvest: onions, beans, tommatoes',
+    myGarden.harvest()
+  )
 
-	// converge test
-	compose(
-		() => {
-			expect(
-				'converge test',
-				3.5,
-				converge(
-          (x, y) => x/y
+  // converge test
+  compose(
+    () => {
+      expect(
+        'converge test',
+        3.5,
+        converge(
+          (x, y) => x / y
         )(
           [xs => reduce((acc, v) => acc + v, xs, 0), length]
         )([1, 2, 3, 4, 5, 6])
-			)
-		},
-		() => {
-			expect(
-				'converge test',
-				[1, 6, 21, 6],
-				converge(
-					(...args) => args,
-					[
-						xs => Math.min(...xs),
-						xs => Math.max(...xs),
-						xs => reduce((acc, v) => acc + v, xs, 0),
-						length
+      )
+    }, () => {
+      expect(
+        'converge test', [1, 6, 21, 6],
+        converge(
+          (...args) => args, [
+            xs => Math.min(...xs),
+            xs => Math.max(...xs),
+            xs => reduce((acc, v) => acc + v, xs, 0),
+            length
           ]
         )([1, 2, 3, 4, 5, 6])
-			)
-		},
-		() => {
-			expect(
-				'converge test',
-				[1, 1, 2, 6],
-				converge(
-					(...args) => deepFlat(args),
-					[
-						takeWhile(isOdd),
-						take(2),
-						length
-					])([1, 2, 3, 4, 5, 6])
-			)
-		}
-	)();
+      )
+    }, () => {
+      expect(
+        'converge test', [1, 1, 2, 6],
+        converge(
+          (...args) => deepFlat(args), [
+            takeWhile(isOdd),
+            take(2),
+            length
+          ])([1, 2, 3, 4, 5, 6])
+      )
+    }
+  )();
 
   // curry test
   let curryFunction = function(a, b, c, d) {
@@ -184,56 +180,61 @@ async function runTests() {
     }
   )();
 
-	// defaultTo test
-	compose(
-		() => {
-			expect('defaultTo', 42, defaultTo(42)(NaN))
-		},
-		() => {
-			expect('defaultTo', '42', defaultTo(42)('42'))
-		},
-		() => {
-			expect('defaultTo', NaN, defaultTo(NaN)(NaN))
-		}
-	)();
+  // defaultTo test
+  compose(
+    () => {
+      expect('defaultTo', 42, defaultTo(42)(NaN))
+    }, () => {
+      expect('defaultTo', '42', defaultTo(42)('42'))
+    }, () => {
+      expect('defaultTo', NaN, defaultTo(NaN)(NaN))
+    }
+  )();
 
-	// dissoc test
-	expect(
-		'dissoc test',
-		{a: 1, b: 2, c: 3},
-		dissoc('d', {a: 1, b: 2, c: 3, d: 4})
-	)
+  // dissoc test
+  expect(
+    'dissoc test', {
+      a: 1,
+      b: 2,
+      c: 3
+    },
+    dissoc('d', {
+      a: 1,
+      b: 2,
+      c: 3,
+      d: 4
+    })
+  )
 
-	// drop test
-	compose(
-		([data]) => {
-			expect('drop', 'cd', drop(2, data));
-		},
-		data => {
-			const expected = ['abcd'];
-			expect('drop', expected, drop(2)(data));
+  // drop test
+  compose(
+    ([data]) => {
+      expect('drop', 'cd', drop(2, data));
+    },
+    data => {
+      const expected = ['abcd'];
+      expect('drop', expected, drop(2)(data));
 
-			return expected;
-		},
-		data => {
-			const expected = [6, 7, 'abcd'];
-			expect('drop', expected, drop(2, data));
+      return expected;
+    },
+    data => {
+      const expected = [6, 7, 'abcd'];
+      expect('drop', expected, drop(2, data));
 
-			return expected;
-		},
-		data => {
-			const expected = [4, 5, 6, 7, 'abcd'];
-			expect('drop', expected, drop(2)(data));
+      return expected;
+    },
+    data => {
+      const expected = [4, 5, 6, 7, 'abcd'];
+      expect('drop', expected, drop(2)(data));
 
-			return expected;
-		},
-		() => {
-			const expected = [2, 3, 4, 5, 6, 7, 'abcd'];
-			expect('drop', expected, drop(1, [1, ...expected]));
+      return expected;
+    }, () => {
+      const expected = [2, 3, 4, 5, 6, 7, 'abcd'];
+      expect('drop', expected, drop(1, [1, ...expected]));
 
-			return expected;
-		}
-	)();
+      return expected;
+    }
+  )();
 
   // every test
   const everyArrayTrue = [false, false, false, true];

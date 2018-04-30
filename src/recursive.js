@@ -52,12 +52,12 @@ function concat(xs, ys) {
 
 // construct :: (* -> {*}) -> (* -> {*})
 function construct(constructorFn) {
-	return (...args) => new constructorFn(...args);
+  return (...args) => new constructorFn(...args);
 }
 
 // converge :: todo
 function converge(cFn, fns) {
-	return v => cFn(...map(fn => fn(v), fns));
+  return v => cFn(...map(fn => fn(v), fns));
 }
 
 // curry :: (* -> a) → (* -> a)
@@ -83,20 +83,20 @@ function deepFlat(xs) {
 
 // defaultTo :: a -> b -> a | b
 function defaultTo(dflt) {
-	return x => x !== undefined && x !== null && !Number.isNaN(x) ? x : dflt;
+  return x => x !== undefined && x !== null && !Number.isNaN(x) ? x : dflt;
 }
 
 // dissoc :: (String, {Key: v}) -> {Key: v}
 function dissoc(prop, xo) {
-	return reduce((acc, [key, value]) => key === prop ? acc : (acc[key] = value, acc), objectEntries(xo), {});
+  return reduce((acc, [key, value]) => key === prop ? acc : (acc[key] = value, acc), objectEntries(xo), {});
 }
 
 // drop :: (Number, [a]) -> [a]
 function drop(count, xs) {
-	const isString = typeof xs === 'string';
-	return (function drop(count, [x, ...xs]) {
-		return count - 1 === 0 ? isString ? xs.join('') : xs : drop(count - 1, xs);
-	})(count, xs)
+  const isString = typeof xs === 'string';
+  return (function drop(count, [x, ...xs]) {
+  	return count - 1 === 0 ? isString ? xs.join('') : xs : drop(count - 1, xs);
+  })(count, xs)
 }
 
 // every :: (a -> Boolean, [a]) -> Boolean
@@ -254,10 +254,7 @@ function objectValues(xo) {
 
 // partition :: ((a -> Boolean), [a]) -> [[a], [a]]
 function partition(pred, xs) {
-  return (function partition(pred, [x, ...xs], acc = [
-    [],
-    []
-  ]) {
+  return (function partition(pred, [x, ...xs], acc = [[], []]) {
     return x === undefined && acc || partition(
       pred, xs, pred(x) && [
         [...acc[0], x], acc[1]
