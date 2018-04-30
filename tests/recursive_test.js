@@ -10,6 +10,7 @@ const {
   curry,
   deepFlat,
 	defaultTo,
+	dissoc,
   every,
   fill,
   filter,
@@ -226,6 +227,13 @@ async function runTests() {
 			expect('defaultTo', NaN, defaultTo(NaN)(NaN))
 		}
 	)();
+
+	// dissoc test
+	expect(
+		'dissoc test',
+		{a: 1, b: 2, c: 3},
+		dissoc('d', {a: 1, b: 2, c: 3, d: 4})
+	)
 
   // every test
   const everyArrayTrue = [false, false, false, true];

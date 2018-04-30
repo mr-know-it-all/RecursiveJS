@@ -10,6 +10,7 @@ module.exports = {
   curry,
   deepFlat,
 	defaultTo,
+	dissoc,
   every,
   fill,
   filter,
@@ -115,6 +116,11 @@ function deepFlat(xs) {
 // defaultTo :: a -> b -> a | b
 function defaultTo(dflt) {
 	return x => x !== undefined && x !== null && !Number.isNaN(x) ? x : dflt;
+}
+
+// dissoc :: (String, {Key: v}) -> {Key: v}
+function dissoc(prop, xo) {
+	return reduce((acc, [key, value]) => key === prop ? acc : (acc[key] = value, acc), objectEntries(xo), {});
 }
 
 // every :: (a -> Boolean, [a]) -> Boolean
