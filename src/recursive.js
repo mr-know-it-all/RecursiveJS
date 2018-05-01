@@ -4,7 +4,7 @@ const RecursiveJS = [
   allPass,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
-  every,
+  equals, every,
   fill, filter, find, forEach,
   includes, innerJoin, intersection, intersperse,
   juxt,
@@ -21,7 +21,7 @@ const RecursiveJS = [
   zip, zipObj
 ];
 
-module.exports = map(fn => fn.length > 1 ? curry(fn) : fn, RecursiveJS);
+module.exports = map(fn => fn.length > 1 && fn.name !== 'equals' ? curry(fn) : fn, RecursiveJS);
 
 // allPass :: ([a -> Boolean], [a]) -> Boolean
 function allPass(ps, [x, ...xs]) {
@@ -97,6 +97,18 @@ function drop(count, xs) {
   return (function drop(count, [x, ...xs]) {
   	return count - 1 === 0 ? isString ? xs.join('') : xs : drop(count - 1, xs);
   })(count, xs)
+}
+
+function equals(a, b) {
+  const isPrimitiveType = a => {
+    return includes(typeof a, ['null', 'undefined', 'boolean', 'number', 'string', 'symbol']);
+  };
+
+  return typeof a !== typeof b ? false : (
+    isPrimitiveType(a) ? a === b : (
+      'to be continued'
+    )
+  );
 }
 
 // every :: (a -> Boolean, [a]) -> Boolean

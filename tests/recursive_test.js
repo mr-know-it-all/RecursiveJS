@@ -4,7 +4,7 @@ const [
   allPass,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
-  every,
+  equals, every,
   fill, filter, find, forEach,
   includes, innerJoin, intersection, intersperse,
   juxt,
@@ -233,6 +233,34 @@ async function runTests() {
       expect('drop', expected, drop(1, [1, ...expected]));
 
       return expected;
+    }
+  )();
+
+  // equals test
+  compose (
+    () => {
+      expect('equals 1', true, equals(true, true));
+    },
+    () => {
+      expect('equals 2', false, equals(true, false));
+    },
+    () => {
+      expect('equals 3', false, equals(NaN, false));
+    },
+    () => {
+      expect('equals 4', false, equals(undefined, null));
+    },
+    () => {
+      expect('equals 5', false, equals(undefined, false));
+    },
+    () => {
+      expect('equals 6', false, equals(true, 1));
+    },
+    () => {
+      expect('equals 7', false, equals([], ''));
+    },
+    () => {
+      expect('equals 8', false, equals({}, []));
     }
   )();
 
@@ -908,24 +936,7 @@ function serialize(x) {
   return JSON.stringify(x);
 }
 
-function isPrimitiveType(a) {
-  return find(x => x === typeof a, ['null', 'undefined', 'boolean', 'number', 'string', 'symbol']);
-}
-
-function equals(a, b) {
-  return typeof a !== typeof b ? false : (
-    isPrimitiveType(a) ? a === b : (
-      'to be continued'
-    )
-  );
-}
-
 function expect(name, expectation, actual) {
-  // console.log(`RUNNING: ${name}`);
-  // console.log(
-  //   '->', serialize(expectation) === serialize(actual),
-  //   '::', equals(expectation, actual)
-  // );
   if (serialize(expectation) === serialize(actual)) {
     testsState.testPassed();
     // console.log('TEST passed!');
