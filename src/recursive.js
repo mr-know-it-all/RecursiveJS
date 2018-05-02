@@ -101,23 +101,23 @@ function drop(count, xs) {
 
 function equals(a, b) {
   const isValueType = a => includes(typeof a, ['null', 'undefined', 'boolean', 'number', 'string', 'symbol']);
-	const isObject = x => typeof x === 'object';
-	const isArray = x => Array.isArray(x);
-	const isFunction = x => typeof x === 'function';
-	const getObjectType = x => isArray(x) && 'array' || (x && x.has && 'm-s-wm-ws' || 'object');
-	const isHomogenousWithValueTypes = xs => every(x => isValueType(x) && typeof xs[0] === typeof x, xs);
+  const isObject = x => typeof x === 'object';
+  const isArray = x => Array.isArray(x);
+  const isFunction = x => typeof x === 'function';
+  const getObjectType = x => isArray(x) && 'array' || (x && x.has && 'm-s-wm-ws' || 'object');
+  const isHomogenousWithValueTypes = xs => every(x => isValueType(x) && typeof xs[0] === typeof x, xs);
 
-	if(typeof a !== typeof b) return false;
-	else if(isValueType(a) || isValueType(b)) return a === b;
-	else if(isObject(a) && isObject(b) && getObjectType(a) !== getObjectType(b)) return false;
-	else if(
-		getObjectType(a) === 'array' &&
-		getObjectType(b) === 'array' &&
-		isHomogenousWithValueTypes(a) &&
-		isHomogenousWithValueTypes(b)
-	) return `${quickSort(a)}` === `${quickSort(b)}`;
-	else if(isFunction(a) && isFunction(b)) return a.toString() === b.toString();
-	else return 'to be continued';
+  if(typeof a !== typeof b) return false;
+  else if(isValueType(a) || isValueType(b)) return a === b;
+  else if(isObject(a) && isObject(b) && getObjectType(a) !== getObjectType(b)) return false;
+  else if(
+    getObjectType(a) === 'array' &&
+    getObjectType(b) === 'array' &&
+    isHomogenousWithValueTypes(a) &&
+    isHomogenousWithValueTypes(b)
+  ) return `${quickSort(a)}` === `${quickSort(b)}`;
+  else if(isFunction(a) && isFunction(b)) return a.toString() === b.toString();
+  else return 'to be continued';
 }
 
 // every :: (a -> Boolean, [a]) -> Boolean
@@ -369,11 +369,11 @@ function some(fn, xs) {
 
 // sortWith :: ((a, a) -> 1 | -1 | 0, [a]) -> [a]
 function sortWith(fn, [x, ...xs]) {
-	return x === undefined && [] || [
-		...quickSort(filter(y => fn(x, y) === 1, xs)),
-		x,
-		...quickSort(filter(y => fn(x, y) === -1, xs))
-	];
+  return x === undefined && [] || [
+  	...quickSort(filter(y => fn(x, y) === 1, xs)),
+  	x,
+  	...quickSort(filter(y => fn(x, y) === -1, xs))
+  ];
 }
 
 // strPaddEnd :: (String, Number, String) -> String
@@ -419,14 +419,14 @@ function tap(fn, x) {
 
 // transpose :: [[a]] -> [[a]]
 function transpose(xs) {
-	let maxIndex = reduce((acc, v) => length(v) > acc ? length(v) : acc, xs, 0) - 1;
+  let maxIndex = reduce((acc, v) => length(v) > acc ? length(v) : acc, xs, 0) - 1;
 
-	return (function transpose(xs, index = 0, acc = []) {
-		// TODO: after forEach fix, use it instead of map
-		map(x => acc[index] = acc[index] ? [...acc[index], x[index] || null] : [x[index] || null], xs);
+  return (function transpose(xs, index = 0, acc = []) {
+    // TODO: after forEach fix, use it instead of map
+    map(x => acc[index] = acc[index] ? [...acc[index], x[index] || null] : [x[index] || null], xs);
 
-		return index === maxIndex ? map(xs => filter(x => x !== null, xs), acc) : transpose(xs, index + 1, acc);
-	})(xs);
+    return index === maxIndex ? map(xs => filter(x => x !== null, xs), acc) : transpose(xs, index + 1, acc);
+  })(xs);
 }
 
 // uncurryN :: (Number, (a -> b)) -> (a -> c | throw)

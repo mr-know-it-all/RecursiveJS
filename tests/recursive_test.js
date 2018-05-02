@@ -113,11 +113,12 @@ async function runTests() {
       3.5,
       converge(
         (x, y) => x / y
-      )(
-        [xs => reduce((acc, v) => acc + v, xs, 0), length]
-      )([1, 2, 3, 4, 5, 6])
+      )([
+        xs => reduce((acc, v) => acc + v, xs, 0),
+        length
+      ])([1, 2, 3, 4, 5, 6])
     ),
-		() => expect(
+    () => expect(
       'converge test', [1, 6, 21, 6],
       converge(
         (...args) => args, [
@@ -125,10 +126,9 @@ async function runTests() {
           xs => Math.max(...xs),
           xs => reduce((acc, v) => acc + v, xs, 0),
           length
-        ]
-      )([1, 2, 3, 4, 5, 6])
+        ])([1, 2, 3, 4, 5, 6])
     ),
-		() => expect(
+    () => expect(
       'converge test', [1, 1, 2, 6],
       converge(
         (...args) => deepFlat(args), [
@@ -163,8 +163,8 @@ async function runTests() {
   // defaultTo test
   compose(
     () => expect('defaultTo', 42, defaultTo(42)(NaN)),
-		() => expect('defaultTo', '42', defaultTo(42)('42')),
-		() => expect('defaultTo', NaN, defaultTo(NaN)(NaN))
+    () => expect('defaultTo', '42', defaultTo(42)('42')),
+    () => expect('defaultTo', NaN, defaultTo(NaN)(NaN))
   )();
 
   // dissoc test
@@ -222,13 +222,13 @@ async function runTests() {
     () => expect('equals 6', false, equals(true, 1)),
     () => expect('equals 7', false, equals([], '')),
     () => expect('equals 8', false, equals({}, [])),
-		() => expect('equals 9', false, equals({}, new Map())),
-		() => expect('equals 10', false, equals([], new Set())),
-		() => expect('equals 11', true, equals([1, 2, 3], [1, 3, 2])),
-		() => expect('equals 11', false, equals([1, 2, 3], [1, 3, 2, 3])),
-		() => expect('equals 12', 'to be continued', equals([1, 2, 3], [1, 3, 2, 3, 'a'])),
-		() => expect('equals 13', true, equals(x => y => x + 1 - y, x => y => x + 1 - y)),
-		() => expect('equals 14', false, equals(x => y => x + 1 - y, x => y => x + 2 - y)),
+    () => expect('equals 9', false, equals({}, new Map())),
+    () => expect('equals 10', false, equals([], new Set())),
+    () => expect('equals 11', true, equals([1, 2, 3], [1, 3, 2])),
+    () => expect('equals 11', false, equals([1, 2, 3], [1, 3, 2, 3])),
+    () => expect('equals 12', 'to be continued', equals([1, 2, 3], [1, 3, 2, 3, 'a'])),
+    () => expect('equals 13', true, equals(x => y => x + 1 - y, x => y => x + 1 - y)),
+    () => expect('equals 14', false, equals(x => y => x + 1 - y, x => y => x + 2 - y))
   )();
 
   // every test
@@ -593,29 +593,29 @@ async function runTests() {
     () => expect('some', true, some(x => x === true, someArrayTrue))
   )();
 
-	// sortWith test
-	compose(
-		() => expect(
-			'sortWith test 1',
-			[1, 2, 3, 4],
-			sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [2, 1, 4, 3])
-		),
-		() => expect(
-			'sortWith test 2',
-			[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-			sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
-		),
-		() => expect(
-			'sortWith test 3',
-			[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-			sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [2, 9, 8, 1, 6, 5, 4, 3, 10, 7])
-		),
-		() => expect(
-			'sortWith test 4',
-			['a', 'b', 'c', 'd'],
-			sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, ['d', 'a', 'c', 'b'])
-		)
-	)();
+  // sortWith test
+  compose(
+    () => expect(
+      'sortWith test 1',
+      [1, 2, 3, 4],
+      sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [2, 1, 4, 3])
+    ),
+    () => expect(
+      'sortWith test 2',
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
+    ),
+    () => expect(
+      'sortWith test 3',
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [2, 9, 8, 1, 6, 5, 4, 3, 10, 7])
+    ),
+    () => expect(
+      'sortWith test 4',
+      ['a', 'b', 'c', 'd'],
+      sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, ['d', 'a', 'c', 'b'])
+    )
+  )();
 
   // strPaddEnd test
   compose(
@@ -646,19 +646,19 @@ async function runTests() {
   // takeWhile test
   expect('takeWhile', [1, 2, 3, 4, 5], takeWhile(x => x <= 5, [1, 2, 3, 4, 5, 6, 7]));
 
-	// tap test
-	compose(
-		() => expect('tap test 1', 42, tap(x => x + 2, 42)),
-		() => expect('tap test 2', {a: 2}, tap(x => {x.a = 2}, {a: 1}))
-	)();
+  // tap test
+  compose(
+    () => expect('tap test 1', 42, tap(x => x + 2, 42)),
+    () => expect('tap test 2', {a: 2}, tap(x => {x.a = 2}, {a: 1}))
+  )();
 
-	// transpose test
-	compose(
-		() => expect('transpose test 3', [[10, 20, 30], [11, 31], [32]], transpose([[10, 11], [20], [], [30, 31, 32]])), // ramdajs example
-		() => expect('transpose test 2', [[1, 'a'], [2, 'b'], [3, 'c']], transpose([[1, 2, 3], ['a', 'b', 'c']])), // ramdajs example
-		() => expect('transpose test 1', [[1, 2, 3], ['a', 'b', 'c']], transpose([[1, 'a'], [2, 'b'], [3, 'c']])), // ramdajs example
-		() => expect('transpose test 1', [[1, 2, 3], ['a', 'b', 'c'], [11, 12, 13]], transpose([[1, 'a', 11], [2, 'b', 12], [3, 'c', 13]])),
-	)();
+  // transpose test
+  compose(
+    () => expect('transpose test 3', [[10, 20, 30], [11, 31], [32]], transpose([[10, 11], [20], [], [30, 31, 32]])), // ramdajs example
+    () => expect('transpose test 2', [[1, 'a'], [2, 'b'], [3, 'c']], transpose([[1, 2, 3], ['a', 'b', 'c']])), // ramdajs example
+    () => expect('transpose test 1', [[1, 2, 3], ['a', 'b', 'c']], transpose([[1, 'a'], [2, 'b'], [3, 'c']])), // ramdajs example
+    () => expect('transpose test 1', [[1, 2, 3], ['a', 'b', 'c'], [11, 12, 13]], transpose([[1, 'a', 11], [2, 'b', 12], [3, 'c', 13]]))
+  )();
 
   // uncurryN test
   const curriedAdderFunc = a => b => c => d => a + b + c + d;
