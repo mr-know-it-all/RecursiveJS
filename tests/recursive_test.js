@@ -14,7 +14,7 @@ const [
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
   reduce, reduceWhile, reverse,
-  some, strPaddEnd, strPaddStart, symetricDifference,
+  some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile,
   uncurryN, uniqueBy, unless, until,
   xprod,
@@ -248,7 +248,8 @@ async function runTests() {
     () => expect('equals 8', false, equals({}, [])),
 		() => expect('equals 9', false, equals({}, new Map())),
 		() => expect('equals 10', false, equals([], new Set())),
-		() => expect('equals 11', false, equals([1, 2, 3], [1, 3, 2]))
+		() => expect('equals 11', true, equals([1, 2, 3], [1, 3, 2])),
+		() => expect('equals 11', false, equals([1, 2, 3], [1, 3, 2, 3]))
   )();
 
   // every test
@@ -761,6 +762,38 @@ async function runTests() {
       expect('some', true, some(x => x === true, someArrayTrue));
     }
   )();
+
+	// sortWith test
+	compose(
+		() => {
+			expect(
+				'sortWith test 1',
+				[1, 2, 3, 4],
+				sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [2, 1, 4, 3])
+			)
+		},
+		() => {
+			expect(
+				'sortWith test 2',
+				[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+				sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
+			)
+		},
+		() => {
+			expect(
+				'sortWith test 3',
+				[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+				sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [2, 9, 8, 1, 6, 5, 4, 3, 10, 7])
+			)
+		},
+		() => {
+			expect(
+				'sortWith test 4',
+				['a', 'b', 'c', 'd'],
+				sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, ['d', 'a', 'c', 'b'])
+			)
+		}
+	)();
 
   // strPaddEnd test
   compose(

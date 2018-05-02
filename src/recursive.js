@@ -14,7 +14,7 @@ const RecursiveJS = [
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
   reduce, reduceWhile, reverse,
-  some, strPaddEnd, strPaddStart, symetricDifference,
+  some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile,
   uncurryN, uniqueBy, unless, until,
   xprod,
@@ -110,7 +110,9 @@ function equals(a, b) {
   return typeof a !== typeof b ? false : (
     isPrimitiveType(a) || isPrimitiveType(b) ? a === b : (
       getReferenceType(a) !== getReferenceType(b) ? false : (
-				'to be continued'
+				getReferenceType(a) === 'array' ? `${quickSort(a)}` === `${quickSort(b)}` : (
+					'to be continued'
+				)
 			)
     )
   );
@@ -361,6 +363,15 @@ function some(fn, xs) {
   return (function some(fn, [x, ...xs]) {
     return x === undefined ? false : fn(x) || some(fn, xs);
   })(fn, xs);
+}
+
+// sortWith :: ((a, a) -> 1 | -1 | 0, [a]) -> [a]
+function sortWith(fn, [x, ...xs]) {
+	return x === undefined && [] || [
+		...quickSort(filter(y => fn(x, y) === 1, xs)),
+		x,
+		...quickSort(filter(y => fn(x, y) === -1, xs))
+	];
 }
 
 // strPaddEnd :: (String, Number, String) -> String
