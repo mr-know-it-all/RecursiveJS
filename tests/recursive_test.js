@@ -15,7 +15,7 @@ const [
   quickSort,
   reduce, reduceWhile, reverse,
   some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
-  take, takeWhile, tap,
+  take, takeWhile, tap, transpose,
   uncurryN, uniqueBy, unless, until,
   xprod,
   zip, zipObj
@@ -650,6 +650,14 @@ async function runTests() {
 	compose(
 		() => expect('tap test 1', 42, tap(x => x + 2, 42)),
 		() => expect('tap test 2', {a: 2}, tap(x => {x.a = 2}, {a: 1}))
+	)();
+
+	// transpose test
+	compose(
+		() => expect('transpose test 3', [[10, 20, 30], [11, 31], [32]], transpose([[10, 11], [20], [], [30, 31, 32]])), // ramdajs example
+		() => expect('transpose test 2', [[1, 'a'], [2, 'b'], [3, 'c']], transpose([[1, 2, 3], ['a', 'b', 'c']])), // ramdajs example
+		() => expect('transpose test 1', [[1, 2, 3], ['a', 'b', 'c']], transpose([[1, 'a'], [2, 'b'], [3, 'c']])), // ramdajs example
+		() => expect('transpose test 1', [[1, 2, 3], ['a', 'b', 'c'], [11, 12, 13]], transpose([[1, 'a', 11], [2, 'b', 12], [3, 'c', 13]])),
 	)();
 
   // uncurryN test

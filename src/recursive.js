@@ -15,7 +15,7 @@ const RecursiveJS = [
   quickSort,
   reduce, reduceWhile, reverse,
   some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
-  take, takeWhile, tap,
+  take, takeWhile, tap, transpose,
   uncurryN, uniqueBy, unless, until,
   xprod,
   zip, zipObj
@@ -137,7 +137,7 @@ function fill(element, count) {
 // filter :: (a -> Boolean, [a]) -> [a]
 function filter(fn, xs) {
   return (function filter(fn, [x, ...xs], acc = []) {
-    return x === undefined && acc || filter(fn, xs, fn(x) && [...acc, x] || acc);
+    return x === undefined ? acc : filter(fn, xs, fn(x) ? [...acc, x] : acc);
   })(fn, xs);
 }
 
@@ -149,7 +149,7 @@ function find(fn, xs) {
 }
 
 // forEach :: (a -> b, [a]) -> ()
-function forEach(fn, xs) {
+function forEach(fn, xs) { // TODO: implement properly
   return (function forEach(fn, xs, index = 0) {
     if(index < length(xs)) {
       xs[index] = fn(xs[index], index);
@@ -415,6 +415,18 @@ function takeWhile(fn, xs) {
 // tap :: ((a → *), a) -> a
 function tap(fn, x) {
 	return (fn(x), x);
+}
+
+// transpose :: [[a]] -> [[a]]
+function transpose(xs) {
+	let maxIndex = reduce((acc, v) => length(v) > acc ? length(v) : acc, xs, 0) - 1;
+
+	return (function transpose(xs, index = 0, acc = []) {
+		// TODO: after forEach fix, use it instead of map
+		map(x => acc[index] = acc[index] ? [...acc[index], x[index] || null] : [x[index] || null], xs);
+
+		return index === maxIndex ? map(xs => filter(x => x !== null, xs), acc) : transpose(xs, index + 1, acc);
+	})(xs);
 }
 
 // uncurryN :: (Number, (a -> b)) -> (a -> c | throw)
