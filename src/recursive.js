@@ -63,11 +63,9 @@ function converge(cFn, fns) {
 // curry :: (* -> a) → (* -> a)
 function curry(fn) {
   const arity = fn.length;
-
-  const applyArgs = (...args) =>
-    length(args) === arity ? fn(...args) : ((...nextArgs) => applyArgs(...args, ...nextArgs));
-
-  return applyArgs;
+  return function applyArgs(...args) {
+    return length(args) === arity ? fn(...args) : ((...nextArgs) => applyArgs(...args, ...nextArgs));
+  };
 }
 
 // deepFlat :: [[[*]]] -> [*]
@@ -96,7 +94,7 @@ function drop(count, xs) {
   const isString = typeof xs === 'string';
   return (function drop(count, [x, ...xs]) {
   	return count - 1 === 0 ? isString ? xs.join('') : xs : drop(count - 1, xs);
-  })(count, xs)
+  })(count, xs);
 }
 
 function equals(a, b) {
