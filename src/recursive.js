@@ -106,11 +106,17 @@ function equals(a, b) {
 	const getReferenceType = x => {
 		return Array.isArray(x) && 'array' || (x && x.has && 'm-s-wm-ws' || 'object');
 	};
+	const isHomogenousWithValueTypes = xs => {
+		return every(x => isPrimitiveType(x) && typeof xs[0] === typeof x, xs);
+	}
 
   return typeof a !== typeof b ? false : (
     isPrimitiveType(a) || isPrimitiveType(b) ? a === b : (
       getReferenceType(a) !== getReferenceType(b) ? false : (
-				getReferenceType(a) === 'array' ? `${quickSort(a)}` === `${quickSort(b)}` : (
+				getReferenceType(a) === 'array' &&
+				getReferenceType(b) === 'array' &&
+				isHomogenousWithValueTypes(a) &&
+				isHomogenousWithValueTypes(b) ? `${quickSort(a)}` === `${quickSort(b)}` : (
 					'to be continued'
 				)
 			)
