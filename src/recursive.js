@@ -100,28 +100,29 @@ function drop(count, xs) {
 }
 
 function equals(a, b) {
-  const isPrimitiveType = a => {
+  const isValueType = a => {
     return includes(typeof a, ['null', 'undefined', 'boolean', 'number', 'string', 'symbol']);
   };
-	const getReferenceType = x => {
+	const isObject = x => typeof x === 'object';
+	const getObjectType = x => {
 		return Array.isArray(x) && 'array' || (x && x.has && 'm-s-wm-ws' || 'object');
 	};
 	const isHomogenousWithValueTypes = xs => {
-		return every(x => isPrimitiveType(x) && typeof xs[0] === typeof x, xs);
+		return every(x => isValueType(x) && typeof xs[0] === typeof x, xs);
 	}
 
-  return typeof a !== typeof b ? false : (
-    isPrimitiveType(a) || isPrimitiveType(b) ? a === b : (
-      getReferenceType(a) !== getReferenceType(b) ? false : (
-				getReferenceType(a) === 'array' &&
-				getReferenceType(b) === 'array' &&
-				isHomogenousWithValueTypes(a) &&
-				isHomogenousWithValueTypes(b) ? `${quickSort(a)}` === `${quickSort(b)}` : (
-					'to be continued'
-				)
-			)
-    )
-  );
+	if(typeof a !== typeof b) return false;
+	else if(isValueType(a) || isValueType(b)) return a === b;
+	else if(isObject(a) && isObject(b) && getObjectType(a) !== getObjectType(b)) return false;
+	else if(
+		getObjectType(a) === 'array' &&
+		getObjectType(b) === 'array' &&
+		isHomogenousWithValueTypes(a) &&
+		isHomogenousWithValueTypes(b)
+	) return `${quickSort(a)}` === `${quickSort(b)}`;
+	else return 'to be continued';
+
+
 }
 
 // every :: (a -> Boolean, [a]) -> Boolean
