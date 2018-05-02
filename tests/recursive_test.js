@@ -15,7 +15,7 @@ const [
   quickSort,
   reduce, reduceWhile, reverse,
   some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
-  take, takeWhile,
+  take, takeWhile, tap,
   uncurryN, uniqueBy, unless, until,
   xprod,
   zip, zipObj
@@ -645,6 +645,12 @@ async function runTests() {
 
   // takeWhile test
   expect('takeWhile', [1, 2, 3, 4, 5], takeWhile(x => x <= 5, [1, 2, 3, 4, 5, 6, 7]));
+
+	// tap test
+	compose(
+		() => expect('tap test 1', 42, tap(x => x + 2, 42)),
+		() => expect('tap test 2', {a: 2}, tap(x => {x.a = 2}, {a: 1}))
+	)();
 
   // uncurryN test
   const curriedAdderFunc = a => b => c => d => a + b + c + d;

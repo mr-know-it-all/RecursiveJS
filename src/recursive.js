@@ -15,7 +15,7 @@ const RecursiveJS = [
   quickSort,
   reduce, reduceWhile, reverse,
   some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
-  take, takeWhile,
+  take, takeWhile, tap,
   uncurryN, uniqueBy, unless, until,
   xprod,
   zip, zipObj
@@ -410,6 +410,11 @@ function takeWhile(fn, xs) {
   return (function takeWhile(fn, [x, ...xs], acc = []) {
     return (x === undefined || !fn(x)) && acc || takeWhile(fn, xs, [...acc, x]);
   })(fn, xs);
+}
+
+// tap :: ((a → *), a) -> a
+function tap(fn, x) {
+	return (fn(x), x);
 }
 
 // uncurryN :: (Number, (a -> b)) -> (a -> c | throw)
