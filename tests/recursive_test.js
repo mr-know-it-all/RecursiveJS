@@ -238,30 +238,16 @@ async function runTests() {
 
   // equals test
   compose (
-    () => {
-      expect('equals 1', true, equals(true, true));
-    },
-    () => {
-      expect('equals 2', false, equals(true, false));
-    },
-    () => {
-      expect('equals 3', false, equals(NaN, false));
-    },
-    () => {
-      expect('equals 4', false, equals(undefined, null));
-    },
-    () => {
-      expect('equals 5', false, equals(undefined, false));
-    },
-    () => {
-      expect('equals 6', false, equals(true, 1));
-    },
-    () => {
-      expect('equals 7', false, equals([], ''));
-    },
-    () => {
-      expect('equals 8', false, equals({}, []));
-    }
+    () => expect('equals 1', true, equals(true, true)),
+    () => expect('equals 2', false, equals(true, false)),
+    () => expect('equals 3', false, equals(NaN, false)),
+    () => expect('equals 4', false, equals(undefined, null)),
+    () => expect('equals 5', false, equals(undefined, false)),
+    () => expect('equals 6', false, equals(true, 1)),
+    () => expect('equals 7', false, equals([], '')),
+    () => expect('equals 8', false, equals({}, [])),
+		() => expect('equals 9', false, equals({}, new Map())),
+		() => expect('equals 10', false, equals([], new Set()))
   )();
 
   // every test

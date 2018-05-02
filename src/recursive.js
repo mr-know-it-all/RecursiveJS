@@ -103,10 +103,17 @@ function equals(a, b) {
   const isPrimitiveType = a => {
     return includes(typeof a, ['null', 'undefined', 'boolean', 'number', 'string', 'symbol']);
   };
+	const getReferenceType = x => {
+		return Array.isArray(x) && 'array' || (x && x.has && 'm-s-wm-ws' || 'object');
+	};
 
+
+	console.log(a, b, getReferenceType(a), getReferenceType(b));
   return typeof a !== typeof b ? false : (
-    isPrimitiveType(a) ? a === b : (
-      'to be continued'
+    isPrimitiveType(a) || isPrimitiveType(b) ? a === b : (
+      getReferenceType(a) !== getReferenceType(b) ? false : (
+				'to be continued'
+			)
     )
   );
 }
