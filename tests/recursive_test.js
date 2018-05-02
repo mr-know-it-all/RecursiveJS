@@ -247,7 +247,8 @@ async function runTests() {
     () => expect('equals 7', false, equals([], '')),
     () => expect('equals 8', false, equals({}, [])),
 		() => expect('equals 9', false, equals({}, new Map())),
-		() => expect('equals 10', false, equals([], new Set()))
+		() => expect('equals 10', false, equals([], new Set())),
+		() => expect('equals 11', false, equals([1, 2, 3], [1, 3, 2]))
   )();
 
   // every test

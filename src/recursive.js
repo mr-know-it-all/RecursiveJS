@@ -107,8 +107,6 @@ function equals(a, b) {
 		return Array.isArray(x) && 'array' || (x && x.has && 'm-s-wm-ws' || 'object');
 	};
 
-
-	console.log(a, b, getReferenceType(a), getReferenceType(b));
   return typeof a !== typeof b ? false : (
     isPrimitiveType(a) || isPrimitiveType(b) ? a === b : (
       getReferenceType(a) !== getReferenceType(b) ? false : (
