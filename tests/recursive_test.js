@@ -1,7 +1,7 @@
 'use strict';
 
 const [
-  allPass,
+  allPass, aperture,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
   equals, every,
@@ -57,6 +57,13 @@ async function runTests() {
   compose(
     () => expect('allPass', true, allPass([isEven, largerThanTwo, isInteger])([4, 6, 8, 10])),
     () => expect('allPass', false, allPass([isEven, largerThanTwo, isInteger], [4, 6, 8, 10, 'a']))
+  )();
+
+  // aperture test
+  compose(
+    () => expect('aperture', [[1, 2], [2, 3], [3, 4], [4, 5]], aperture(2, [1, 2, 3, 4, 5])), // ramdajs test
+    () => expect('aperture', [[1, 2, 3], [2, 3, 4], [3, 4, 5]], aperture(3, [1, 2, 3, 4, 5])), // ramdajs test
+    () => expect('aperture', [], aperture(7, [1, 2, 3, 4, 5])) // ramdajs test
   )();
 
   // compose test

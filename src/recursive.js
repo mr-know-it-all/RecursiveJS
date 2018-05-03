@@ -1,7 +1,7 @@
 'use strict';
 
 const RecursiveJS = [
-  allPass,
+  allPass, aperture,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
   equals, every,
@@ -30,6 +30,13 @@ function allPass(ps, [x, ...xs]) {
     some(p => !p(x), ps) ? false :
     allPass(ps, xs)
   );
+}
+
+// aperture :: (Number, [a]) -> [[a]]
+function aperture(n, xs) {
+  return (function aperture(n, [x, ...xs], acc = []) {
+    return n - 1 > xs.length ? acc : aperture(n, xs, [...acc, [x, ...take(n - 1, xs)]])
+  })(n, xs);
 }
 
 // compose :: (c -> d, ..., b -> c, a -> b) -> (x -> (a -> b -> c -> d))
