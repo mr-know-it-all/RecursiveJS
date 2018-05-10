@@ -1,7 +1,7 @@
 'use strict';
 
 const RecursiveJS = [
-  allPass, aperture,
+  allPass, aperture, applySpec,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
   equals, every,
@@ -37,6 +37,20 @@ function aperture(n, xs) {
   return (function aperture(n, [x, ...xs], acc = []) {
     return n - 1 > xs.length ? acc : aperture(n, xs, [...acc, [x, ...take(n - 1, xs)]])
   })(n, xs);
+}
+
+// applySpec :: {Key: ((a, b ...) -> v)} -> ((a, b ...) -> {Key: v})
+function applySpec(xo) {
+  return (...args) => {
+    return (function applySpec([x, ...xs], acc = {}) {
+      return (
+        x === undefined ? acc :
+          typeof x[1] !== 'function' ?
+            applySpec(xs, (acc[x[0]] = applySpec(objectEntries(x[1])), acc)) :
+            applySpec(xs, (acc[x[0]] = x[1](args), acc))
+      );
+    })(objectEntries(xo));
+  }
 }
 
 // compose :: (c -> d, ..., b -> c, a -> b) -> (x -> (a -> b -> c -> d))

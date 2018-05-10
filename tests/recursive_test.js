@@ -1,7 +1,7 @@
 'use strict';
 
 const [
-  allPass, aperture,
+  allPass, aperture, applySpec,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
   equals, every,
@@ -64,6 +64,64 @@ async function runTests() {
     () => expect('aperture', [[1, 2], [2, 3], [3, 4], [4, 5]], aperture(2, [1, 2, 3, 4, 5])), // ramdajs test
     () => expect('aperture', [[1, 2, 3], [2, 3, 4], [3, 4, 5]], aperture(3, [1, 2, 3, 4, 5])), // ramdajs test
     () => expect('aperture', [], aperture(7, [1, 2, 3, 4, 5])) // ramdajs test
+  )();
+
+  // applySpec tests
+  const sum = xs => reduce((acc, v) => acc + v, xs, 0);
+  const average = xs => converge((x, y) => x / y)([sum, length])(xs);
+
+  const specObject = {
+    sum, average
+  };
+  const specObjectNested = {
+    sum, average, nested: {sum}
+  };
+
+  const specObjectNestedTwice = {
+    sum, average, nested: {nested: {sum}, nest: {nest: {average}}}
+  };
+
+  compose(
+    () => {
+      expect(
+        'applySpec test 3', {
+          sum: 10,
+          average: 2.5,
+          nested: {
+            nested: {
+              sum: 10
+            },
+            nest: {
+              nest: {
+                average: 2.5
+              }
+            }
+          }
+        },
+        applySpec(specObjectNestedTwice)(1, 2, 3, 4)
+      )
+    },
+    () => {
+      expect(
+        'applySpec test 2', {
+          sum: 10,
+          average: 2.5,
+          nested: {
+            sum: 10
+          }
+        },
+        applySpec(specObjectNested)(1, 2, 3, 4)
+      )
+    },
+    () => {
+      expect(
+        'applySpec test 1', {
+          sum: 10,
+          average: 2.5
+        },
+        applySpec(specObject)(1, 2, 3, 4)
+      )
+    }
   )();
 
   // compose test
