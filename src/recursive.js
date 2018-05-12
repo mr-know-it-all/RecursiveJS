@@ -1,7 +1,7 @@
 'use strict';
 
 const RecursiveJS = [
-  allPass, aperture, applySpec,
+  adjust, allPass, aperture, applySpec,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
   equals, every,
@@ -22,6 +22,13 @@ const RecursiveJS = [
 ];
 
 module.exports = map(fn => fn.length > 1 && fn.name !== 'equals' ? curry(fn) : fn, RecursiveJS);
+
+// adjust :: (a -> a) -> Number -> [a] -> [a]
+function adjust(fn, index, xs) {
+  return (function adjust([x, ...xs], currentIndex = 0, acc = []) {
+    return currentIndex === index ? [...acc, fn(x), ...(xs ? xs : [])] : adjust(xs, currentIndex + 1, [...acc, x])
+  })(xs);
+}
 
 // allPass :: ([a -> Boolean], [a]) -> Boolean
 function allPass(ps, [x, ...xs]) {
