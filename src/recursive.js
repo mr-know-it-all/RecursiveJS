@@ -6,7 +6,7 @@ const RecursiveJS = [
   deepFlat, defaultTo, dissoc, drop,
   equals, every,
   fill, filter, find, forEach,
-  includes, innerJoin, intersection, intersperse,
+  includes, innerJoin, intersection, intersperse, invoker,
   juxt,
   length,
   map, memoize, merge, mergeWith,
@@ -226,6 +226,18 @@ function intersperse(n, xs) {
       return x === undefined ? acc : intersperse(xs, length(acc) > 0 ? [...acc, n, x] : [...acc, x])
     }
   )(xs);
+}
+
+
+// invoker :: Number -> String -> (a -> b ... -> Object -> *)
+function invoker(arity, method) {
+  return function invoker(...args) {
+    return (
+      arity === length(args) - 1 ?
+        args[length(args) - 1][method](...(take(length(args) - 1, args))) :
+        (...nextArgs) => invoker(...args, ...nextArgs)
+    );
+  }
 }
 
 // juxt :: ([* -> a], [*]) -> [a]

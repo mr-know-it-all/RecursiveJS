@@ -6,7 +6,7 @@ const [
   deepFlat, defaultTo, dissoc, drop,
   equals, every,
   fill, filter, find, forEach,
-  includes, innerJoin, intersection, intersperse,
+  includes, innerJoin, intersection, intersperse, invoker,
   juxt,
   length,
   map, memoize, merge, mergeWith,
@@ -399,6 +399,19 @@ async function runTests() {
 
   // intersperse test
   expect('intersperse', [1, '#', 2, '#', 3, '#', 4], intersperse('#', [1, 2, 3, 4]));
+
+  // invoker tests
+  compose(
+    () => expect('invoker test 3', 'ghijklm', invoker(1, 'slice')(6, 'abcdefghijklm')),
+    () => expect('invoker test 2', 'gh', invoker(2, 'slice')(6)(8, 'abcdefghijklm')),
+    () => expect('invoker test 1', '--cd', invoker(2)('replace')('ab')('--')('abcd')),
+    () => expect(
+      'invoker test 1', 42,
+      invoker(4, 'call')(
+        {fn: (x, y, z) => x + y + z}, 39, 1, 2
+      )(function(x, y, z) { return this.fn(x, y, z); })
+    )
+  )()
 
   // juxt test
   expect('juxt', [1, 9], juxt([Math.min, Math.max], [9, 1, 3, 1, 2, 3, 4, 5, 6]));
