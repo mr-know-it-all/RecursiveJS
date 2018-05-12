@@ -9,7 +9,7 @@ const [
   includes, innerJoin, intersection, intersperse, invoker,
   juxt,
   length,
-  map, memoize, merge, mergeWith,
+  map, mapObjIndexed, memoize, merge, mergeWith,
   objectEntries, objectValues, omit,
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
@@ -425,6 +425,26 @@ async function runTests() {
   compose(
     () => expect('map', [1, 2, 3, 4], mapArray),
     () => expect('map', [2, 3, 4, 5], map(x => x + 1, mapArray))
+  )();
+
+  // mapObjIndexed test
+  compose(
+    () => expect(
+      'mapObjIndexed test 2',
+      {a: [2, {a: 1, b: 2, c: 3}], b: [3, {a: 1, b: 2, c: 3}], c: [4, {a: 1, b: 2, c: 3}]},
+      mapObjIndexed(
+        (val, key, obj) => [val + 1, obj],
+        {a: 1, b: 2, c: 3}
+      )
+    ),
+    () => expect(
+      'mapObjIndexed test 1',
+      {a: 'a has value 1', b: 'b has value 2', c: 'c has value 3'},
+      mapObjIndexed(
+        (val, key, obj) => `${key} has value ${val}`,
+        {a: 1, b: 2, c: 3}
+      )
+    )
   )();
 
   // memoize test

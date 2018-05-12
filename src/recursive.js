@@ -9,7 +9,7 @@ const RecursiveJS = [
   includes, innerJoin, intersection, intersperse, invoker,
   juxt,
   length,
-  map, memoize, merge, mergeWith,
+  map, mapObjIndexed, memoize, merge, mergeWith,
   objectEntries, objectValues, omit,
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
@@ -259,6 +259,14 @@ function map(fn, xs) {
   return (function map([x, ...xs], acc = []) {
     return x === undefined && acc || map(xs, [...acc, fn(x)]);
   })(xs);
+}
+
+
+// mapObjIndexed :: ((*, String, Object) -> *) -> Object -> Object
+function mapObjIndexed(fn, xo) {
+  return (function mapObjIndexed([kv, ...kvs], acc = {}) {
+    return kv === undefined ? acc : mapObjIndexed(kvs, (acc[kv[0]] = fn(kv[1], kv[0], xo), acc));
+  })(objectEntries(xo));
 }
 
 // memoize :: (* -> a) -> a
