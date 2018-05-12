@@ -1,7 +1,7 @@
 'use strict';
 
 const RecursiveJS = [
-  adjust, allPass, aperture, applySpec,
+  adjust, allPass, anyPass, aperture, applySpec,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
   equals, every,
@@ -30,12 +30,21 @@ function adjust(fn, index, xs) {
   })(xs);
 }
 
-// allPass :: ([a -> Boolean], [a]) -> Boolean
-function allPass(ps, [x, ...xs]) {
+// allPass :: ([* -> Boolean], [*]) -> Boolean
+function allPass([p, ...ps], xs) {
   return (
-    x === undefined ? true :
-    some(p => !p(x), ps) ? false :
+    p === undefined ? true :
+    !p(xs) ? false :
     allPass(ps, xs)
+  );
+}
+
+// anyPass :: ([* -> Boolean], [*]) -> Boolean
+function anyPass([p, ...ps], xs) {
+  return (
+    p === undefined ? false :
+    p(xs) ? true :
+    anyPass(ps, xs)
   );
 }
 

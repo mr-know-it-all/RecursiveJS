@@ -1,7 +1,7 @@
 'use strict';
 
 const [
-  adjust, allPass, aperture, applySpec,
+  adjust, allPass, anyPass, aperture, applySpec,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
   equals, every,
@@ -56,15 +56,28 @@ async function runTests() {
     () => expect('adjust test 1', [1, 2, 6, 4, 5], adjust(x => x + 3, 2, [1, 2, 3, 4, 5]))
   )();
 
-  // allPass test
+
   const isEven = x => x % 2 === 0;
   const isOdd = x => !isEven(x);
   const largerThanTwo = x => x > 2;
   const isInteger = x => Number.isInteger(x);
 
+  const hasEvenNumber = xs => some(isEven, xs);
+  const hasOddNumber = xs => some(isOdd, xs);
+  const hasLargerThanTwo = xs => some(largerThanTwo, xs);
+  const hasInteger = xs => some(isInteger, xs);
+
+  // allPass test
   compose(
-    () => expect('allPass', true, allPass([isEven, largerThanTwo, isInteger])([4, 6, 8, 10])),
-    () => expect('allPass', false, allPass([isEven, largerThanTwo, isInteger], [4, 6, 8, 10, 'a']))
+    () => expect('allPass 2', true, allPass([hasEvenNumber, hasLargerThanTwo, hasInteger])([4, 6, 8, 10, 3])),
+    () => expect('allPass 1', false, allPass([hasEvenNumber, hasLargerThanTwo, hasInteger, hasOddNumber], [4, 6, 8, 10]))
+  )();
+
+  // anyPass test
+  compose(
+    () => expect('anyPass 3', true, anyPass([hasEvenNumber, hasOddNumber, hasLargerThanTwo, hasInteger])([4, 6, 8, 10])),
+    () => expect('anyPass 2', false, anyPass([hasOddNumber, hasLargerThanTwo])([2, 2, 2])),
+    () => expect('anyPass 1', true, anyPass([hasEvenNumber, hasLargerThanTwo, hasInteger])([4, 4, 1]))
   )();
 
   // aperture test
