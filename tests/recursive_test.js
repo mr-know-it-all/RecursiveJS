@@ -10,6 +10,7 @@ const [
   juxt,
   length,
   map, mapObjIndexed, memoize, merge, mergeWith,
+  nAry,
   objectEntries, objectValues, omit,
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
@@ -499,6 +500,21 @@ async function runTests() {
       {c: [3, 4], b: 2}
     )
   );
+
+  // nAry test
+  const nAryAdd = (x = 'not supplied', y = 'not supplied') => [x, y];
+  const twoArgsAdd = nAry(2, nAryAdd);
+  const oneArgAdd = nAry(1, nAryAdd);
+  const zeroArgsAdd = nAry(0, nAryAdd);
+
+  compose(
+    () => expect('nAry test 6', [1, 2], twoArgsAdd(1, 2)),
+    () => expect('nAry test 5', ['not supplied', 'not supplied'], zeroArgsAdd(1, 2)),
+    () => expect('nAry test 4', [1, 'not supplied'], oneArgAdd(1, 2)),
+    () => expect('nAry test 3', 2, twoArgsAdd.length),
+    () => expect('nAry test 2', 1, oneArgAdd.length),
+    () => expect('nAry test 1', 0, zeroArgsAdd.length)
+  )();
 
   // objectEntries test
   expect(

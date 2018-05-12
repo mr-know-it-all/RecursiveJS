@@ -10,6 +10,7 @@ const RecursiveJS = [
   juxt,
   length,
   map, mapObjIndexed, memoize, merge, mergeWith,
+  nAry,
   objectEntries, objectValues, omit,
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
@@ -298,6 +299,14 @@ function mergeWith(fn, xo, yo) {
     reduce(
       (acc, v) => (acc[v[0]] = acc[v[0]] ? fn(v[1], acc[v[0]]) : v[1], acc), [...objectEntries(yo), ...objectEntries(xo)], {})
   );
+}
+
+function nAry(arity, fn) {
+  // TODO: find another way to restrict function length 
+  const nAry = (...args) => (args.length = arity, fn(...args));
+  Object.defineProperty(nAry, 'length', {value: arity});
+
+  return nAry;
 }
 
 // omit :: ([String], {String: *}) -> {String: *}
