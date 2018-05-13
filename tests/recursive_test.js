@@ -4,7 +4,7 @@ const [
   adjust, allPass, anyPass, aperture, applySpec,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
-  equals, every,
+  eqBy, equals, every,
   fill, filter, find, forEach,
   includes, innerJoin, intersection, intersperse, invoker,
   juxt,
@@ -297,6 +297,14 @@ async function runTests() {
 
       return expected;
     }
+  )();
+
+  // eqBy tests
+  compose(
+    () => expect('eqBy test 4', false, eqBy(x => Number(x), '421', 42)),
+    () => expect('eqBy test 3', true, eqBy(x => Number(x), '42', 42)),
+    () => expect('eqBy test 2', false, eqBy(Math.abs)(5, -51)),
+    () => expect('eqBy test 1', true, eqBy(Math.abs)(5)(-5))
   )();
 
   // equals test

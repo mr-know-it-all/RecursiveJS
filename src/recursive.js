@@ -4,7 +4,7 @@ const RecursiveJS = [
   adjust, allPass, anyPass, aperture, applySpec,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
-  equals, every,
+  eqBy, equals, every,
   fill, filter, find, forEach,
   includes, innerJoin, intersection, intersperse, invoker,
   juxt,
@@ -133,6 +133,11 @@ function drop(count, xs) {
   return (function drop(count, [x, ...xs]) {
   	return count - 1 === 0 ? isString ? xs.join('') : xs : drop(count - 1, xs);
   })(count, xs);
+}
+
+// eqBy :: (a -> b) -> a -> a -> Boolean
+function eqBy(fn, a, b) {
+  return fn(a) === fn(b);
 }
 
 function equals(a, b) {
