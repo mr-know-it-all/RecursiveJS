@@ -15,7 +15,7 @@ const [
   objectEntries, objectValues, omit,
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
-  reduce, reduceWhile, reverse,
+  range, reduce, reduceWhile, reverse,
   some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, transpose,
   uncurryN, uniqueBy, unless, until,
@@ -741,6 +741,13 @@ async function runTests() {
 
   // quickSort test
   expect('quickSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], quickSort([7, 2, 1, 3, 5, 4, 6, 9, 8]));
+
+  // range test
+  compose(
+    () => expect('range test 3', 7626, sum(range(1, 124))),
+    () => expect('range test 2', [1, 2, 3, 4, 5], range(1, 6)),
+    () => expect('range test 1', [51, 52, 53, 54, 55], range(51)(56))
+  )();
 
   // reduce test
   expect('reduce', 15, reduce((acc, v) => acc + v, [1, 2, 3, 4, 5], 0));

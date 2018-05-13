@@ -15,7 +15,7 @@ const RecursiveJS = [
   objectEntries, objectValues, omit,
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
-  reduce, reduceWhile, reverse,
+  range, reduce, reduceWhile, reverse,
   some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, transpose,
   uncurryN, uniqueBy, unless, until,
@@ -420,6 +420,13 @@ function quickSort([x, ...xs]) {
     x,
     ...quickSort(filter(y => y > x, xs))
   ];
+}
+
+// range :: Number -> Number -> [Number]
+function range(from, to) {
+  return (function range(from, to, acc = []) {
+    return from === to ? acc : range(from + 1, to, [...acc, from]);
+  })(from, to)
 }
 
 // reduce :: ((a, b) -> a, [b], a) -> a
