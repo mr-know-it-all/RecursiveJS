@@ -17,7 +17,7 @@ const RecursiveJS = [
   quickSort,
   range, reduce, reduceWhile, reverse,
   some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
-  take, takeWhile, tap, transpose,
+  take, takeWhile, tap, transduce, transpose,
   uncurryN, uniqueBy, unless, until,
   xprod,
   zip, zipObj
@@ -503,6 +503,17 @@ function takeWhile(fn, xs) {
 // tap :: ((a → *), a) -> a
 function tap(fn, x) {
 	return (fn(x), x);
+}
+
+// Functor F => transduce :: [F* -> F*, F* -> F*, ...] -> F* -> F*
+// TODO: this doesn't seem accurate, sill revisit it
+function transduce(ops, xs) {
+	return (function transduce(ops, [x, ...xs], acc = []) {
+		const applyOps = ([op, ...ops], x) =>
+			op === undefined ? x : !op(x) ? undefined : applyOps(ops, op(x));
+
+		return x === undefined ? acc : transduce(ops, xs, [...acc, ...(applyOps(reverse(ops), [x]) || [])]);
+	})(ops, xs);
 }
 
 // transpose :: [[a]] -> [[a]]

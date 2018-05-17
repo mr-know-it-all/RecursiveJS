@@ -17,7 +17,7 @@ const [
   quickSort,
   range, reduce, reduceWhile, reverse,
   some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
-  take, takeWhile, tap, transpose,
+  take, takeWhile, tap, transduce, transpose,
   uncurryN, uniqueBy, unless, until,
   xprod,
   zip, zipObj
@@ -840,6 +840,34 @@ async function runTests() {
     () => expect('tap test 1', 42, tap(x => x + 2, 42)),
     () => expect('tap test 2', {a: 2}, tap(x => {x.a = 2}, {a: 1}))
   )();
+
+	// transduce test
+	compose(
+		() => expect(
+			'transduce test 3',
+			['-0-', '-4-', '-8-'],
+			transduce(
+				[map(x => `-${x}-`), filter(x => x < 12), filter(x => x / 2 % 2 === 0)],
+				range(0, 200)
+			)
+		),
+		() => expect(
+			'transduce test 2',
+			[0, 2, 4],
+			transduce(
+				[map(x => x - 1), filter(x => x < 7), filter(isOdd)],
+				[1, 2, 3, 4, 5, 6, 7, 8, 9]
+			)
+		),
+		() => expect(
+			'transduce test 1',
+			[4, 6],
+			transduce(
+				[map(x => x + 2), filter(x => x + 1 < 7), filter(isEven)],
+				[1, 2, 3, 4, 5, 6, 7, 8, 9]
+			)
+		)
+	)();
 
   // transpose test
   compose(
