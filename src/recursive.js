@@ -502,7 +502,7 @@ function takeWhile(fn, xs) {
 
 // tap :: ((a → *), a) -> a
 function tap(fn, x) {
-	return (fn(x), x);
+  return (fn(x), x);
 }
 
 // Functor F => transduce :: [F* -> F*, F* -> F*, ...] -> F* -> F*
