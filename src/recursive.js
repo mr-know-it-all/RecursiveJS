@@ -18,7 +18,7 @@ const RecursiveJS = [
   range, reduce, reduceWhile, reverse,
   some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, transduce, transpose,
-  uncurryN, uniqueBy, unless, until,
+  uncurryN, unfold, uniqueBy, unless, until,
   xprod,
   zip, zipObj
 ];
@@ -535,6 +535,12 @@ function uncurryN(arity, fn) {
     else
       return reduce((fn, x) => fn(x), args, fn);
   };
+}
+
+// unfold :: (a -> [b]) -> a -> [b]
+function unfold(fn, seed, acc = []) {
+  const nextValue = fn(seed);
+  return nextValue ? unfold(fn, nextValue[1], [...acc, nextValue[0]]) : acc;
 }
 
 // uniqueBy :: (a -> a, [a]) -> [a]

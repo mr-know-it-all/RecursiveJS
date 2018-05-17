@@ -18,7 +18,7 @@ const [
   range, reduce, reduceWhile, reverse,
   some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, transduce, transpose,
-  uncurryN, uniqueBy, unless, until,
+  uncurryN, unfold, uniqueBy, unless, until,
   xprod,
   zip, zipObj
 ] = require('./../src/recursive.js');
@@ -898,6 +898,20 @@ async function runTests() {
         );
       }
     }
+  )();
+
+  // unfold test
+  compose(
+    () => expect(
+      'unfold test 2',
+      [[0], [0, 1], [0, 1, 2], [0, 1, 2, 3]],
+      unfold(x => x > 4 ? false : [range(0, x), x + 1], 1)
+    ),
+    () => expect(
+      'unfold test 1',
+      [-1, -2, -3, -4, -5],
+      unfold(x => x > 5 ? false : [-x, x + 1], 1)
+    )
   )();
 
   // uniqueBy test
