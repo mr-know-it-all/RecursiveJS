@@ -17,7 +17,7 @@ const RecursiveJS = [
   quickSort,
   range, reduce, reduceWhile, reverse,
   some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
-  take, takeWhile, tap, transduce, transpose,
+  take, takeWhile, tap, trampoline, transduce, transpose,
   uncurryN, unfold, union, uniqueBy, unless, until,
   xprod,
   zip, zipObj
@@ -503,6 +503,15 @@ function takeWhile(fn, xs) {
 // tap :: ((a → *), a) -> a
 function tap(fn, x) {
   return (fn(x), x);
+}
+
+// trampoline :: (a -> b) -> a -> b
+function trampoline(fn) {
+  return (...args) => {
+    let result = fn(...args);
+    while(typeof result === 'function') result = result();
+    return result;
+  };
 }
 
 // Functor F => transduce :: [F* -> F*, F* -> F*, ...] -> F* -> F*

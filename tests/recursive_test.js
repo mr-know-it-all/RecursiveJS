@@ -17,7 +17,7 @@ const [
   quickSort,
   range, reduce, reduceWhile, reverse,
   some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
-  take, takeWhile, tap, transduce, transpose,
+  take, takeWhile, tap, trampoline, transduce, transpose,
   uncurryN, unfold, union, uniqueBy, unless, until,
   xprod,
   zip, zipObj
@@ -839,6 +839,27 @@ async function runTests() {
   compose(
     () => expect('tap test 1', 42, tap(x => x + 2, 42)),
     () => expect('tap test 2', {a: 2}, tap(x => {x.a = 2}, {a: 1}))
+  )();
+
+  // trampoline test
+  function factorialT(n, acc = 1) {
+    return n === 1 ? acc : () => factorialT(n - 1, acc * n);
+  }
+
+  function factorial(n, acc = 1) {
+    return n === 1 ? acc : factorial(n - 1, acc * n);
+  }
+  const LARGE_NUM = 12000000;
+
+  compose(
+    () => expect('trampoline test', Infinity, trampoline(factorialT)(LARGE_NUM)),
+    () => {
+      try {
+        factorial(LARGE_NUM);
+      } catch(err) {
+        expect('trampoline test', 'RangeError', err.name);
+      }
+    }
   )();
 
   // transduce test
