@@ -1,7 +1,7 @@
 'use strict';
 
 const RecursiveJS = [
-  adjust, allPass, anyPass, aperture, applySpec,
+  adjust, allPass, anyPass, aperture, applySpec, assoc,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
   eqBy, equals, every,
@@ -69,6 +69,13 @@ function applySpec(xo) {
       );
     })(objectEntries(xo));
   }
+}
+
+// String -> a -> {Key: v} -> {Key: v}
+function assoc(k, v, xo) {
+  return (function assoc(k, v, [x, ...xo], acc = {}) {
+    return x === undefined ? acc : assoc(k, v, xo, (acc[x[0]] = x[1], acc[k] = v, acc));
+  })(k, v, objectEntries(xo));
 }
 
 // compose :: (c -> d, ..., b -> c, a -> b) -> (x -> (a -> b -> c -> d))
