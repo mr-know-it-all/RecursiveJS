@@ -1,7 +1,7 @@
 'use strict';
 
 const [
-  adjust, allPass, anyPass, aperture, applySpec, assoc,
+  adjust, allPass, anyPass, aperture, applySpec, assoc, assocPath,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
   eqBy, equals, every,
@@ -166,6 +166,13 @@ async function runTests() {
       expect('assoc test 1', {a: 1, b: 42, c: 3}, assocObj);
       expect('assoc test 1', 2, obj.b);
     }
+  )();
+
+  // assocPath test
+  compose(
+    () => expect('assocPath test 3', {a: {b: {c: 42}}}, assocPath(['a', 'b', 'c'], 42, {})),
+    () => expect('assocPath test 2', {a: {b: {c: 42}}, b: 1}, assocPath(['a', 'b', 'c'], 42, {a: {b: {c: 0}}, b: 1})),
+    () => expect('assocPath test 1', {a: {b: {c: 42}}}, assocPath(['a', 'b', 'c'])(42)({a: {b: {c: 0}}}))
   )();
 
   // compose test

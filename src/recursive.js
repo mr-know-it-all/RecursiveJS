@@ -1,7 +1,7 @@
 'use strict';
 
 const RecursiveJS = [
-  adjust, allPass, anyPass, aperture, applySpec, assoc,
+  adjust, allPass, anyPass, aperture, applySpec, assoc, assocPath,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
   eqBy, equals, every,
@@ -76,6 +76,15 @@ function assoc(k, v, xo) {
   return (function assoc(k, v, [x, ...xo], acc = {}) {
     return x === undefined ? acc : assoc(k, v, xo, (acc[x[0]] = x[1], acc[k] = v, acc));
   })(k, v, objectEntries(xo));
+}
+
+// assocPath :: [String] -> a -> {Key: v} -> {Key: v}
+function assocPath(xs, v, xo) {
+  return (function assocShallowCopy([x, ...xo], acc = {}) {
+    return x === undefined ? (function applyPath([x, ...xs], path) {
+      return length(xs) === 0 ? (path[x] = v, acc) : (!path[x] && (path[x] = {}), applyPath(xs, path[x]));
+    })(xs, acc) : assocShallowCopy(xo, (acc[x[0]] = x[1], acc));
+  })(objectEntries(xo));
 }
 
 // compose :: (c -> d, ..., b -> c, a -> b) -> (x -> (a -> b -> c -> d))
