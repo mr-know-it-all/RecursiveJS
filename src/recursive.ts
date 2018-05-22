@@ -24,8 +24,8 @@ export const RecursiveJS = map(fn => fn.length > 1 && fn.name !== 'equals' ? cur
 ]);
 
 // adjust :: (a -> a) -> Number -> [a] -> [a]
-function adjust<T>(fn: (x: T) => T, index: number, xs: T[]) {
-  return (function adjust([x, ...xs]: T[], currentIndex:number = 0, acc: T[] = []) {
+function adjust<T>(fn: (x: T) => T, index: number, xs: T[]): T[] {
+  return (function adjust([x, ...xs]: T[], currentIndex:number = 0, acc: T[] = []): T[] {
     return currentIndex === index ? [...acc, fn(x), ...(xs ? xs : [])] : adjust(xs, currentIndex + 1, [...acc, x])
   })(xs);
 }
