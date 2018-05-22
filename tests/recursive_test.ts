@@ -1,6 +1,6 @@
 'use strict';
 
-import {RecursiveJS} from './../src/ts/recursive';
+import {RecursiveJS} from './../src/recursive';
 
 const [
   adjust, allPass, anyPass, aperture, applySpec, assoc, assocPath,
