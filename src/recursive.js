@@ -131,7 +131,7 @@ function countBy(fn) {
 function curry(fn) {
   const arity = fn.length;
   return function applyArgs(...args) {
-    return length(args) === arity ? fn(...args) : ((...nextArgs) => applyArgs(...args, ...nextArgs));
+    return length(args) === arity ? fn(...args) : (...nextArgs) => applyArgs(...args, ...nextArgs);
   };
 }
 
