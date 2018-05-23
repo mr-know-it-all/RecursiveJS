@@ -2,7 +2,7 @@
 
 const [
   adjust, allPass, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
-  compose, composeP, concat, construct, converge, curry,
+  compose, composeP, concat, construct, converge, countBy, curry,
   deepFlat, defaultTo, dissoc, drop,
   eqBy, equals, every,
   fill, filter, find, forEach,
@@ -260,6 +260,19 @@ async function runTests() {
         ])([1, 2, 3, 4, 5, 6])
     )
   )();
+	
+	// countBy test
+	compose(
+		// ramdajs examples
+		() => {
+			const letters = ['a', 'b', 'A', 'a', 'B', 'c'];
+			expect('countBy test 2', {'a': 3, 'b': 2, 'c': 1}, countBy(l => l.toLowerCase())(letters));
+		},
+		() => {
+			const numbers = [1.0, 1.1, 1.2, 2.0, 3.0, 2.2];
+			expect('countBy test 1', {'1': 3, '2': 2, '3': 1}, countBy(Math.floor)(numbers));
+		}
+	)();
 
   // curry test
   let curryFunction = function(a, b, c, d) {

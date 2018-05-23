@@ -2,7 +2,7 @@
 
 const RecursiveJS = [
   adjust, allPass, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
-  compose, composeP, concat, construct, converge, curry,
+  compose, composeP, concat, construct, converge, countBy, curry,
   deepFlat, defaultTo, dissoc, drop,
   eqBy, equals, every,
   fill, filter, find, forEach,
@@ -118,6 +118,13 @@ function construct(constructorFn) {
 // converge :: todo
 function converge(cFn, fns) {
   return v => cFn(...map(fn => fn(v), fns));
+}
+
+// countBy :: (a -> String) -> [a] -> {*}
+function countBy(fn) {
+	return xs => (function countBy([x, ...xs], acc = {}) {
+		return x === undefined ? acc : countBy(xs, (acc[fn(x[1])] ? acc[fn(x[1])]++ : acc[fn(x[1])] = 1, acc));
+	})(objectEntries(xs));
 }
 
 // curry :: (* -> a) → (* -> a)
