@@ -146,12 +146,12 @@ async function runTests() {
       )
     }
   )();
-	
-	// applyTo test
-	compose(
-		() => expect('applyTo test 1', [1, 2, 3, 4, 5], applyTo([1, 2, 3, 4, 5, 6, 7])(xs => filter(x => x < 6, xs))),
-		() => expect('applyTo test 1', 42, applyTo(30)(x => x + 12))
-	)();
+
+  // applyTo test
+  compose(
+    () => expect('applyTo test 1', [1, 2, 3, 4, 5], applyTo([1, 2, 3, 4, 5, 6, 7])(xs => filter(x => x < 6, xs))),
+    () => expect('applyTo test 1', 42, applyTo(30)(x => x + 12))
+  )();
 
   // assoc test
   compose(
@@ -260,19 +260,19 @@ async function runTests() {
         ])([1, 2, 3, 4, 5, 6])
     )
   )();
-	
-	// countBy test
-	compose(
-		// ramdajs examples
-		() => {
-			const letters = ['a', 'b', 'A', 'a', 'B', 'c'];
-			expect('countBy test 2', {'a': 3, 'b': 2, 'c': 1}, countBy(l => l.toLowerCase())(letters));
-		},
-		() => {
-			const numbers = [1.0, 1.1, 1.2, 2.0, 3.0, 2.2];
-			expect('countBy test 1', {'1': 3, '2': 2, '3': 1}, countBy(Math.floor)(numbers));
-		}
-	)();
+
+  // countBy test
+  compose(
+    // ramdajs examples
+    () => {
+      const letters = ['a', 'b', 'A', 'a', 'B', 'c'];
+      expect('countBy test 2', {'a': 3, 'b': 2, 'c': 1}, countBy(l => l.toLowerCase())(letters));
+    },
+    () => {
+      const numbers = [1.0, 1.1, 1.2, 2.0, 3.0, 2.2];
+      expect('countBy test 1', {'1': 3, '2': 2, '3': 1}, countBy(Math.floor)(numbers));
+    }
+  )();
 
   // curry test
   let curryFunction = function(a, b, c, d) {

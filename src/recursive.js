@@ -73,7 +73,7 @@ function applySpec(xo) {
 
 // applyTo :: a -> (a -> b) -> b
 function applyTo(x) {
-	return fn => fn(x);
+  return fn => fn(x);
 }
 
 // assoc :: String -> a -> {Key: v} -> {Key: v}
@@ -122,9 +122,9 @@ function converge(cFn, fns) {
 
 // countBy :: (a -> String) -> [a] -> {*}
 function countBy(fn) {
-	return xs => (function countBy([x, ...xs], acc = {}) {
-		return x === undefined ? acc : countBy(xs, (acc[fn(x[1])] ? acc[fn(x[1])]++ : acc[fn(x[1])] = 1, acc));
-	})(objectEntries(xs));
+  return xs => (function countBy([x, ...xs], acc = {}) {
+    return x === undefined ? acc : countBy(xs, (acc[fn(x[1])] ? acc[fn(x[1])]++ : acc[fn(x[1])] = 1, acc));
+  })(objectEntries(xs));
 }
 
 // curry :: (* -> a) → (* -> a)
