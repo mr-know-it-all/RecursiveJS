@@ -1,7 +1,7 @@
 'use strict';
 
 const [
-  adjust, allPass, anyPass, aperture, applySpec, assoc, assocPath,
+  adjust, allPass, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
   eqBy, equals, every,
@@ -146,6 +146,12 @@ async function runTests() {
       )
     }
   )();
+	
+	// applyTo test
+	compose(
+		() => expect('applyTo test 1', [1, 2, 3, 4, 5], applyTo([1, 2, 3, 4, 5, 6, 7])(xs => filter(x => x < 6, xs))),
+		() => expect('applyTo test 1', 42, applyTo(30)(x => x + 12))
+	)();
 
   // assoc test
   compose(

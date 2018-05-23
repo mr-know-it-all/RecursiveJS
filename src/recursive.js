@@ -1,7 +1,7 @@
 'use strict';
 
 const RecursiveJS = [
-  adjust, allPass, anyPass, aperture, applySpec, assoc, assocPath,
+  adjust, allPass, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   compose, composeP, concat, construct, converge, curry,
   deepFlat, defaultTo, dissoc, drop,
   eqBy, equals, every,
@@ -69,6 +69,11 @@ function applySpec(xo) {
       );
     })(objectEntries(xo));
   }
+}
+
+// applyTo :: a -> (a -> b) -> b
+function applyTo(x) {
+	return fn => fn(x);
 }
 
 // assoc :: String -> a -> {Key: v} -> {Key: v}
