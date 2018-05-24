@@ -3,7 +3,7 @@
 const [
   adjust, allPass, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   compose, composeP, concat, construct, converge, countBy, curry,
-  deepFlat, defaultTo, dissoc, drop,
+  deepFlat, defaultTo, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
   fill, filter, find, forEach,
   groupBy,
@@ -346,7 +346,26 @@ async function runTests() {
       return expected;
     }
   )();
-
+	
+	// dropRepeatsWith test
+	compose(
+		() => {
+			let computations = [x => x - 1, x => x - 1, x => x * 1, x => x * 1, x => x * 2];
+			
+			expect(
+				'dropRepeatsWith test 2',
+				[0, 1, 2],
+				compose(map(fn => fn(1)), dropRepeatsWith((fnX, fnY) => fnX(1) === fnY(1)))(computations)
+			);
+		},
+		() => {
+			// ramdajs example
+			let numbers = [1, -1, 1, 3, 4, -4, -4, -5, 5, 3, 3];
+			
+			expect('dropRepeatsWith test 1', [1, 3, 4, -5, 3], dropRepeatsWith((x, y) => Math.abs(x) === Math.abs(y), numbers));
+		}
+	)();
+	
   // eqBy tests
   compose(
     () => expect('eqBy test 4', false, eqBy(x => Number(x), '421', 42)),

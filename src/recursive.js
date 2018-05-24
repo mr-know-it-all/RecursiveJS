@@ -3,7 +3,7 @@
 const RecursiveJS = [
   adjust, allPass, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   compose, composeP, concat, construct, converge, countBy, curry,
-  deepFlat, defaultTo, dissoc, drop,
+  deepFlat, defaultTo, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
   fill, filter, find, forEach,
   groupBy,
@@ -162,6 +162,15 @@ function drop(count, xs) {
   return (function drop(count, [x, ...xs]) {
   	return count - 1 === 0 ? isString ? xs.join('') : xs : drop(count - 1, xs);
   })(count, xs);
+}
+
+// dropRepeatsWith :: ((a, a) -> Boolean) -> [a] -> [a]
+function dropRepeatsWith(pred, xs) {
+	return (function dropRepeatsWith(pred, [x, ...xs], last, acc = []) {
+		return x === undefined ? acc : dropRepeatsWith(
+			pred, xs, x, last === undefined ? [x] : pred(x, last) ? acc : [...acc, x]
+		);
+	})(pred, xs);
 }
 
 // eqBy :: (a -> b) -> a -> a -> Boolean
