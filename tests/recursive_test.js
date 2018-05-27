@@ -16,7 +16,7 @@ const [
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
   range, reduce, reduceWhile, reverse,
-  some, sortWith, strPaddEnd, strPaddStart, symetricDifference,
+  some, sortWith, splitEvery, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, trampoline, transduce, transpose,
   uncurryN, unfold, union, uniqueBy, unless, until,
   xprod,
@@ -870,6 +870,12 @@ async function runTests() {
       ['a', 'b', 'c', 'd'],
       sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, ['d', 'a', 'c', 'b'])
     )
+  )();
+
+  // splitEvery test
+  compose(
+    () => expect('splitEvery test 2', ['for', 'tyt', 'wo'], splitEvery(3)('fortytwo')),
+    () => expect('splitEvery test 1', [[1, 2, 3], [4, 5, 6], [7]], splitEvery(3)([1, 2, 3, 4, 5, 6, 7]))
   )();
 
   // strPaddEnd test
