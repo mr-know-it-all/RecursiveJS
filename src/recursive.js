@@ -16,7 +16,7 @@ const RecursiveJS = [
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
   range, reduce, reduceWhile, reverse,
-  some, sortWith, splitEvery, strPaddEnd, strPaddStart, symetricDifference,
+  some, sortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, trampoline, transduce, transpose,
   uncurryN, unfold, union, uniqueBy, unless, until,
   xprod,
@@ -513,6 +513,19 @@ function splitEvery(n, xs) {
         count === 0 ? [...acc, x] : (acc[length(acc) - 1] = `${acc[length(acc) - 1]}${x}`, acc)
     );
   })(xs);
+}
+
+// splitWhen :: (a -> Boolean) -> [a] -> [[a], [a]]
+function splitWhen(pred, xs) {
+	const type = typeof xs;
+	return (function splitWhen([x, ...xs], acc = []) {
+		return x === undefined ? acc : splitWhen(
+			xs,
+			type !== 'string' ?
+				pred(x) || length(acc) === 0 ? [...acc, [x]] : (acc[length(acc) - 1] = [...acc[length(acc) - 1], x], acc) :
+				pred(x) || length(acc) === 0 ? [...acc, x] : (acc[length(acc) - 1] = `${acc[length(acc) - 1]}${x}`, acc)
+		);
+	})(xs);
 }
 
 // strPaddEnd :: (String, Number, String) -> String
