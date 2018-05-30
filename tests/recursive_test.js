@@ -346,12 +346,12 @@ async function runTests() {
       return expected;
     }
   )();
-	
+
 	// dropRepeatsWith test
 	compose(
 		() => {
 			let computations = [x => x - 1, x => x - 1, x => x * 1, x => x * 1, x => x * 2];
-			
+
 			expect(
 				'dropRepeatsWith test 2',
 				[0, 1, 2],
@@ -361,11 +361,11 @@ async function runTests() {
 		() => {
 			// ramdajs example
 			let numbers = [1, -1, 1, 3, 4, -4, -4, -5, 5, 3, 3];
-			
+
 			expect('dropRepeatsWith test 1', [1, 3, 4, -5, 3], dropRepeatsWith((x, y) => Math.abs(x) === Math.abs(y), numbers));
 		}
 	)();
-	
+
   // eqBy tests
   compose(
     () => expect('eqBy test 4', false, eqBy(x => Number(x), '421', 42)),
@@ -877,13 +877,13 @@ async function runTests() {
     () => expect('splitEvery test 2', ['for', 'tyt', 'wo'], splitEvery(3)('fortytwo')),
     () => expect('splitEvery test 1', [[1, 2, 3], [4, 5, 6], [7]], splitEvery(3)([1, 2, 3, 4, 5, 6, 7]))
   )();
-	
-	//splitWhen test
-	compose(
-		() => expect('splitWhen test 2', ['abc', 'defg'], splitWhen(x => x === 'd')('abcdefg')),
-		//ramdajs example
-		() => expect('splitWhen test 1', [[1], [2, 3, 4, 5, 6]], splitWhen(x => x === 2)([1, 2, 3, 4, 5, 6]))
-	)();
+
+  //splitWhen test
+  compose(
+    () => expect('splitWhen test 2', ['abc', 'defg'], splitWhen(x => x === 'd')('abcdefg')),
+    //ramdajs example
+    () => expect('splitWhen test 1', [[1], [2, 3, 4, 5, 6]], splitWhen(x => x === 2)([1, 2, 3, 4, 5, 6]))
+  )();
 
   // strPaddEnd test
   compose(
