@@ -347,24 +347,24 @@ async function runTests() {
     }
   )();
 
-	// dropRepeatsWith test
-	compose(
-		() => {
-			let computations = [x => x - 1, x => x - 1, x => x * 1, x => x * 1, x => x * 2];
+  // dropRepeatsWith test
+  compose(
+    () => {
+      let computations = [x => x - 1, x => x - 1, x => x * 1, x => x * 1, x => x * 2];
 
-			expect(
-				'dropRepeatsWith test 2',
-				[0, 1, 2],
-				compose(map(fn => fn(1)), dropRepeatsWith((fnX, fnY) => fnX(1) === fnY(1)))(computations)
-			);
-		},
-		() => {
-			// ramdajs example
-			let numbers = [1, -1, 1, 3, 4, -4, -4, -5, 5, 3, 3];
+      expect(
+        'dropRepeatsWith test 2',
+        [0, 1, 2],
+        compose(map(fn => fn(1)), dropRepeatsWith((fnX, fnY) => fnX(1) === fnY(1)))(computations)
+      );
+    },
+    () => {
+      // ramdajs example
+      let numbers = [1, -1, 1, 3, 4, -4, -4, -5, 5, 3, 3];
 
-			expect('dropRepeatsWith test 1', [1, 3, 4, -5, 3], dropRepeatsWith((x, y) => Math.abs(x) === Math.abs(y), numbers));
-		}
-	)();
+      expect('dropRepeatsWith test 1', [1, 3, 4, -5, 3], dropRepeatsWith((x, y) => Math.abs(x) === Math.abs(y), numbers));
+    }
+  )();
 
   // eqBy tests
   compose(
