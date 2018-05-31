@@ -979,15 +979,15 @@ async function runTests() {
 	
 	// traverseTree test
 	class Node {
-		constructor(data, left = null, right = null){
+		constructor(data, left = null, right = null) {
 			this.data = data;
 			this.left = left;
 			this.right = right;
 		}
 	}
-	const buildNode = (data, left = null, right = null) => new Node(data, left, right);
+  const buildNode = (data, left = null, right = null) => new Node(data, left, right);
 	const TreeOne =
-		buildNode(
+    buildNode(
 			1,
 			buildNode(
 				2,
