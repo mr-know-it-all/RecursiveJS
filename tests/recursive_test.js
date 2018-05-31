@@ -977,60 +977,60 @@ async function runTests() {
     () => expect('transpose test 1', [[1, 2, 3], ['a', 'b', 'c'], [11, 12, 13]], transpose([[1, 'a', 11], [2, 'b', 12], [3, 'c', 13]]))
   )();
 	
-	// traverseTree test
-	class Node {
-		constructor(data, left = null, right = null) {
-			this.data = data;
-			this.left = left;
-			this.right = right;
-		}
-	}
+  // traverseTree test
+  class Node {
+    constructor(data, left = null, right = null) {
+      this.data = data;
+      this.left = left;
+      this.right = right;
+    }
+  }
   const buildNode = (data, left = null, right = null) => new Node(data, left, right);
-	const TreeOne =
+  const TreeOne =
     buildNode(
-			1,
-			buildNode(
-				2,
-				buildNode(
-					21,
-					buildNode(22),
-					buildNode(
-						32,
-						buildNode(
-							321,
-							buildNode(322),
-							buildNode(323)
-						)
-					)
-				)
-			),
-			buildNode(
-				3,
-				buildNode(
-					31,
-					buildNode(32),
-					buildNode(33)
-				)
-			)
-		);
+      1,
+      buildNode(
+        2,
+        buildNode(
+          21,
+          buildNode(22),
+          buildNode(
+            32,
+            buildNode(
+              321,
+              buildNode(322),
+              buildNode(323)
+            )
+          )
+        )
+      ),
+      buildNode(
+        3,
+        buildNode(
+          31,
+          buildNode(32),
+          buildNode(33)
+        )
+      )
+    );
 	
-	compose(
-		() => expect(
-			'traverseTree postOrder',
-			[22, 322, 323, 321, 32, 21, 2, 32, 33, 31, 3, 1],
-			traverseTree('postOrder', TreeOne)
-		),
-		() => expect(
-			'traverseTree inOrder',
-			[22, 21, 322, 321, 323, 32, 2, 1, 32, 31, 33, 3],
-			traverseTree('inOrder')(TreeOne)
-		),
-		() => expect(
-			'traverseTree preOrder',
-			[1, 2, 21, 22, 32, 321, 322, 323, 3, 31, 32, 33],
-			traverseTree('preOrder', TreeOne)
-		)
-	)();
+  compose(
+    () => expect(
+      'traverseTree postOrder',
+      [22, 322, 323, 321, 32, 21, 2, 32, 33, 31, 3, 1],
+      traverseTree('postOrder', TreeOne)
+    ),
+    () => expect(
+      'traverseTree inOrder',
+      [22, 21, 322, 321, 323, 32, 2, 1, 32, 31, 33, 3],
+      traverseTree('inOrder')(TreeOne)
+    ),
+    () => expect(
+      'traverseTree preOrder',
+      [1, 2, 21, 22, 32, 321, 322, 323, 3, 31, 32, 33],
+      traverseTree('preOrder', TreeOne)
+    )
+  )();
 	
   // uncurryN test
   const curriedAdderFunc = a => b => c => d => a + b + c + d;
