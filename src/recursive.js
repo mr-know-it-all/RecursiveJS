@@ -17,7 +17,7 @@ const RecursiveJS = [
   quickSort,
   range, reduce, reduceWhile, reverse,
   some, sortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
-  take, takeWhile, tap, trampoline, transduce, transpose,
+  take, takeWhile, tap, trampoline, transduce, transpose, traverseTree,
   uncurryN, unfold, union, uniqueBy, unless, until,
   xprod,
   zip, zipObj
@@ -598,6 +598,33 @@ function transpose(xs) {
 
     return index === maxIndex ? map(xs => filter(x => x !== null, xs), acc) : transpose(index + 1, acc);
   })();
+}
+
+// traverseTree :: Tree -> [a] TODO: revisit this signature
+function traverseTree(type, node) {
+	return (
+		type === 'preOrder' && (function preOrder(node) {
+			return [
+				node.data,
+				...(node.left ? preOrder(node.left) : []),
+				...(node.right ? preOrder(node.right) : [])
+			];
+		})(node) ||
+		type === 'inOrder' && (function inOrder(node) {
+			return [
+				...(node.left ? inOrder(node.left) : []),
+				node.data,
+				...(node.right ? inOrder(node.right) : [])
+			];
+		})(node) ||
+		type === 'postOrder' && (function postOrder(node) {
+			return [
+				...(node.left ? postOrder(node.left) : []),
+				...(node.right ? postOrder(node.right) : []),
+				node.data
+			];
+		})(node)
+	);
 }
 
 // uncurryN :: (Number, (a -> b)) -> (a -> c | throw)
