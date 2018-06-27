@@ -607,14 +607,14 @@ async function runTests() {
   // memoize test
   let callCount = 0;
   const memoizeList = [
-    [4, 2],
-    [5, 1],
-    [4, 2],
-    [5, 1],
-    [4, 2],
-    [5, 1]
+    [4, 2, 3],
+    [5, 1, 4],
+    [4, 2, 6],
+    [5, 1, 7],
+    [4, 2, 8],
+    [5, 1, 7]
   ];
-  const adder = (x, y) => (callCount++, x + y);
+  const adder = (x, y, z) => (callCount++, x + y);
   const memoizedAdder = memoize(adder);
 
   map(([x, y]) => {memoizedAdder(x, y);}, memoizeList);
@@ -1019,7 +1019,7 @@ async function runTests() {
     () => expect('transpose test 1', [[1, 2, 3], ['a', 'b', 'c']], transpose([[1, 'a'], [2, 'b'], [3, 'c']])), // ramdajs example
     () => expect('transpose test 1', [[1, 2, 3], ['a', 'b', 'c'], [11, 12, 13]], transpose([[1, 'a', 11], [2, 'b', 12], [3, 'c', 13]]))
   )();
-	
+
   // traverseTree test
   class Node {
     constructor(data, left = null, right = null) {
@@ -1056,7 +1056,7 @@ async function runTests() {
         )
       )
     );
-	
+
   compose(
     () => expect(
       'traverseTree postOrder',
@@ -1074,7 +1074,7 @@ async function runTests() {
       traverseTree('preOrder', TreeOne)
     )
   )();
-	
+
   // uncurryN test
   const curriedAdderFunc = a => b => c => d => a + b + c + d;
   const uncurriedAdderFunc = uncurryN(4)(curriedAdderFunc);

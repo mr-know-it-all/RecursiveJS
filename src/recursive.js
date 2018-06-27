@@ -339,10 +339,11 @@ function mapObjIndexed(fn, xo) {
 // memoize :: (* -> a) -> a
 function memoize(fn) {
   return (function memoize(fn, dataStore = new Map()) {
-    return function getValue(x, y) {
+    return function getValue(...args) {
+			let dataKey = JSON.stringify(args);
       return (
-        dataStore.get(`${x}${y}`) ||
-        dataStore.set(`${x}${y}`, fn(x, y)) && getValue(x, y)
+        dataStore.get(dataKey) ||
+        dataStore.set(dataKey, fn(...args)) && getValue(...args)
       );
     };
   })(fn);
