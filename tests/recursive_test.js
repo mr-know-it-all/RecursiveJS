@@ -184,7 +184,14 @@ async function runTests() {
   // compose test
   const addOne = x => x + 1;
   const multiplyByTwo = x => x * 2;
-
+  const addTwo = x => x + 2;
+  
+  
+  expect(
+    'compose',
+    compose(addOne, compose(multiplyByTwo, addTwo))(42),
+    compose(compose(addOne, multiplyByTwo), addTwo)(42)
+  );
   expect('compose', multiplyByTwo(addOne(5)), compose(multiplyByTwo, addOne)(5));
 
   // composeP test
