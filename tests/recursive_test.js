@@ -331,8 +331,8 @@ async function runTests() {
         xs[2][0][0] = 42;
         xs[0] = 42;
       } catch(e) {
-      expect('deep freeze test 1', 'TypeError', e.name);
-    }
+        expect('deep freeze test 1', 'TypeError', e.name);
+      }
       expect('deep freeze test 1', [1, 2, [[3]]], xs);
       expect('deep freeze test 1', 1, xs[0]);
     }
