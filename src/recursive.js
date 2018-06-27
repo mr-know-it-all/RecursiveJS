@@ -3,7 +3,7 @@
 const RecursiveJS = [
   adjust, allPass, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   compose, composeP, concat, construct, converge, countBy, curry,
-  deepFlat, defaultTo, dissoc, drop, dropRepeatsWith,
+  deepFlat, deepFreeze, defaultTo, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
   fill, filter, find, forEach,
   groupBy,
@@ -144,6 +144,19 @@ function deepFlat(xs) {
         Array.isArray(x) && deepFlat([...x, ...xs], acc) || deepFlat(xs, [...acc, x])
     );
   })(xs);
+}
+
+// deepFreeze :: a -> a
+function deepFreeze(obj) {
+  const getReducer = obj => Array.isArray(obj) ? range(0, obj.length) : Object.keys(obj);
+
+  (function deepFreeze([x, ...xs], obj) {
+    Object.freeze(obj);
+    typeof obj[x] === 'object' && deepFreeze(getReducer(obj[x]), obj[x]);
+    return x === undefined ? x : deepFreeze(xs, obj);
+  })(getReducer(obj), obj);
+
+  return obj;
 }
 
 // defaultTo :: a -> b -> a | b
