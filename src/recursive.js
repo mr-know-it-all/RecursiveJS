@@ -2,7 +2,7 @@
 
 const RecursiveJS = [
   adjust, allPass, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
-	bubbleSort,
+  bubbleSort,
   compose, composeP, concat, construct, converge, countBy, curry,
   deepFlat, deepFreeze, defaultTo, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
