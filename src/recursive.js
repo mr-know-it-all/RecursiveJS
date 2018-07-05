@@ -2,6 +2,7 @@
 
 const RecursiveJS = [
   adjust, allPass, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
+	bubbleSort,
   compose, composeP, concat, construct, converge, countBy, curry,
   deepFlat, deepFreeze, defaultTo, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
@@ -90,6 +91,22 @@ function assocPath(xs, v, xo) {
       return length(xs) === 0 ? (path[x] = v, acc) : (!path[x] && (path[x] = {}), applyPath(xs, path[x]));
     })(xs, acc) : assocShallowCopy(xo, (acc[x[0]] = x[1], acc));
   })(objectEntries(xo));
+}
+
+// Ord a => [a] -> [a]
+function bubbleSort(xs) {
+  return (function bubbleSort([x, ...xs], acc = [], modified = false) {
+    if(x === undefined) return !modified ? acc : bubbleSort(acc);
+
+    if(acc.length !== 0 && acc[acc.length - 1] > x) {
+      let tail = acc[acc.length - 1];
+      acc[acc.length - 1] = x;
+      acc = [...acc, tail];
+      modified = true;
+    } else acc = [...acc, x];
+
+    return bubbleSort(xs, acc, modified);
+  })(xs);
 }
 
 // compose :: (c -> d, ..., b -> c, a -> b) -> (x -> (a -> b -> c -> d))

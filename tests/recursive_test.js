@@ -2,6 +2,7 @@
 
 const [
   adjust, allPass, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
+	bubbleSort,
   compose, composeP, concat, construct, converge, countBy, curry,
   deepFlat, deepFreeze, defaultTo, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
@@ -181,12 +182,20 @@ async function runTests() {
     () => expect('assocPath test 1', {a: {b: {c: 42}}}, assocPath(['a', 'b', 'c'])(42)({a: {b: {c: 0}}}))
   )();
 
+  // bubbleSort test
+  compose(
+    () => expect('bubbleSort', [1, 2, 3, 4, 5, 6, 7, 8, 9, 23, 1400], bubbleSort([7, 1400, 2, 1, 3, 5, 4, 23, 6, 9, 8])),
+    () => expect('bubbleSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], bubbleSort([9, 8, 7, 6, 5, 4, 3, 2, 1])),
+    () => expect('bubbleSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], bubbleSort([7, 2, 1, 3, 5, 4, 6, 9, 8])),
+    () => expect('bubbleSort', [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], bubbleSort([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
+  )();
+
   // compose test
   const addOne = x => x + 1;
   const multiplyByTwo = x => x * 2;
   const addTwo = x => x + 2;
-  
-  
+
+
   expect(
     'compose',
     compose(addOne, compose(multiplyByTwo, addTwo))(42),
