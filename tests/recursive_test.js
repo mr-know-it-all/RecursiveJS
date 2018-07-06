@@ -8,7 +8,7 @@ const [
   eqBy, equals, every,
   fill, filter, find, forEach,
   groupBy,
-  includes, innerJoin, intersection, intersperse, invoker,
+  includes, innerJoin, insertionSort, intersection, intersperse, invoker,
   juxt,
   length,
   map, mapObjIndexed, memoize, merge, mergeWith,
@@ -566,6 +566,14 @@ async function runTests() {
     id: 5,
     name: 'User Five'
   }], innerJoinResult);
+
+  // insertionSort test
+  compose(
+    () => expect('insertionSort', [1, 2, 3, 4, 5, 6, 7, 8, 9, 23, 1400], insertionSort([7, 1400, 2, 1, 3, 5, 4, 23, 6, 9, 8])),
+    () => expect('insertionSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], insertionSort([9, 8, 7, 6, 5, 4, 3, 2, 1])),
+    () => expect('insertionSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], insertionSort([7, 2, 1, 3, 5, 4, 6, 9, 8])),
+    () => expect('insertionSort', [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], insertionSort([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
+  )();
 
   // intersection test
   expect('intersection', [3, 4], intersection([4, 3, 1, 2, 3, 4, 3, 3], [7, 6, 5, 4, 3, 3]));

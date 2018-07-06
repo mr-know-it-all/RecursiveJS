@@ -8,7 +8,7 @@ const RecursiveJS = [
   eqBy, equals, every,
   fill, filter, find, forEach,
   groupBy,
-  includes, innerJoin, intersection, intersperse, invoker,
+  includes, innerJoin, insertionSort, intersection, intersperse, invoker,
   juxt,
   length,
   map, mapObjIndexed, memoize, merge, mergeWith,
@@ -289,6 +289,12 @@ function innerJoin(fn, xs, ys) {
       y === undefined && acc || innerJoin(xs, ys, [...acc, ...filter(x => fn(x, y), xs)])
     );
   })(xs, ys);
+}
+
+function insertionSort(xs) {
+  return (function insertionSort([x, ...xs], sorted = []) {
+    return x === undefined ? sorted : insertionSort(xs, quickSort([...sorted, x]));
+  })(xs);
 }
 
 // intersection :: ([*], [*]) -> [*]
