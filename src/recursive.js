@@ -17,7 +17,7 @@ const RecursiveJS = [
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
   range, reduce, reduceWhile, reverse,
-  some, sortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
+  selectionSort, some, sortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, trampoline, transduce, transpose, traverseTree,
   uncurryN, unfold, union, uniqueBy, unless, until,
   xprod,
@@ -516,6 +516,23 @@ function reverse(xs) {
   })(xs);
 }
 
+// selectionSort :: Ord a => [a] -> [a]
+function selectionSort(xs) {
+  // getMin :: Ord a => [a] -> a
+  const getMin = xs => (function getMin([x, ...xs], min) {
+    return x === undefined ? min : getMin(xs, x < min ? x : min);
+  })(xs, xs[0]);
+
+  // removeElem :: (a, [a]) -> [a]
+  const removeElem = (xs, el) => (function removeElem([x, ...xs], acc = [], found = false) {
+    return x === undefined ? acc : removeElem(xs, found || x !== el ? [...acc, x] : acc, found || x === el);
+  })(xs);
+
+  return (function selectionSort(xs, sorted = []) {
+    if(length(xs) === 0) return sorted;
+    return  selectionSort(compose(curry(removeElem)(xs), getMin)(xs), [...sorted, getMin(xs)]);
+  })(xs);
+}
 // some :: (a -> Boolean, [a]) -> Boolean
 function some(fn, xs) {
   return (function some([x, ...xs]) {

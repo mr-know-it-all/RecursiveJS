@@ -17,7 +17,7 @@ const [
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
   range, reduce, reduceWhile, reverse,
-  some, sortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
+  selectionSort, some, sortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, trampoline, transduce, transpose, traverseTree,
   uncurryN, unfold, union, uniqueBy, unless, until,
   xprod,
@@ -897,6 +897,14 @@ async function runTests() {
 
   // reverse test
   expect('reverse', [3, 2, 1], reverse([1, 2, 3]));
+
+  // selectionSort test
+  compose(
+    () => expect('selectionSort', [1, 2, 3, 4, 5, 6, 7, 8, 9, 23, 1400], selectionSort([7, 1400, 2, 1, 3, 5, 4, 23, 6, 9, 8])),
+    () => expect('selectionSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], selectionSort([9, 8, 7, 6, 5, 4, 3, 2, 1])),
+    () => expect('selectionSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], selectionSort([7, 2, 1, 3, 5, 4, 6, 9, 8])),
+    () => expect('selectionSort', [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], selectionSort([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
+  )();
 
   // some test
   const someArrayTrue = [false, false, false, true];
