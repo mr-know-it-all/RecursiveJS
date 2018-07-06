@@ -385,8 +385,27 @@ function merge(xo, yo) {
 }
 
 // mergeLists :: Ord a => ([a], [a]) -> [a]
-function mergeLists(left, right) {
-  return quickSort([...left, ...right]);
+function mergeLists(left, right, acc = []) {
+  let [x, ...xs] = left;
+  let [y, ...ys] = right;
+
+  return (
+    x === undefined && y === undefined
+      ? acc
+      : length(left) === 0
+        ? [...acc, ...right]
+        : length(right) === 0
+          ? [...acc, ...left]
+          : x === undefined
+            ? [...acc, y]
+            : y === undefined
+              ? [...acc, x]
+              : (
+                x < y
+                  ? mergeLists(xs, right, [...acc, x])
+                  : mergeLists(left, ys, [...acc, y])
+              )
+  );
 }
 
 // mergeSort :: Ord a => [a] -> [a]
