@@ -291,6 +291,7 @@ function innerJoin(fn, xs, ys) {
   })(xs, ys);
 }
 
+// insertionSort :: Ord a => [a] -> [a]
 function insertionSort(xs) {
   return (function insertionSort([x, ...xs], sorted = []) {
     return x === undefined ? sorted : insertionSort(xs, quickSort([...sorted, x]));
