@@ -11,7 +11,7 @@ const RecursiveJS = [
   includes, innerJoin, insertionSort, intersection, intersperse, invoker,
   juxt,
   length,
-  map, mapObjIndexed, memoize, merge, mergeWith,
+  map, mapObjIndexed, memoize, merge, mergeSort, mergeWith,
   nAry,
   objectEntries, objectValues, omit,
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
@@ -384,6 +384,21 @@ function merge(xo, yo) {
   );
 }
 
+// mergeLists :: Ord a => ([a], [a]) -> [a]
+function mergeLists(left, right) {
+  return quickSort([...left, ...right]);
+}
+
+// mergeSort :: Ord a => [a] -> [a]
+function mergeSort(xs) {
+  if(length(xs) === 1) return xs;
+
+  let left = mergeSort(take(Math.ceil(length(xs) / 2), xs));
+  let right = mergeSort(drop(Math.ceil(length(xs) / 2), xs));
+
+  return mergeLists(left, right);
+}
+
 // mergeWith :: (((a, a) -> a), {a}, {a}) -> {a}
 function mergeWith(fn, xo, yo) {
   return (
@@ -614,8 +629,8 @@ function take(count, xs) {
 
 // takeWhile :: (a -> Boolean, [a]) -> [a]
 function takeWhile(fn, xs) {
-  return (function takeWhile([x, ...xs], acc = []) {
-    return (x === undefined || !fn(x)) && acc || takeWhile(xs, [...acc, x]);
+  return (function takeWhile([x, ...xs], acc = [], index = 0) {
+    return (x === undefined || !fn(x, index)) && acc || takeWhile(xs, [...acc, x], index + 1);
   })(xs);
 }
 

@@ -11,7 +11,7 @@ const [
   includes, innerJoin, insertionSort, intersection, intersperse, invoker,
   juxt,
   length,
-  map, mapObjIndexed, memoize, merge, mergeWith,
+  map, mapObjIndexed, memoize, merge, mergeSort, mergeWith,
   nAry,
   objectEntries, objectValues, omit,
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
@@ -667,6 +667,14 @@ async function runTests() {
       city: 'NY'
     })
   );
+
+  // mergeSort test
+  compose(
+    () => expect('mergeSort', [1, 2, 3, 4, 5, 6, 7, 8], mergeSort([7, 2, 1, 3, 5, 4, 6, 8])),
+    () => expect('mergeSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], mergeSort([9, 8, 7, 6, 5, 4, 3, 2, 1])),
+    () => expect('mergeSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], mergeSort([7, 2, 1, 3, 5, 4, 6, 9, 8])),
+    () => expect('mergeSort', [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], mergeSort([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
+  )();
 
   // mergeWith test
   expect(
