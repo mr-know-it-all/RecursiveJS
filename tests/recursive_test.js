@@ -182,13 +182,13 @@ async function runTests() {
     () => expect('assocPath test 1', {a: {b: {c: 42}}}, assocPath(['a', 'b', 'c'])(42)({a: {b: {c: 0}}}))
   )();
 
-  // bubbleSort test
-  compose(
-    () => expect('bubbleSort', [1, 2, 3, 4, 5, 6, 7, 8, 9, 23, 1400], bubbleSort([7, 1400, 2, 1, 3, 5, 4, 23, 6, 9, 8])),
-    () => expect('bubbleSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], bubbleSort([9, 8, 7, 6, 5, 4, 3, 2, 1])),
-    () => expect('bubbleSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], bubbleSort([7, 2, 1, 3, 5, 4, 6, 9, 8])),
-    () => expect('bubbleSort', [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], bubbleSort([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
-  )();
+  // sorting test
+  map(sortType => compose(
+    () => expect(`${sortType.name}`, [1, 2, 3, 4, 5, 6, 7, 8, 9, 23, 1400], sortType([7, 1400, 2, 1, 3, 5, 4, 23, 6, 9, 8])),
+    () => expect(`${sortType.name}`, [1, 2, 3, 4, 5, 6, 7, 8, 9], sortType([9, 8, 7, 6, 5, 4, 3, 2, 1])),
+    () => expect(`${sortType.name}`, [1, 2, 3, 4, 5, 6, 7, 8, 9], sortType([7, 2, 1, 3, 5, 4, 6, 9, 8])),
+    () => expect(`${sortType.name}`, [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], sortType([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
+  )(), [bubbleSort, selectionSort, insertionSort, mergeSort, quickSort]);
 
   // compose test
   const addOne = x => x + 1;
@@ -567,14 +567,6 @@ async function runTests() {
     name: 'User Five'
   }], innerJoinResult);
 
-  // insertionSort test
-  compose(
-    () => expect('insertionSort', [1, 2, 3, 4, 5, 6, 7, 8, 9, 23, 1400], insertionSort([7, 1400, 2, 1, 3, 5, 4, 23, 6, 9, 8])),
-    () => expect('insertionSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], insertionSort([9, 8, 7, 6, 5, 4, 3, 2, 1])),
-    () => expect('insertionSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], insertionSort([7, 2, 1, 3, 5, 4, 6, 9, 8])),
-    () => expect('insertionSort', [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], insertionSort([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
-  )();
-
   // intersection test
   expect('intersection', [3, 4], intersection([4, 3, 1, 2, 3, 4, 3, 3], [7, 6, 5, 4, 3, 3]));
 
@@ -667,14 +659,6 @@ async function runTests() {
       city: 'NY'
     })
   );
-
-  // mergeSort test
-  compose(
-    () => expect('mergeSort', [1, 2, 3, 4, 5, 6, 7, 8], mergeSort([7, 2, 1, 3, 5, 4, 6, 8])),
-    () => expect('mergeSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], mergeSort([9, 8, 7, 6, 5, 4, 3, 2, 1])),
-    () => expect('mergeSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], mergeSort([7, 2, 1, 3, 5, 4, 6, 9, 8])),
-    () => expect('mergeSort', [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], mergeSort([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
-  )();
 
   // mergeWith test
   expect(
@@ -880,9 +864,6 @@ async function runTests() {
     project(['name', 'age'], people)
   );
 
-  // quickSort test
-  expect('quickSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], quickSort([7, 2, 1, 3, 5, 4, 6, 9, 8]));
-
   // range test
   compose(
     () => expect('range test 3', 7626, sum(range(1, 124))),
@@ -913,14 +894,6 @@ async function runTests() {
 
   // reverse test
   expect('reverse', [3, 2, 1], reverse([1, 2, 3]));
-
-  // selectionSort test
-  compose(
-    () => expect('selectionSort', [1, 2, 3, 4, 5, 6, 7, 8, 9, 23, 1400], selectionSort([7, 1400, 2, 1, 3, 5, 4, 23, 6, 9, 8])),
-    () => expect('selectionSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], selectionSort([9, 8, 7, 6, 5, 4, 3, 2, 1])),
-    () => expect('selectionSort', [1, 2, 3, 4, 5, 6, 7, 8, 9], selectionSort([7, 2, 1, 3, 5, 4, 6, 9, 8])),
-    () => expect('selectionSort', [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], selectionSort([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
-  )();
 
   // some test
   const someArrayTrue = [false, false, false, true];
