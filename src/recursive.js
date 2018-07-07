@@ -389,23 +389,19 @@ function mergeLists(left, right, acc = []) {
   let [x, ...xs] = left;
   let [y, ...ys] = right;
 
-  return (
-    x === undefined && y === undefined
-      ? acc
-      : length(left) === 0
-        ? [...acc, ...right]
-        : length(right) === 0
-          ? [...acc, ...left]
-          : x === undefined
-            ? [...acc, y]
-            : y === undefined
-              ? [...acc, x]
-              : (
-                x < y
-                  ? mergeLists(xs, right, [...acc, x])
-                  : mergeLists(left, ys, [...acc, y])
-              )
-  );
+  if(x === undefined && y === undefined) return acc;
+  
+  if(length(left) === 0) return [...acc, ...right];
+  if(length(right) === 0) return [...acc, ...left];
+
+  if(x === undefined) return [...acc, y];
+  if(y === undefined) return [...acc, x];
+
+  if(left[length(left) - 1] < right[0]) return [...acc, ...left, ...right];
+  if(left[length(right) - 1] < left[0]) return [...acc, ...right, ...left];
+
+  if(x < y) return mergeLists(xs, right, [...acc, x]);
+  else return mergeLists(left, ys, [...acc, y]);
 }
 
 // mergeSort :: Ord a => [a] -> [a]
