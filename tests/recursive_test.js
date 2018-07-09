@@ -2,7 +2,7 @@
 
 const [
   adjust, allPass, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
-  bubbleSort,
+  bubbleSort, bisectSearch,
   compose, composeP, concat, construct, converge, countBy, curry,
   deepFlat, deepFreeze, defaultTo, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
@@ -189,6 +189,14 @@ async function runTests() {
     () => expect(`${sortType.name}`, [1, 2, 3, 4, 5, 6, 7, 8, 9], sortType([7, 2, 1, 3, 5, 4, 6, 9, 8])),
     () => expect(`${sortType.name}`, [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], sortType([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
   )(), [bubbleSort, selectionSort, insertionSort, mergeSort, quickSort, timSort]);
+
+
+  // bisectSearch test
+  compose(
+    () => expect('bisectSearch', true, bisectSearch(123, range(12, 126))),
+    () => expect('bisectSearch', true, bisectSearch(1, range(1, 11))),
+    () => expect('bisectSearch', false, bisectSearch(101, range(1, 12)))
+  )();
 
   // compose test
   const addOne = x => x + 1;

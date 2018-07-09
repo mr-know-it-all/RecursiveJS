@@ -2,7 +2,7 @@
 
 const RecursiveJS = [
   adjust, allPass, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
-  bubbleSort,
+  bubbleSort, bisectSearch,
   compose, composeP, concat, construct, converge, countBy, curry,
   deepFlat, deepFreeze, defaultTo, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
@@ -107,6 +107,17 @@ function bubbleSort(xs) {
 
     return bubbleSort(xs, acc, modified);
   })(xs);
+}
+
+// Ord a, Sorted [a] => a -> [a] -> Boolean
+function bisectSearch(el, xs) {
+  let left = length(xs) ? take(Math.ceil(length(xs) / 2) - 1, xs) : null;
+  let middle = length(xs) ? xs[Math.ceil(length(xs) / 2) - 1] : null;
+  let right = length(xs) ? drop(Math.ceil(length(xs) / 2), xs) : null;
+
+  return (
+    !left && !middle && !right ? false : middle === el || bisectSearch(el, middle > el ? left : right)
+  );
 }
 
 // compose :: (c -> d, ..., b -> c, a -> b) -> (x -> (a -> b -> c -> d))
@@ -656,15 +667,15 @@ function tap(fn, x) {
 
 // timSort :: Ord a => [a] -> [a]
 function timSort(xs) {
-	// this is not a totally accurrate timSort
-	const RUN = 2;
-	if(length(xs) <= RUN) return insertionSort(xs);
+  // this is not a totally accurrate timSort
+  const RUN = 2;
+  if(length(xs) <= RUN) return insertionSort(xs);
 
-	// sortAndMerge :: Ord a => [[a]] -> [a]
-	const sortAndMerge = (acc, v) => compose(v => mergeLists(acc, v), insertionSort)(v);
-	const runs = splitEvery(RUN, xs);
+  // sortAndMerge :: Ord a => [[a]] -> [a]
+  const sortAndMerge = (acc, v) => compose(v => mergeLists(acc, v), insertionSort)(v);
+  const runs = splitEvery(RUN, xs);
 
-	return reduce(sortAndMerge, runs, []);
+  return reduce(sortAndMerge, runs, []);
 }
 
 // trampoline :: (a -> b) -> a -> b
