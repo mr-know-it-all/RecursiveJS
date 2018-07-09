@@ -18,7 +18,7 @@ const RecursiveJS = [
   quickSort,
   range, reduce, reduceWhile, reverse,
   selectionSort, some, sortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
-  take, takeWhile, tap, trampoline, transduce, transpose, traverseTree,
+  take, takeWhile, tap, timSort, trampoline, transduce, transpose, traverseTree,
   uncurryN, unfold, union, uniqueBy, unless, until,
   xprod,
   zip, zipObj
@@ -390,7 +390,7 @@ function mergeLists(left, right, acc = []) {
   let [y, ...ys] = right;
 
   if(x === undefined && y === undefined) return acc;
-  
+
   if(length(left) === 0) return [...acc, ...right];
   if(length(right) === 0) return [...acc, ...left];
 
@@ -652,6 +652,18 @@ function takeWhile(fn, xs) {
 // tap :: ((a → *), a) -> a
 function tap(fn, x) {
   return (fn(x), x);
+}
+
+// timSort :: Ord a => [a] -> [a]
+function timSort(xs) {
+	// this is not a totally accurrate timSort
+	const RUN = 2;
+	if(length(xs) <= RUN) return insertionSort(xs);
+
+	const sortAndMerge = (acc, v) => compose(v => mergeLists(acc, v), insertionSort)(v);
+	const runs = splitEvery(RUN, xs);
+
+	return reduce(sortAndMerge, runs, []);
 }
 
 // trampoline :: (a -> b) -> a -> b
