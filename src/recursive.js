@@ -111,7 +111,7 @@ function bubbleSort(xs) {
 
 // Ord a, Sorted [a] => a -> [a] -> Boolean
 function bisectSearch(el, xs) {
-	if(length(xs) === 0) return false;
+  if(length(xs) === 0) return false;
 	
   let left = take(Math.ceil(length(xs) / 2) - 1, xs);
   let middle = xs[Math.ceil(length(xs) / 2) - 1];
