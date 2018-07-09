@@ -120,17 +120,17 @@ function bisectSearch(el, xs) {
   return middle === el || bisectSearch(el, middle > el ? left : right);
 }
 
-// "pointer" version
-// Ord a, Sorted [a] => a -> [a] -> Boolean
+// // "pointer" version
+// // Ord a, Sorted [a] => a -> [a] -> Boolean
 // function bisectSearch(el, xs) {
-// 	return (function bisectSearch(start, end) {
-// 		if(end === start) return false;
+//   return (function bisectSearch(start, end) {
+//     if(end === start) return false;
 //
-// 		let middle = Math.ceil((end + start)/2) - 1;
-// 		if(xs[middle] === el) return true;
-// 		if(xs[middle] > el) return bisectSearch(start, middle);
-// 		if(xs[middle] < el) return bisectSearch(middle + 1, end);
-// 	})(0, length(xs) - 1);
+//     let middle = Math.ceil((end + start)/2) - 1;
+//     if(xs[middle] === el) return true;
+//     if(xs[middle] > el) return bisectSearch(start, middle);
+//     if(xs[middle] < el) return bisectSearch(middle + 1, end);
+//   })(0, length(xs) - 1);
 // }
 
 // compose :: (c -> d, ..., b -> c, a -> b) -> (x -> (a -> b -> c -> d))
