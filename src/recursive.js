@@ -660,6 +660,7 @@ function timSort(xs) {
 	const RUN = 2;
 	if(length(xs) <= RUN) return insertionSort(xs);
 
+	// sortAndMerge :: Ord a => [[a]] -> [a]
 	const sortAndMerge = (acc, v) => compose(v => mergeLists(acc, v), insertionSort)(v);
 	const runs = splitEvery(RUN, xs);
 
