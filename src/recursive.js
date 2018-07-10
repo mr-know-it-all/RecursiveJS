@@ -1,7 +1,7 @@
 'use strict';
 
 const RecursiveJS = [
-  adjust, allPass, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
+  adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch,
   compose, composeP, concat, construct, converge, countBy, curry,
   deepFlat, deepFreeze, defaultTo, dissoc, drop, dropRepeatsWith,
@@ -40,6 +40,31 @@ function allPass([p, ...ps], xs) {
     !p(xs) ? false :
     allPass(ps, xs)
   );
+}
+
+// allPermutations :: [a] -> [[a]]
+function allPermutations(xs) {
+  return (function allPermutations(xs, permutations = []) {
+    if(xs.length < 2) return xs;
+
+    return (function loopList(xs, i = 0) {
+      if(i < length(xs)) {
+        let x = xs[i];
+        let rest = [...take(i, xs), ...drop(i + 1, xs)];
+
+        permutations = [
+          ...permutations,
+          ...map(subPermutation => [
+            x, ...(Array.isArray(subPermutation) ? subPermutation : [subPermutation])
+          ], allPermutations(rest))
+        ];
+
+        return loopList(xs, i + 1)
+      } else {
+        return permutations;
+      }
+    })(xs);
+  })(xs);
 }
 
 // anyPass :: ([* -> Boolean], [*]) -> Boolean
