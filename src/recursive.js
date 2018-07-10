@@ -45,7 +45,7 @@ function allPass([p, ...ps], xs) {
 // allPermutations :: [a] -> [[a]]
 function allPermutations(xs) {
   return (function allPermutations(xs, permutations = []) {
-    if(xs.length < 2) return xs;
+    if(length(xs) < 2) return xs;
 
     return (function loopList(xs, i = 0) {
       if(i < length(xs)) {
