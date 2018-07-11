@@ -11,7 +11,7 @@ const RecursiveJS = [
   includes, innerJoin, insertionSort, intersection, intersperse, invoker,
   juxt,
   length,
-  map, mapObjIndexed, memoize, merge, mergeSort, mergeWith,
+  map, mapObjIndexed, memoize, merge, mergeSort, mergeWith, monkeySort,
   nAry,
   objectEntries, objectValues, omit,
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
@@ -51,13 +51,11 @@ function allPermutations(xs) {
       if(i < length(xs)) {
         let x = xs[i];
         let rest = [...take(i, xs), ...drop(i + 1, xs)];
+        let nextPermutations = map(subPermutation => [
+          x, ...(Array.isArray(subPermutation) ? subPermutation : [subPermutation])
+        ], allPermutations(rest));
 
-        permutations = [
-          ...permutations,
-          ...map(subPermutation => [
-            x, ...(Array.isArray(subPermutation) ? subPermutation : [subPermutation])
-          ], allPermutations(rest))
-        ];
+        permutations = [...permutations, ...nextPermutations];
 
         return loopList(xs, i + 1)
       } else {
@@ -469,6 +467,16 @@ function mergeWith(fn, xo, yo) {
     reduce(
       (acc, v) => (acc[v[0]] = acc[v[0]] ? fn(v[1], acc[v[0]]) : v[1], acc), [...objectEntries(yo), ...objectEntries(xo)], {})
   );
+}
+
+// monkeySort :: Ord a => [a] -> [a]
+function monkeySort(xs) {
+  // this is an unoptimized version of monkeySort
+  // it's better than random order generation but still bad
+  // then again, monkeySort isn't the smartest sorting algorithm
+  const isSorted = ([x, ...xs], prev) => x === undefined ? true : prev && x < prev ? false : isSorted(xs, x);
+
+  return find(isSorted, allPermutations(xs));
 }
 
 // nAry :: Number -> (* -> a) -> (* -> a)

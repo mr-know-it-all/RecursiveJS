@@ -11,7 +11,7 @@ const [
   includes, innerJoin, insertionSort, intersection, intersperse, invoker,
   juxt,
   length,
-  map, mapObjIndexed, memoize, merge, mergeSort, mergeWith,
+  map, mapObjIndexed, memoize, merge, mergeSort, mergeWith, monkeySort,
   nAry,
   objectEntries, objectValues, omit,
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
@@ -245,7 +245,7 @@ async function runTests() {
     () => expect(`${sortType.name}`, [1, 2, 3, 4, 5, 6, 7, 8, 9], sortType([7, 2, 1, 3, 5, 4, 6, 9, 8])),
     () => expect(`${sortType.name}`, [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], sortType([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
   )(), [bubbleSort, selectionSort, insertionSort, mergeSort, quickSort, timSort]);
-
+  expect('monkeySort', [1, 2, 3, 4], monkeySort([4, 2, 1, 3]));
 
   // bisectSearch test
   compose(
