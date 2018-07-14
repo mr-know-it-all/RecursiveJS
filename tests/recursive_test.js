@@ -4,7 +4,7 @@ const [
   adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch,
   compose, composeP, concat, construct, converge, countBy, curry,
-  deepFlat, deepFreeze, defaultTo, dissoc, drop, dropRepeatsWith,
+  deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
   fill, filter, find, forEach,
   groupBy,
@@ -423,6 +423,34 @@ async function runTests() {
     () => expect('defaultTo', 42, defaultTo(42)(NaN)),
     () => expect('defaultTo', '42', defaultTo(42)('42')),
     () => expect('defaultTo', NaN, defaultTo(NaN)(NaN))
+  )();
+
+  // dijkstraShortestPath test
+  compose(
+    () => {
+      let graph = {
+        start: {A: 150, B: 20},
+        A: {C: 3},
+        B: {D: 30},
+        C: {finish: 2},
+        D: {A: 4, finish: 22},
+        finish: {}
+      };
+
+      expect('dijkstraShortestPath', ['start', 'B', 'D', 'A', 'C', 'finish'], dijkstraShortestPath(graph))
+    },
+    () => {
+      let graph = {
+        start: {A: 5, B: 2},
+        A: {C: 4, D: 2},
+        B: {A: 8, D: 7},
+        C: {D: 6, finish: 3},
+        D: {finish: 1},
+        finish: {}
+      };
+
+      expect('dijkstraShortestPath', ['start', 'A', 'D', 'finish'], dijkstraShortestPath(graph))
+    }
   )();
 
   // dissoc test

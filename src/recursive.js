@@ -4,7 +4,7 @@ const RecursiveJS = [
   adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch,
   compose, composeP, concat, construct, converge, countBy, curry,
-  deepFlat, deepFreeze, defaultTo, dissoc, drop, dropRepeatsWith,
+  deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
   fill, filter, find, forEach,
   groupBy,
@@ -226,6 +226,49 @@ function deepFreeze(obj) {
 // defaultTo :: a -> b -> a | b
 function defaultTo(dflt) {
   return x => x !== undefined && x !== null && !Number.isNaN(x) ? x : dflt;
+}
+
+// dijkstraShortestPath :: Object -> [String]
+function dijkstraShortestPath(graph) {
+  // TODO: refactor to make it more readable
+  let Table = reduce((acc, [key, _]) => {
+    acc[key] = {
+      distToStart: key === 'start' ? 0 : Infinity,
+      through: key === 'start' ? 'start' : null,
+      visited: false
+    };
+    return acc;
+  }, objectEntries(graph), {});
+
+  const shortestUnvisitedKey = () => reduce((acc, v) => {
+    if(!v[1].visited) {
+      if(acc === 'ALL_VISITED') return v;
+      else if(v[1].distToStart < acc[1].distToStart) return v;
+    }
+    return acc;
+  }, objectEntries(Table), 'ALL_VISITED');
+
+  (function shortestPath() {
+    let nextKey = shortestUnvisitedKey();
+    if(nextKey === 'ALL_VISITED') return Table;
+    else {
+      map(key => {// TODO: we're using map (our own recursive map) as a forEach, will refactor
+        if(key[1] + Table[nextKey[0]].distToStart < Table[key[0]].distToStart) {
+          Table[key[0]].distToStart = key[1] + Table[nextKey[0]].distToStart;
+          Table[key[0]].through = nextKey[0];
+        }
+      }, objectEntries(graph[nextKey[0]]));
+
+      Table[nextKey[0]].visited = true;
+      return shortestPath();
+    }
+  })();
+
+  return reverse((function computeShortestPath(path = []) {
+    if(path[length(path) - 1] === 'start') return path;
+    else if(length(path) === 0) return computeShortestPath(['finish', Table['finish'].through]);
+    else return computeShortestPath([...path, Table[path[length(path) - 1]].through])
+  })());
 }
 
 // dissoc :: (String, {Key: v}) -> {Key: v}
