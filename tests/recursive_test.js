@@ -429,6 +429,21 @@ async function runTests() {
   compose(
     () => {
       let graph = {
+        start: {A: 50, B: 2},
+        A: {D: 12, C: 1},
+        B: {A: 24},
+        C: {E: 400, F: 200},
+        D: {C: 2},
+        E: {F: 12},
+        F: {G: 14},
+        G: {finish: 12},
+        finish: {}
+      };
+
+      expect('dijkstraShortestPath', ['start', 'B', 'A', 'C', 'F', 'G', 'finish'], dijkstraShortestPath(graph))
+    },
+    () => {
+      let graph = {
         start: {A: 150, B: 20},
         A: {C: 3},
         B: {D: 30},
