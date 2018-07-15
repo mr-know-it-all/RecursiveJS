@@ -252,13 +252,15 @@ function dijkstraShortestPath(graph) {
     let nextKey = shortestUnvisitedKey();
     if(nextKey === 'ALL_VISITED') return Table;
     else {
-      map(key => {// TODO: we're using map (our own recursive map) as a forEach, will refactor
+      (function updateDistanceToStart([key, ...xs]) {
+        if(key === undefined) return void 0;
         if(key[1] + Table[nextKey[0]].distToStart < Table[key[0]].distToStart) {
           Table[key[0]].distToStart = key[1] + Table[nextKey[0]].distToStart;
           Table[key[0]].through = nextKey[0];
         }
-      }, objectEntries(graph[nextKey[0]]));
-
+        return updateDistanceToStart(xs);
+      })(objectEntries(graph[nextKey[0]]))
+      
       Table[nextKey[0]].visited = true;
       return shortestPath();
     }
