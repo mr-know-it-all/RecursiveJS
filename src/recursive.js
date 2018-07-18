@@ -132,6 +132,22 @@ function bubbleSort(xs) {
   })(xs);
 }
 
+// Ord a => (a -> a, [a]) -> [a]
+function bubbleSortBy(fn, xs) {
+  return (function bubbleSort([x, ...xs], acc = [], modified = false) {
+    if(x === undefined) return !modified ? acc : bubbleSort(acc);
+
+    if(acc.length !== 0 && fn(acc[acc.length - 1]) > fn(x)) {
+      let tail = acc[acc.length - 1];
+      acc[acc.length - 1] = x;
+      acc = [...acc, tail];
+      modified = true;
+    } else acc = [...acc, x];
+
+    return bubbleSort(xs, acc, modified);
+  })(xs);
+}
+
 // Ord a, Sorted [a] => a -> [a] -> Boolean
 function bisectSearch(el, xs) {
   if(length(xs) === 0) return false;
@@ -669,7 +685,7 @@ function quickSort([x, ...xs]) {
   ];
 }
 
-// quickSortBy :: Filterable f => f a -> f a
+// quickSortBy :: Filterable f => (a -> a, f a) -> f a
 function quickSortBy(fn, [x, ...xs]) {
   return x === undefined && [] || [
     ...quickSortBy(fn, filter(y => fn(y) <= fn(x), xs)),
@@ -680,15 +696,15 @@ function quickSortBy(fn, [x, ...xs]) {
 
 // radixSort :: Ord a => [a] -> [a]
 function radixSort(xs) {
-  // TODO: refactor
   let xss = map(String, xs);
   let largestIndex = reduce((acc, v) => length(v) > acc ? length(v) : acc, xss, 0);
 
-  const quickSortByIndex = (xs, index) =>
-    quickSortBy(x => Number(reverse(take(index + 1, reverse(x))).join('')), xs);
+  const bubbleSortByIndex = (xs, index) =>
+    bubbleSortBy(x => reverse(x)[index - 1] ? Number(reverse(x)[index - 1]) : -Infinity, xs);
 
   return (function updateList(xs, index = 0) {
-    return index > largestIndex ? map(Number, xs) : updateList(quickSortByIndex(xs, index), index + 1);
+		console.log(xs)
+    return index > largestIndex ? map(Number, xs) : updateList(bubbleSortByIndex(xs, index), index + 1);
   })(xss);
 }
 
