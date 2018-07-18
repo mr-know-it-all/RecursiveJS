@@ -16,7 +16,7 @@ const RecursiveJS = [
   objectEntries, objectValues, omit,
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
-  range, reduce, reduceWhile, reverse,
+  radixSort, range, reduce, reduceWhile, reverse,
   selectionSort, some, sortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, timSort, trampoline, transduce, transpose, traverseTree,
   uncurryN, unfold, union, uniqueBy, unless, until,
@@ -669,6 +669,29 @@ function quickSort([x, ...xs]) {
   ];
 }
 
+// quickSortBy :: Filterable f => f a -> f a
+function quickSortBy(fn, [x, ...xs]) {
+  return x === undefined && [] || [
+    ...quickSortBy(fn, filter(y => fn(y) <= fn(x), xs)),
+    x,
+    ...quickSortBy(fn, filter(y => fn(y) > fn(x), xs))
+  ];
+}
+
+// radixSort :: Ord a => [a] -> [a]
+function radixSort(xs) {
+  // TODO: refactor
+  let xss = map(String, xs);
+  let largestIndex = reduce((acc, v) => length(v) > acc ? length(v) : acc, xss, 0);
+
+  const quickSortByIndex = (xs, index) =>
+    quickSortBy(x => Number(reverse(take(index + 1, reverse(x))).join('')), xs);
+
+  return (function updateList(xs, index = 0) {
+    return index > largestIndex ? map(Number, xs) : updateList(quickSortByIndex(xs, index), index + 1);
+  })(xss);
+}
+
 // range :: Number -> Number -> [Number]
 function range(from, to) {
   return (function range(from, to, acc = []) {
@@ -678,8 +701,8 @@ function range(from, to) {
 
 // reduce :: ((a, b) -> a, [b], a) -> a
 function reduce(fn, xs, acc) {
-  return (function reduce(fn, [x, ...xs], acc) {
-    return x === undefined ? acc : reduce(fn, xs, fn(acc, x));
+  return (function reduce(fn, [x, ...xs], acc, index = 0) {
+    return x === undefined ? acc : reduce(fn, xs, fn(acc, x, index + 1));
   })(fn, xs, acc);
 }
 
