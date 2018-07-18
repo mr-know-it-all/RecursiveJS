@@ -703,7 +703,6 @@ function radixSort(xs) {
     bubbleSortBy(x => reverse(x)[index - 1] ? Number(reverse(x)[index - 1]) : -Infinity, xs);
 
   return (function updateList(xs, index = 0) {
-		console.log(xs)
     return index > largestIndex ? map(Number, xs) : updateList(bubbleSortByIndex(xs, index), index + 1);
   })(xss);
 }
