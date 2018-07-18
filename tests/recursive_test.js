@@ -3,7 +3,7 @@
 const [
   adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch,
-  compose, composeP, concat, construct, converge, countBy, curry,
+  compose, composeP, concat, construct, converge, countBy, countSort, curry,
   deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
   fill, filter, find, forEach,
@@ -245,7 +245,12 @@ async function runTests() {
     () => expect(`${sortType.name}`, [1, 2, 3, 4, 5, 6, 7, 8, 9], sortType([7, 2, 1, 3, 5, 4, 6, 9, 8])),
     () => expect(`${sortType.name}`, [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], sortType([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
   )(), [bubbleSort, selectionSort, insertionSort, mergeSort, quickSort, timSort]);
+
   expect('monkeySort', [1, 2, 3, 4], monkeySort([4, 2, 1, 3]));
+
+  expect('countSort', [2, 3, 4, 4, 5], countSort([4, 2, 5, 3, 4], [2, 5]));
+  expect('countSort', [0, 1, 2, 3, 4, 5], countSort([4, 2, 1, 3, 0, 5], [0, 5]));
+  expect('countSort', [15, 15, 16, 17, 18, 18, 19, 20], countSort([18, 18, 15, 16, 19, 20, 15, 17], [15, 20]));
 
   // bisectSearch test
   compose(
