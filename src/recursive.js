@@ -221,10 +221,10 @@ function countSort(unsortedList, [start, end]) {
     (function getValueIndex(range, index = 0) {
       if(index === length(range)) return void 0;
         if(x === range[index][0]) {
-        finalList[range[index][1] - 1] = x;
-        range[index][1] = range[index][1] - 1;
-      }
-      return getValueIndex(range, index + 1);
+          finalList[range[index][1] - 1] = x;
+          range[index][1] = range[index][1] - 1;
+        }
+        return getValueIndex(range, index + 1);
     })(range);
 
     return updateFinalList(xs, range, finalList);
