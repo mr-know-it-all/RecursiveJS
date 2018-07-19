@@ -119,10 +119,10 @@ function assocPath(xs, v, xo) {
 // Ord a => [a] -> [a]
 function bubbleSort(xs) {
   return (function bubbleSort(
-		[x, ...xs],
-		acc = [],
-		modified = false
-	) {
+    [x, ...xs],
+    acc = [],
+    modified = false
+  ) {
     if(x === undefined) return !modified ? acc : bubbleSort(acc);
 
     if(acc.length !== 0 && acc[acc.length - 1] > x) {
@@ -139,10 +139,10 @@ function bubbleSort(xs) {
 // Ord a => (a -> a, [a]) -> [a]
 function bubbleSortBy(fn, xs) {
   return (function bubbleSort(
-		[x, ...xs],
-		acc = [],
-		modified = false
-	) {
+    [x, ...xs],
+    acc = [],
+    modified = false
+  ) {
     if(x === undefined) return !modified ? acc : bubbleSort(acc);
 
     if(acc.length !== 0 && fn(acc[acc.length - 1]) > fn(x)) {
@@ -183,26 +183,26 @@ function bisectSearch(el, xs) {
 // this is a small variation of bubbleSort
 // cocktailSort :: Ord a -> [a] -> [a]
 function cocktailSort(xs) {
-	return (function cocktailSort(
-		[x, ...xs],
-		reversed = false,
-		acc = [],
-		modified = false
-	) {
-		if(x === undefined) return !modified ? reversed ? reverse(acc) : acc : cocktailSort(reverse(acc), !reversed);
+  return (function cocktailSort(
+    [x, ...xs],
+    reversed = false,
+    acc = [],
+    modified = false
+  ) {
+    if(x === undefined) return !modified ? reversed ? reverse(acc) : acc : cocktailSort(reverse(acc), !reversed);
 
-		if(acc.length !== 0 && (
-			!reversed && acc[acc.length - 1] > x ||
-			reversed && acc[acc.length - 1] < x
-		)) {
-			let tail = acc[acc.length - 1];
-			acc[acc.length - 1] = x;
-			acc = [...acc, tail];
-			modified = true;
-		} else acc = [...acc, x];
+    if(acc.length !== 0 && (
+      !reversed && acc[acc.length - 1] > x ||
+      reversed && acc[acc.length - 1] < x
+    )) {
+      let tail = acc[acc.length - 1];
+      acc[acc.length - 1] = x;
+      acc = [...acc, tail];
+      modified = true;
+    } else acc = [...acc, x];
 
-		return cocktailSort(xs, reversed, acc, modified);
-	})(xs);
+    return cocktailSort(xs, reversed, acc, modified);
+  })(xs);
 }
 
 // compose :: (c -> d, ..., b -> c, a -> b) -> (x -> (a -> b -> c -> d))
