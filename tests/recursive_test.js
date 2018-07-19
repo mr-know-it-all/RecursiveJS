@@ -3,7 +3,7 @@
 const [
   adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch,
-  compose, composeP, concat, construct, converge, countBy, countSort, curry, cycleSort,
+  cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, curry, cycleSort,
   deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
   fill, filter, find, forEach,
@@ -246,7 +246,7 @@ async function runTests() {
     () => expect(`${sortType.name}`, [1, 2, 3, 4, 5, 6, 7, 8, 9], sortType([9, 8, 7, 6, 5, 4, 3, 2, 1])),
     () => expect(`${sortType.name}`, [1, 2, 3, 4, 5, 6, 7, 8, 9], sortType([7, 2, 1, 3, 5, 4, 6, 9, 8])),
     () => expect(`${sortType.name}`, [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], sortType([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
-  )(), [bubbleSort, selectionSort, insertionSort, mergeSort, quickSort, timSort, radixSort, cycleSort]);
+  )(), [bubbleSort, selectionSort, insertionSort, mergeSort, quickSort, timSort, radixSort, cycleSort, cocktailSort]);
 
   expect('monkeySort', [1, 2, 3, 4], monkeySort([4, 2, 1, 3]));
 
