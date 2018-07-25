@@ -344,47 +344,47 @@ function defaultTo(dflt) {
 
 // dijkstraShortestPath :: Object -> [String]
 function dijkstraShortestPath(graph) {
-  // TODO: refactor to make it more readable
-  let Table = reduce((acc, [key, _]) => {
-    acc[key] = {
+  const buildPathsTable = graph => reduce((acc, [key, _]) => (
+    (acc[key] = {
       distToStart: key === 'start' ? 0 : Infinity,
       through: key === 'start' ? 'start' : null,
       visited: false
-    };
-    return acc;
-  }, objectEntries(graph), {});
+    }), acc
+  ), objectEntries(graph), {});
 
-  const shortestUnvisitedKey = () => reduce((acc, v) => {
-    if(!v[1].visited) {
-      if(acc === 'ALL_VISITED') return v;
-      else if(v[1].distToStart < acc[1].distToStart) return v;
-    }
-    return acc;
-  }, objectEntries(Table), 'ALL_VISITED');
-
-  (function shortestPath() {
-    let nextKey = shortestUnvisitedKey();
+  const getShortestUnvisitedKey = Table => reduce((acc, v) => (
+    !v[1].visited && (acc === 'ALL_VISITED' || v[1].distToStart < acc[1].distToStart) ? v : acc
+  ), objectEntries(Table), 'ALL_VISITED');
+  
+  const updateShortestPathsTable = Table => {
+    let nextKey = getShortestUnvisitedKey(Table);
     if(nextKey === 'ALL_VISITED') return Table;
-    else {
-      (function updateDistanceToStart([key, ...xs]) {
-        if(key === undefined) return void 0;
-        if(key[1] + Table[nextKey[0]].distToStart < Table[key[0]].distToStart) {
-          Table[key[0]].distToStart = key[1] + Table[nextKey[0]].distToStart;
-          Table[key[0]].through = nextKey[0];
-        }
-        return updateDistanceToStart(xs);
-      })(objectEntries(graph[nextKey[0]]))
+    
+    (function updateDistanceToStart([key, ...xs]) {
+      if(key === undefined) return;
+      if(key[1] + Table[nextKey[0]].distToStart < Table[key[0]].distToStart) {
+        Table[key[0]].distToStart = key[1] + Table[nextKey[0]].distToStart;
+        Table[key[0]].through = nextKey[0];
+      }
+      return updateDistanceToStart(xs);
+    })(objectEntries(graph[nextKey[0]]));
+    Table[nextKey[0]].visited = true;
 
-      Table[nextKey[0]].visited = true;
-      return shortestPath();
-    }
-  })();
+    return updateShortestPathsTable(Table);
+  };
 
-  return reverse((function computeShortestPath(path = []) {
+  const computeFinishToStartPath = Table => function compute(path = []) {
     if(path[length(path) - 1] === 'start') return path;
-    else if(length(path) === 0) return computeShortestPath(['finish', Table['finish'].through]);
-    else return computeShortestPath([...path, Table[path[length(path) - 1]].through])
-  })());
+    else if(length(path) === 0) return compute(['finish', Table['finish'].through]);
+    else return compute([...path, Table[path[length(path) - 1]].through])
+  };
+
+  return compose(
+    finishToStartPath => reverse(finishToStartPath),
+    updatedTable => computeFinishToStartPath(updatedTable)(),
+    Table => updateShortestPathsTable(Table),
+    () => buildPathsTable(graph)
+  )();
 }
 
 // dissoc :: (String, {Key: v}) -> {Key: v}
