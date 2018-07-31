@@ -10,7 +10,7 @@ const RecursiveJS = [
   groupBy,
   includes, innerJoin, insertionSort, intersection, intersperse, invoker,
   juxt,
-  length,
+  length, linkedListForEach,
   map, mapObjIndexed, memoize, merge, mergeSort, mergeWith, monkeySort,
   nAry,
   objectEntries, objectValues, omit,
@@ -558,6 +558,13 @@ function map(fn, xs) {
   })(xs);
 }
 
+// linkedListForEach :: Singly linked list L => (a -> a) -> L -> L
+function linkedListForEach(fn, {head}) {
+  return (function forEachNode(node) {
+    node.value = fn(node.value);
+    return node.next ? forEachNode(node.next) : undefined;
+  })(head);
+}
 
 // mapObjIndexed :: ((*, String, Object) -> *) -> Object -> Object
 function mapObjIndexed(fn, xo) {

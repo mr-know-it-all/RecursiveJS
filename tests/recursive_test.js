@@ -10,7 +10,7 @@ const [
   groupBy,
   includes, innerJoin, insertionSort, intersection, intersperse, invoker,
   juxt,
-  length,
+  length, linkedListForEach,
   map, mapObjIndexed, memoize, merge, mergeSort, mergeWith, monkeySort,
   nAry,
   objectEntries, objectValues, omit,
@@ -734,6 +734,40 @@ async function runTests() {
     () => expect('map', [2, 3, 4, 5], map(x => x + 1, mapArray))
   )();
 
+  // linkedListForEach test
+  function ListNode(value) {
+    this.value = value;
+    this.next = undefined;
+  }
+  function LinkedList(name) {
+    this.name = name;
+    this.head = undefined;
+    this.length = 0;
+  }
+  
+  let listOfPoints = new LinkedList('list of points');
+  listOfPoints.head = new ListNode('A');
+  listOfPoints.lenght++;
+  listOfPoints.head.next = new ListNode('B');
+  listOfPoints.lenght++;
+  listOfPoints.head.next.next = new ListNode('C');
+  listOfPoints.lenght++;
+  listOfPoints.head.next.next.next = new ListNode('D');
+  listOfPoints.lenght++;
+
+  let expectedListOfPoints = new LinkedList('list of points');
+  expectedListOfPoints.head = new ListNode('A-modified');
+  expectedListOfPoints.lenght++;
+  expectedListOfPoints.head.next = new ListNode('B-modified');
+  expectedListOfPoints.lenght++;
+  expectedListOfPoints.head.next.next = new ListNode('C-modified');
+  expectedListOfPoints.lenght++;
+  expectedListOfPoints.head.next.next.next = new ListNode('D-modified');
+  expectedListOfPoints.lenght++;
+
+  linkedListForEach(x => `${x}-modified`, listOfPoints);
+  expect('linkedListForEach', expectedListOfPoints, listOfPoints);
+
   // mapObjIndexed test
   compose(
     () => expect(
@@ -1353,7 +1387,7 @@ function logTestsStatus(testsState) {
 }
 
 function serialize(x) {
-  return JSON.stringify(x);
+  return JSON.stringify(x, null, 2);
 }
 
 function expect(name, expectation, actual) {
@@ -1364,9 +1398,9 @@ function expect(name, expectation, actual) {
     testsState.testFailed();
     console.warn(`TEST >> ${name} << failed!`);
     console.log('expectation:');
-    console.log(expectation);
+    console.log(serialize(expectation));
     console.log('actual:');
-    console.log(actual);
+    console.log(serialize(actual));
   }
 
   return new Promise(resolve => {
