@@ -551,10 +551,10 @@ function length(xs) {
   })(xs);
 }
 
-// linkedListForEach :: Singly linked list L => (a -> a) -> L{a} -> L{a}
+// linkedListForEach :: Singly linked list L => (a -> *) -> L{a} -> L{a}
 function linkedListForEach(fn, {head}) {
   return (function forEachNode(node) {
-    node.value = fn(node.value);
+    fn(node);
     return node.next ? forEachNode(node.next) : undefined;
   })(head);
 }

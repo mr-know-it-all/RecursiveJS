@@ -765,7 +765,7 @@ async function runTests() {
   expectedListOfPoints.head.next.next.next = new ListNode('D-modified');
   expectedListOfPoints.length++;
 
-  linkedListForEach(x => `${x}-modified`, listOfPoints);
+  linkedListForEach(x => x.value = `${x.value}-modified`, listOfPoints);
   expect('linkedListForEach', expectedListOfPoints, listOfPoints);
 
   // linkedListFromArray test
