@@ -10,7 +10,7 @@ const [
   groupBy,
   includes, innerJoin, insertionSort, intersection, intersperse, invoker,
   juxt,
-  length, linkedListForEach, linkedListToArray,
+  length, linkedListForEach, linkedListFromArray, linkedListToArray,
   map, mapObjIndexed, memoize, merge, mergeSort, mergeWith, monkeySort,
   nAry,
   objectEntries, objectValues, omit,
@@ -747,26 +747,29 @@ async function runTests() {
 
   let listOfPoints = new LinkedList('list of points');
   listOfPoints.head = new ListNode('A');
-  listOfPoints.lenght++;
+  listOfPoints.length++;
   listOfPoints.head.next = new ListNode('B');
-  listOfPoints.lenght++;
+  listOfPoints.length++;
   listOfPoints.head.next.next = new ListNode('C');
-  listOfPoints.lenght++;
+  listOfPoints.length++;
   listOfPoints.head.next.next.next = new ListNode('D');
-  listOfPoints.lenght++;
+  listOfPoints.length++;
 
   let expectedListOfPoints = new LinkedList('list of points');
   expectedListOfPoints.head = new ListNode('A-modified');
-  expectedListOfPoints.lenght++;
+  expectedListOfPoints.length++;
   expectedListOfPoints.head.next = new ListNode('B-modified');
-  expectedListOfPoints.lenght++;
+  expectedListOfPoints.length++;
   expectedListOfPoints.head.next.next = new ListNode('C-modified');
-  expectedListOfPoints.lenght++;
+  expectedListOfPoints.length++;
   expectedListOfPoints.head.next.next.next = new ListNode('D-modified');
-  expectedListOfPoints.lenght++;
+  expectedListOfPoints.length++;
 
   linkedListForEach(x => `${x}-modified`, listOfPoints);
   expect('linkedListForEach', expectedListOfPoints, listOfPoints);
+
+  // linkedListFromArray test
+  expect('linkedListFromArray', expectedListOfPoints, linkedListFromArray('list of points', ["A-modified", "B-modified", "C-modified", "D-modified"]));
 
   // linkedListToArray test
   expect('linkedListToArray', [

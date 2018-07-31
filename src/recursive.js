@@ -10,7 +10,7 @@ const RecursiveJS = [
   groupBy,
   includes, innerJoin, insertionSort, intersection, intersperse, invoker,
   juxt,
-  length, linkedListForEach, linkedListToArray,
+  length, linkedListForEach, linkedListFromArray, linkedListToArray,
   map, mapObjIndexed, memoize, merge, mergeSort, mergeWith, monkeySort,
   nAry,
   objectEntries, objectValues, omit,
@@ -566,12 +566,32 @@ function linkedListForEach(fn, {head}) {
   })(head);
 }
 
+function ListNode(value) {
+	this.value = value;
+	this.next = undefined;
+}
+function LinkedList(name) {
+	this.name = name;
+	this.head = undefined;
+	this.length = 0;
+}
+
+// linkedListFromArray :: Singly linked list L => L{a} -> [a]
+function linkedListFromArray(name, xs) {
+  return (function buildList([x, ...xs], list = new LinkedList(name), nextNode) {
+    if(x === undefined) return list;
+    if(!list.head) return buildList(xs, (list.head = new ListNode(x), list.length++, list), list.head);
+    return buildList(xs, (list.length++, list), (nextNode.next = new ListNode(x), nextNode.next));
+  })(xs);
+}
+
 // linkedListToArray :: Singly linked list L => L{a} -> [a]
 function linkedListToArray({head}) {
   return (function forEachNode(node, acc = []) {
     return node.next ? forEachNode(node.next, [...acc, node.value]) : [...acc, node.value];
   })(head);
 }
+
 // mapObjIndexed :: ((*, String, Object) -> *) -> Object -> Object
 function mapObjIndexed(fn, xo) {
   return (function mapObjIndexed([kv, ...kvs], acc = {}) {
