@@ -10,7 +10,7 @@ const [
   groupBy,
   includes, innerJoin, insertionSort, intersection, intersperse, invoker,
   juxt,
-  length, linkedListForEach,
+  length, linkedListForEach, linkedListToArray,
   map, mapObjIndexed, memoize, merge, mergeSort, mergeWith, monkeySort,
   nAry,
   objectEntries, objectValues, omit,
@@ -744,7 +744,7 @@ async function runTests() {
     this.head = undefined;
     this.length = 0;
   }
-  
+
   let listOfPoints = new LinkedList('list of points');
   listOfPoints.head = new ListNode('A');
   listOfPoints.lenght++;
@@ -767,6 +767,11 @@ async function runTests() {
 
   linkedListForEach(x => `${x}-modified`, listOfPoints);
   expect('linkedListForEach', expectedListOfPoints, listOfPoints);
+
+  // linkedListToArray test
+  expect('linkedListToArray', [
+    "A-modified", "B-modified", "C-modified", "D-modified"
+  ], linkedListToArray(expectedListOfPoints));
 
   // mapObjIndexed test
   compose(
