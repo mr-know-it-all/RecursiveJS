@@ -551,13 +551,6 @@ function length(xs) {
   })(xs);
 }
 
-// map :: (a -> b, [a]) -> [b]
-function map(fn, xs) {
-  return (function map([x, ...xs], acc = []) {
-    return x === undefined && acc || map(xs, [...acc, fn(x)]);
-  })(xs);
-}
-
 // linkedListForEach :: Singly linked list L => (a -> a) -> L{a} -> L{a}
 function linkedListForEach(fn, {head}) {
   return (function forEachNode(node) {
@@ -567,13 +560,13 @@ function linkedListForEach(fn, {head}) {
 }
 
 function ListNode(value) {
-	this.value = value;
-	this.next = undefined;
+  this.value = value;
+  this.next = undefined;
 }
 function LinkedList(name) {
-	this.name = name;
-	this.head = undefined;
-	this.length = 0;
+  this.name = name;
+  this.head = undefined;
+  this.length = 0;
 }
 
 // linkedListFromArray :: Singly linked list L => L{a} -> [a]
@@ -590,6 +583,13 @@ function linkedListToArray({head}) {
   return (function forEachNode(node, acc = []) {
     return node.next ? forEachNode(node.next, [...acc, node.value]) : [...acc, node.value];
   })(head);
+}
+
+// map :: (a -> b, [a]) -> [b]
+function map(fn, xs) {
+  return (function map([x, ...xs], acc = []) {
+    return x === undefined && acc || map(xs, [...acc, fn(x)]);
+  })(xs);
 }
 
 // mapObjIndexed :: ((*, String, Object) -> *) -> Object -> Object
