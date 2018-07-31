@@ -464,7 +464,7 @@ function find(fn, xs) {
 }
 
 // forEach :: (a -> b, [a]) -> ()
-function forEach(fn, xs) { // TODO: implement properly
+function forEach(fn, xs) {
   return (function forEach(xs, index = 0) {
     if(index < length(xs)) {
       fn(xs[index], index);
