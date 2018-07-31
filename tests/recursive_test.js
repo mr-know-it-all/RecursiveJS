@@ -612,9 +612,11 @@ async function runTests() {
   )();
 
   // forEach test
-  const arrayForEach = [1, 2, 3];
-  forEach((x, index) => x * 2, arrayForEach);
-  expect("forEach", [2, 4, 6], arrayForEach);
+  const arrayForEach = [{a: 1}, {a: 2}, {a: 3}];
+  forEach((x, index) => {
+		x.a = x.a * 2;
+	}, arrayForEach);
+  expect("forEach", [{a: 2}, {a: 4}, {a: 6}], arrayForEach);
 
   // groupBy test
   const getExp = ({points}) => points > 1000 ? 'master' : points > 500 ? 'craftsman' : 'novice';

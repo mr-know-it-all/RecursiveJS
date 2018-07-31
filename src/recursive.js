@@ -355,11 +355,11 @@ function dijkstraShortestPath(graph) {
   const getShortestUnvisitedKey = Table => reduce((acc, v) => (
     !v[1].visited && (acc === 'ALL_VISITED' || v[1].distToStart < acc[1].distToStart) ? v : acc
   ), objectEntries(Table), 'ALL_VISITED');
-  
+
   const updateShortestPathsTable = Table => {
     let nextKey = getShortestUnvisitedKey(Table);
     if(nextKey === 'ALL_VISITED') return Table;
-    
+
     (function updateDistanceToStart([key, ...xs]) {
       if(key === undefined) return;
       if(key[1] + Table[nextKey[0]].distToStart < Table[key[0]].distToStart) {
@@ -467,7 +467,7 @@ function find(fn, xs) {
 function forEach(fn, xs) { // TODO: implement properly
   return (function forEach(xs, index = 0) {
     if(index < length(xs)) {
-      xs[index] = fn(xs[index], index);
+      fn(xs[index], index);
       return forEach(xs, index + 1);
     }
   })(xs);
