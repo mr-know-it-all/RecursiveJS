@@ -569,7 +569,7 @@ function LinkedList(name) {
   this.length = 0;
 }
 
-// linkedListFromArray :: Singly linked list L => L{a} -> [a]
+// linkedListFromArray :: Singly linked list L => [a] -> L{a}
 function linkedListFromArray(name, xs) {
   return (function buildList([x, ...xs], list = new LinkedList(name), nextNode) {
     if(x === undefined) return list;
