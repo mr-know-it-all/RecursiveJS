@@ -551,6 +551,7 @@ function length(xs) {
   })(xs);
 }
 
+// levenshteinDistance :: String -> String -> Number
 function levenshteinDistance(xs, ys) {
   let rowsLength = length(ys) + 1;
   let colsLength = length(xs) + 1;
