@@ -736,7 +736,7 @@ async function runTests() {
 
   // levenshteinDistance test
   compose(
-    () => expect('levenshteinDistance test', 4, levenshteinDistance('saturday', 'sunday'))
+    () => expect('levenshteinDistance test', 3, levenshteinDistance('saturday', 'sunday'))
   )();
 
   // linkedListForEach test

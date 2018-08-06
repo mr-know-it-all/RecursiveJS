@@ -568,7 +568,7 @@ function levenshteinDistance(xs, ys) {
       strTable[rowIndex][colIndex] = Math.min(
         strTable[rowIndex - 1][colIndex] + 1, // insertion
         strTable[rowIndex][colIndex - 1] + 1, // deletion
-        strTable[rowIndex - 1][colIndex - 1] + (xs[colIndex - 1] === ys[rowIndex - 1] ? 0 : 2), // substitution
+        strTable[rowIndex - 1][colIndex - 1] + (xs[colIndex - 1] === ys[rowIndex - 1] ? 0 : 1), // substitution
       );
       return forEachRowCol(colIndex+1);
     })();
