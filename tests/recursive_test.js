@@ -10,7 +10,7 @@ const [
   groupBy,
   includes, innerJoin, insertionSort, intersection, intersperse, invoker,
   juxt,
-  length, linkedListForEach, linkedListFromArray, linkedListToArray,
+  length, levenshteinDistance, linkedListForEach, linkedListFromArray, linkedListToArray,
   map, mapObjIndexed, memoize, merge, mergeSort, mergeWith, monkeySort,
   nAry,
   objectEntries, objectValues, omit,
@@ -732,6 +732,11 @@ async function runTests() {
   compose(
     () => expect('map', [1, 2, 3, 4], mapArray),
     () => expect('map', [2, 3, 4, 5], map(x => x + 1, mapArray))
+  )();
+
+  // levenshteinDistance test
+  compose(
+    () => expect('levenshteinDistance test', 4, levenshteinDistance('saturday', 'sunday'))
   )();
 
   // linkedListForEach test
