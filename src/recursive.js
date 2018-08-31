@@ -342,8 +342,22 @@ function cycleSort(list) {
 function deepClone(obj) {
   return (function deepClone([[k, v] = [], ...kvs], acc = {}) {
     if(k === undefined) return acc;
-    // we only assign value types to the accumulator that we return - all reference links are broken
-    acc[k] = v instanceof Object ? deepClone(objectEntries(v), acc[k]) : v;
+    
+    acc[k] = (
+      Array.isArray(v)
+        ? (function cloneArray(xs) {
+          return map((x, i) => (
+            Array.isArray(x)
+              ? cloneArray(x)
+              : x instanceof Object
+                ? deepClone(objectEntries(x), xs[i])
+                : x
+          ), xs);
+        })(v)
+        : v instanceof Object
+          ? deepClone(objectEntries(v), acc[k])
+          : v
+    );
     return deepClone(kvs, acc);
   })(objectEntries(obj));
 }
