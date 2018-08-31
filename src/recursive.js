@@ -350,7 +350,7 @@ function deepClone(obj) {
             Array.isArray(x)
               ? cloneArray(x)
               : x instanceof Object
-                ? deepClone(objectEntries(x), xs[i])
+                ? deepClone(objectEntries(x))
                 : x
           ), xs);
         })(v)
