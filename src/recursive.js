@@ -4,7 +4,7 @@ const RecursiveJS = [
   adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch,
   cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, createStore, curry, cycleSort,
-  deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
+  deepClone, deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
   fill, filter, find, forEach,
   groupBy,
@@ -280,15 +280,16 @@ function countSort(unsortedList, [start, end]) {
   })(unsortedList, range, []);
 }
 
+// createStore :: (State -> State) -> Store
 function createStore(reducer) {
   let subscribers = [];
   let STORE = new Proxy({
       state: reducer()
     }, {
       set(obj, prop, value) {
-        const oldState = Object.assign({}, obj[prop]);
+        const oldState = obj[prop];
         obj[prop] = value;
-        forEach(subscriber => { subscriber(oldState, obj[prop]); }, subscribers);
+        forEach(subscriber => { subscriber(deepClone(oldState), deepClone(obj[prop])); }, subscribers);
         return true;
       }
   });
@@ -296,7 +297,7 @@ function createStore(reducer) {
   return {
     getState: () => STORE.state,
     dispatch: action => {
-      STORE.state = Object.assign({}, reducer(STORE.state, action));
+      STORE.state = reducer(STORE.state, action);
     },
     subscribe: fn => {
       subscribers = [...subscribers, fn]
@@ -335,6 +336,16 @@ function cycleSort(list) {
     cycles[x] = [...(cycles[x] || []), startIndex];
     return cycleSort(xs, cycles);
   })(list);
+}
+
+// deepClone :: Object a => a -> a
+function deepClone(obj) {
+  return (function deepClone([[k, v] = [], ...kvs], acc = {}) {
+    if(k === undefined) return acc;
+    // we only assign value types to the accumulator that we return - all reference links are broken
+    acc[k] = v instanceof Object ? deepClone(objectEntries(v), acc[k]) : v;
+    return deepClone(kvs, acc);
+  })(objectEntries(obj));
 }
 
 // deepFlat :: [[[*]]] -> [*]

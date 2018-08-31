@@ -4,7 +4,7 @@ const [
   adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch,
   cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, createStore, curry, cycleSort,
-  deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
+  deepClone, deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
   fill, filter, find, forEach,
   groupBy,
@@ -425,6 +425,25 @@ async function runTests() {
   };
 
   expect('curry', curryFunction(1, 2, 3, 4), curry(curryFunction)(1)(2, 3)(4));
+
+  // deepClone test
+  let objToClone = {z: 1, k: {}, a: {b: {c: {d: 4}, e: {f: 2}, g: 1}}};
+  let deepClonedObject = deepClone(objToClone);
+
+  compose(
+    () => {
+      deepClonedObject.a.b.e.f = [1, 2, 3, 4];
+      expect('initial state', 2, objToClone.a.b.e.f);
+    },
+    () => {
+      deepClonedObject.a.b.e.f = 42;
+      expect('initial state', 2, objToClone.a.b.e.f);
+    },
+    () => {
+      deepClonedObject.a.b.c.d = 42;
+      expect('initial state', 4, objToClone.a.b.c.d);
+    }
+  )();
 
   // deepFlat test
   compose(
