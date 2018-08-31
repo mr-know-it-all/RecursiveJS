@@ -3,7 +3,7 @@
 const RecursiveJS = [
   adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch,
-  cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, curry, cycleSort,
+  cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, createStore, curry, cycleSort,
   deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
   fill, filter, find, forEach,
@@ -278,6 +278,30 @@ function countSort(unsortedList, [start, end]) {
 
     return updateFinalList(xs, range, finalList);
   })(unsortedList, range, []);
+}
+
+function createStore(reducer) {
+  let subscribers = [];
+  let STORE = new Proxy({
+      state: reducer()
+    }, {
+      set(obj, prop, value) {
+        const oldState = obj[prop];
+        obj[prop] = value;
+        forEach(subscriber => { subscriber(oldState, obj[prop]); }, subscribers);
+        return true;
+      }
+  });
+
+  return {
+    getState: () => STORE.state,
+    dispatch: action => {
+      STORE.state = reducer(STORE.state, action);
+    },
+    subscribe: fn => {
+      subscribers = [...subscribers, fn]
+    }
+  };
 }
 
 // curry :: (* -> a) → (* -> a)

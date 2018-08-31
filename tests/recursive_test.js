@@ -3,7 +3,7 @@
 const [
   adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch,
-  cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, curry, cycleSort,
+  cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, createStore, curry, cycleSort,
   deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
   fill, filter, find, forEach,
@@ -359,6 +359,64 @@ async function runTests() {
       const numbers = [1.0, 1.1, 1.2, 2.0, 3.0, 2.2];
       expect('countBy test 1', {'1': 3, '2': 2, '3': 1}, countBy(Math.floor)(numbers));
     }
+  )();
+
+  // createStore test
+  const reducer = (state = {count: 0, users: []}, action = {}) => {
+    let count = state.count, users = state.users;
+    switch(action.type) {
+      case 'INC_COUNT':
+      count = count + action.payload;
+      break;
+      case 'DEC_COUNT':
+      count = count - action.payload;
+      break;
+      case 'ADD_USER':
+      users = [...users, action.payload]
+      break;
+    }
+
+    return {...state, count, users};
+  }
+
+  let myStore = createStore(reducer);
+  let subscriberOne = [];
+  let subscriberTwo = [];
+
+  myStore.subscribe((oldState, newState) => {
+    subscriberOne = [...subscriberOne, {oldState, newState}];
+  });
+  myStore.subscribe((oldState, newState) => {
+    subscriberTwo = [...subscriberTwo, {oldState, newState}];
+  });
+
+  compose(
+    () => {
+      expect('after dispatch ADD_USER', 10, subscriberOne.length + subscriberTwo.length);
+      expect('after dispatch ADD_USER', {count: -1, users: ['Jack', 'Joe']}, myStore.getState());
+    },
+    () => myStore.dispatch({type: 'ADD_USER', payload: 'Joe'}),
+    () => {
+      expect('after dispatch ADD_USER', 8, subscriberOne.length + subscriberTwo.length);
+      expect('after dispatch ADD_USER', {count: -1, users: ['Jack']}, myStore.getState());
+    },
+    () => myStore.dispatch({type: 'ADD_USER', payload: 'Jack'}),
+    () => {
+      expect('after dispatch DEC_COUNT', 6, subscriberOne.length + subscriberTwo.length);
+      expect('after dispatch DEC_COUNT', {count: -1, users: []}, myStore.getState());
+    },
+    () => myStore.dispatch({type: 'DEC_COUNT', payload: 1}),
+    () => {
+      expect('after dispatch DEC_COUNT 1', 4, subscriberOne.length + subscriberTwo.length);
+      expect('after dispatch DEC_COUNT 1', {count: 0, users: []}, myStore.getState());
+    },
+    () => myStore.dispatch({type: 'DEC_COUNT', payload: 1}),
+    () => {
+      expect('after dispatch INC_COUNT 1', 2, subscriberOne.length + subscriberTwo.length);
+      expect('after dispatch INC_COUNT 1', {count: 1, users: []}, myStore.getState());
+    },
+    () => myStore.dispatch({type: 'INC_COUNT', payload: 1}),
+    () => expect('initial state', {count: 0, users: []}, myStore.getState())
   )();
 
   // curry test
