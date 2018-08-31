@@ -286,7 +286,7 @@ function createStore(reducer) {
       state: reducer()
     }, {
       set(obj, prop, value) {
-        const oldState = obj[prop];
+        const oldState = Object.assign({}, obj[prop]);
         obj[prop] = value;
         forEach(subscriber => { subscriber(oldState, obj[prop]); }, subscribers);
         return true;
@@ -296,7 +296,7 @@ function createStore(reducer) {
   return {
     getState: () => STORE.state,
     dispatch: action => {
-      STORE.state = reducer(STORE.state, action);
+      STORE.state = Object.assign({}, reducer(STORE.state, action));
     },
     subscribe: fn => {
       subscribers = [...subscribers, fn]
