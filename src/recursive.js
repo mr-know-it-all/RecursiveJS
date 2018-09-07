@@ -192,11 +192,11 @@ function buildTrie(words = []) {
         let key = `${word.slice(0, i)}${word[i]}`;
         if(currentNode.children[key]) {
           currentNode = currentNode.children[key];
-          if(i === word.length - 1)  currentNode.children[key].endWord = true;
+          if(i === length(word) - 1)  currentNode.children[key].endWord = true;
         } else {
           let newNode = {children: {}};
           currentNode.children[key] = newNode;
-          if(i === word.length - 1) currentNode.children[key].endWord = true;
+          if(i === length(word) - 1) currentNode.children[key].endWord = true;
           currentNode = newNode;
         }
       }, [...word]);
