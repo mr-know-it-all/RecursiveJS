@@ -2,7 +2,7 @@
 
 const [
   adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
-  bubbleSort, bisectSearch,
+  bubbleSort, bisectSearch, buildTrie,
   cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, createStore, curry, cycleSort,
   deepClone, deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
@@ -261,6 +261,60 @@ async function runTests() {
     () => expect('bisectSearch', false, bisectSearch(101, range(1, 12)))
   )();
 
+  // buildTrie test
+  let expectedTrie = {
+    "root": {
+      "children": {
+      "a": {
+        "children": {
+          "ab": {
+            "children": {
+              "abc": {
+                "children": {
+                  "abcd": {
+                    "children": {
+                      "abcde": {
+                        "children": {
+                          "abcdef": {
+                            "children": {},
+                              "endWord": true
+                            }
+                          }
+                        }
+                      },
+                      "endWord": true
+                    }
+                  }
+                }
+              }
+            },
+            "as": {
+              "children": {
+                "asd": {
+                  "children": {
+                    "asdf": {
+                      "children": {
+                        "asdfg": {
+                          "children": {},
+                          "endWord": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+  
+  let Trie = buildTrie(['abcd', 'abcdef', 'asdfg']);
+  expect('buildTrie test', expectedTrie, Trie);
+  expect('buildTrie test', true, Trie.hasWord('asdfg'));
+  expect('buildTrie test', false, Trie.hasWord('asdzfg'));
+
   // compose test
   const addOne = x => x + 1;
   const multiplyByTwo = x => x * 2;
@@ -440,7 +494,7 @@ async function runTests() {
       expect('deepClone', 1, objToClone.k[3].a.b);
     },
     () => {
-      deepClonedObject.k[0] = 42; 
+      deepClonedObject.k[0] = 42;
       expect('deepClone', 1, objToClone.k[0]);
     },
     () => {

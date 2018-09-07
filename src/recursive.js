@@ -2,7 +2,7 @@
 
 const RecursiveJS = [
   adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
-  bubbleSort, bisectSearch,
+  bubbleSort, bisectSearch, buildTrie,
   cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, createStore, curry, cycleSort,
   deepClone, deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
   eqBy, equals, every,
@@ -180,6 +180,50 @@ function bisectSearch(el, xs) {
 //   })(0, length(xs) - 1);
 // }
 
+// buildTrie :: Trie T => [String] | () -> T
+function buildTrie(words = []) {
+  function Trie() {
+    this.root = {children: {}};
+
+    this.insert = function(word) {
+      let currentNode = this.root;
+
+      forEach((letter, i) => {
+        let key = `${word.slice(0, i)}${word[i]}`;
+        if(currentNode.children[key]) {
+          currentNode = currentNode.children[key];
+          if(i === word.length - 1)  currentNode.children[key].endWord = true;
+        } else {
+          let newNode = {children: {}};
+          currentNode.children[key] = newNode;
+          if(i === word.length - 1) currentNode.children[key].endWord = true;
+          currentNode = newNode;
+        }
+      }, [...word]);
+    }
+
+    this.hasWord = function(word) {
+      return (function findWord(currentNode, i = 0) {
+        let key = `${word.slice(0, i)}${word[i]}`;
+        return (
+          !currentNode.children[key]
+            ? false
+            : key === word
+              ? true
+              : findWord(currentNode.children[key], i + 1)
+        );
+      })(this.root);
+    }
+
+    // TODO
+    this.remove = function() {}
+  }
+
+  let trie = new Trie();
+  if(length(words) > 0) forEach(word => { trie.insert(word); }, words);
+  return trie;
+}
+
 // this is a small variation of bubbleSort
 // cocktailSort :: Ord a -> [a] -> [a]
 function cocktailSort(xs) {
@@ -342,7 +386,7 @@ function cycleSort(list) {
 function deepClone(obj) {
   return (function deepClone([[k, v] = [], ...kvs], acc = {}) {
     if(k === undefined) return acc;
-    
+
     acc[k] = (
       Array.isArray(v)
         ? (function cloneArray(xs) {
@@ -358,7 +402,7 @@ function deepClone(obj) {
           ? deepClone(objectEntries(v), acc[k])
           : v
     );
-    
+
     return deepClone(kvs, acc);
   })(objectEntries(obj));
 }
