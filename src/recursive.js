@@ -1175,10 +1175,10 @@ function until(pred, fn, x) {
 
 // whyBird :: whyform fn => fn -> *
 function whyBird(fn) {
-	return (
-		(rec => (...args) => fn(rec(rec), ...args))
-		(rec => (...args) => fn(rec(rec), ...args))
-	);
+  return (
+    (rec => (...args) => fn(rec(rec), ...args))
+    (rec => (...args) => fn(rec(rec), ...args))
+  );
 }
 
 // xprod :: ([a], [b])-> [[a, b]]
@@ -1190,10 +1190,10 @@ function xprod(xs, ys) {
 
 // Ycombinator :: Y form fn => fn -> *
 function Ycombinator(fn) {
-	return (
-		(rec => arg => fn(rec(rec))(arg))
-		(rec => arg => fn(rec(rec))(arg))
-	);
+  return (
+    (rec => arg => fn(rec(rec))(arg))
+    (rec => arg => fn(rec(rec))(arg))
+  );
 }
 
 // zip :: ([a], [b]) -> [a, b]
