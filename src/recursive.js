@@ -1,5 +1,7 @@
 'use strict';
-
+//
+// TODO break into modules [function - function tests]
+//
 const RecursiveJS = [
   adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch, buildTrie,
