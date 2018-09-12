@@ -20,6 +20,8 @@ const [
   selectionSort, some, sortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, timSort, trampoline, transduce, transpose, traverseTree,
   uncurryN, unfold, union, uniqueBy, unless, until,
+	whyBird,
+	Ycombinator,
   xprod,
   zip, zipObj
 ] = require('./../src/recursive.js');
@@ -309,7 +311,7 @@ async function runTests() {
       }
     }
   };
-  
+
   let Trie = buildTrie(['abcd', 'abcdef', 'asdfg']);
   expect('buildTrie test', expectedTrie, Trie);
   expect('buildTrie test', true, Trie.hasWord('asdfg'));
@@ -1502,6 +1504,18 @@ async function runTests() {
     )
   )();
 
+  // whyBird test
+  compose(
+    () => {
+      const mapAddOne = (me, [x, ...xs], acc = []) => x === undefined ? acc : me(xs, [...acc, x + 1]);
+      expect('whyBird test', [2, 3, 4, 5], whyBird(mapAddOne)([1, 2, 3, 4]));
+    },
+    () => {
+      const length = (me, [x, ...xs], acc = 0) => x === undefined ? acc : me(xs, acc + 1);
+      expect('whyBird test', 4, whyBird(length)([1, 2, 3, 4]));
+    }
+  )();
+
   // xprod test
   expect(
     'xprod test', [
@@ -1512,6 +1526,14 @@ async function runTests() {
     ],
     xprod([1, 2], ['a', 'b'])
   )
+
+  // Ycombinator test
+  compose(
+    () => {
+      const length = me => ([x, ...xs]) => x === undefined ? 0 : 1 + me(xs);
+      expect('Ycombinator test', 4, Ycombinator(length)([1, 2, 3, 4]));
+    }
+  )();
 
   // zip test
   expect(

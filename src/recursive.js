@@ -20,6 +20,8 @@ const RecursiveJS = [
   selectionSort, some, sortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, timSort, trampoline, transduce, transpose, traverseTree,
   uncurryN, unfold, union, uniqueBy, unless, until,
+	whyBird,
+	Ycombinator,
   xprod,
   zip, zipObj
 ];
@@ -390,7 +392,7 @@ function deepClone(obj) {
     acc[k] = (
       Array.isArray(v)
         ? (function cloneArray(xs) {
-          return map((x, i) => (
+          return map(x => (
             Array.isArray(x)
               ? cloneArray(x)
               : x instanceof Object
@@ -1169,11 +1171,27 @@ function until(pred, fn, x) {
   return pred(x) ? x : until(pred, fn, fn(x));
 }
 
+// whyBird :: whyform fn => fn -> *
+function whyBird(fn) {
+	return (
+		(rec => (...args) => fn(rec(rec), ...args))
+		(rec => (...args) => fn(rec(rec), ...args))
+	);
+}
+
 // xprod :: ([a], [b])-> [[a, b]]
 function xprod(xs, ys) {
   return (function xprod([x, ...xs], acc = []) {
     return x === undefined ? acc : xprod(xs, [...acc, ...map(y => [x, y], ys)]);
   })(xs);
+}
+
+// Ycombinator :: Y form fn => fn -> *
+function Ycombinator(fn) {
+	return (
+		(rec => arg => fn(rec(rec))(arg))
+		(rec => arg => fn(rec(rec))(arg))
+	);
 }
 
 // zip :: ([a], [b]) -> [a, b]
