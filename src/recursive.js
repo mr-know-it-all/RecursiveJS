@@ -3,7 +3,7 @@
 // TODO break into modules [function - function tests]
 //
 const RecursiveJS = [
-  adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
+  adjust, allAnagrams, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch, buildTrie,
   cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, createStore, curry, cycleSort,
   deepClone, deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
@@ -35,6 +35,23 @@ function adjust(fn, index, xs) {
   return (function adjust([x, ...xs], currentIndex = 0, acc = []) {
     return currentIndex === index ? [...acc, fn(x), ...(xs ? xs : [])] : adjust(xs, currentIndex + 1, [...acc, x])
   })(xs);
+}
+
+// allAnagrams :: String -> [String]
+function allAnagrams(word) {
+  let acc = [];
+  (function allAnagrams(word, anagram = '') {
+    if(length(word) === 0) { acc = [...acc, anagram]; return; }
+    (function forEachLetter(word, index = 0) {
+      if(length(word) - 1 < index) return;
+      let wordMinusCurrentLetter = ([...take(index, word), ...drop(index + 1, word)]).join('');
+      let anagramPlusCurrentLetter = `${anagram}${word[index]}`;
+
+      allAnagrams(wordMinusCurrentLetter, anagramPlusCurrentLetter);
+      return forEachLetter(word, index + 1);
+    })(word);
+  })(word);
+  return acc;
 }
 
 // allPass :: ([* -> Boolean], [*]) -> Boolean

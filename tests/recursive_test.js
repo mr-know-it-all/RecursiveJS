@@ -3,7 +3,7 @@
 // TODO break into modules [function - function tests]
 //
 const [
-  adjust, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
+  adjust, allAnagrams, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch, buildTrie,
   cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, createStore, curry, cycleSort,
   deepClone, deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
@@ -73,6 +73,11 @@ async function runTests() {
   const hasOddNumber = xs => some(isOdd, xs);
   const hasLargerThanTwo = xs => some(largerThanTwo, xs);
   const hasInteger = xs => some(isInteger, xs);
+
+  // allAnagrams test
+  compose(
+    () => expect('allAnagrams', ["ABC", "ACB","BAC","BCA","CAB","CBA"], allAnagrams('ABC'))
+  )();
 
   // allPass test
   compose(
