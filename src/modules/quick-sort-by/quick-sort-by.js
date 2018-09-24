@@ -8,3 +8,5 @@ function quickSortBy(fn, [x, ...xs]) {
     ...quickSortBy(fn, filter(y => fn(y) > fn(x), xs))
   ];
 }
+
+module.exports = quickSortBy;
