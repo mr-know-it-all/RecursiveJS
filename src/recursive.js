@@ -1,6 +1,6 @@
 'use strict';
 
-// TODO: replace with scrip
+// TODO: replace with script
 const adjust = require('./modules/adjust/adjust.js');
 const allAnagrams = require('./modules/all-anagrams/all-anagrams.js');
 const allPass = require('./modules/all-pass/all-pass.js');
