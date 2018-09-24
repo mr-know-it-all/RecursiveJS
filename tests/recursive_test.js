@@ -2,7 +2,7 @@
 //
 // TODO break into modules [function - function tests]
 //
-const [
+const {
   adjust, allAnagrams, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch, buildTrie,
   cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, createStore, curry, cycleSort,
@@ -26,7 +26,7 @@ const [
 	Ycombinator,
   xprod,
   zip, zipObj
-] = require('./../src/recursive.js');
+} = require('./../src/recursive.js');
 
 const testsState = {
   allTests: 0,

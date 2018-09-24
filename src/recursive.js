@@ -128,8 +128,6 @@ const Ycombinator = require('./modules/y-combinator/y-combinator.js');
 const zip = require('./modules/zip/zip.js');
 const zipObj = require('./modules/zip-obj/zip-obj.js');
 
-
-// TODO: refactor export
 const RecursiveJS = [
   adjust, allAnagrams, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch, buildTrie,
@@ -150,10 +148,14 @@ const RecursiveJS = [
   selectionSort, some, quickSortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, timSort, trampoline, transduce, transpose, traverseTree,
   uncurryN, unfold, union, uniqueBy, unless, until,
-	whyBird,
-	Ycombinator,
+  whyBird,
+  Ycombinator,
   xprod,
   zip, zipObj
 ];
 
-module.exports = map(fn => fn.length > 1 && fn.name !== 'equals' ? curry(fn) : fn, RecursiveJS);
+module.exports = reduce((acc, fn) => {
+  if(fn.length > 1 && fn.name !== 'equals') acc[fn.name] = curry(fn);
+  else acc[fn.name] = fn;
+  return acc;
+}, RecursiveJS, {});
