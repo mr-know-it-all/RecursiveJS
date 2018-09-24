@@ -1,7 +1,135 @@
 'use strict';
-//
-// TODO break into modules [function - function tests]
-//
+
+const adjust = require('./modules/adjust/adjust.js');
+const allAnagrams = require('./modules/all-anagrams/all-anagrams.js');
+const allPass = require('./modules/all-pass/all-pass.js');
+const allPermutations = require('./modules/all-permutations/all-permutations.js');
+const anyPass = require('./modules/any-pass/any-pass.js');
+const aperture = require('./modules/aperture/aperture.js');
+const applySpec = require('./modules/apply-spec/apply-spec.js');
+const applyTo = require('./modules/apply-to/apply-to.js');
+const assoc = require('./modules/assoc/assoc.js');
+const assocPath = require('./modules/assoc-path/assoc-path.js');
+
+const bisectSearch = require('./modules/bisect-search/bisect-search.js');
+const bubbleSort = require('./modules/bubble-sort/bubble-sort.js');
+const bubbleSortBy = require('./modules/bubble-sort-by/bubble-sort-by.js');
+const buildTrie = require('./modules/build-trie/build-trie.js');
+
+const cocktailSort = require('./modules/cocktail-sort/cocktail-sort.js');
+const compose = require('./modules/compose/compose.js');
+const composeP = require('./modules/compose-p/compose-p.js');
+const concat = require('./modules/concat/concat.js');
+const construct = require('./modules/construct/construct.js');
+const converge = require('./modules/converge/converge.js');
+const countBy = require('./modules/count-by/count-by.js');
+const countSort = require('./modules/count-sort/count-sort.js');
+const createStore = require('./modules/create-store/create-store.js');
+const curry = require('./modules/curry/curry.js');
+const cycleSort = require('./modules/cycle-sort/cycle-sort.js');
+
+const deepClone = require('./modules/deep-clone/deep-clone.js');
+const deepFlat = require('./modules/deep-flat/deep-flat.js');
+const deepFreeze = require('./modules/deep-freeze/deep-freeze.js');
+const defaultTo = require('./modules/default-to/default-to.js');
+const dijkstraShortestPath = require('./modules/dijkstra-shortest-path/dijkstra-shortest-path.js');
+const dissoc = require('./modules/dissoc/dissoc.js');
+const drop = require('./modules/drop/drop.js');
+const dropRepeatsWith = require('./modules/drop-repeats-with/drop-repeats-with.js');
+
+const eqBy = require('./modules/eq-by/eq-by.js');
+const equals = require('./modules/equals/equals.js');
+const every = require('./modules/every/every.js');
+
+const fill = require('./modules/fill/fill.js');
+const filter = require('./modules/filter/filter.js');
+const find = require('./modules/find/find.js');
+const forEach = require('./modules/for-each/for-each.js');
+
+const groupBy = require('./modules/group-by/group-by.js');
+
+const includes = require('./modules/includes/includes.js');
+const innerJoin = require('./modules/inner-join/inner-join.js');
+const insertionSort = require('./modules/insertion-sort/insertion-sort.js');
+const intersection = require('./modules/intersection/intersection.js');
+const intersperse = require('./modules/intersperse/intersperse.js');
+const invoker = require('./modules/invoker/invoker.js');
+
+const juxt = require('./modules/juxt/juxt.js');
+
+const length = require('./modules/length/length.js');
+const levenshteinDistance = require('./modules/levenshtein-distance/levenshtein-distance.js');
+const linkedListForEach = require('./modules/linked-list-for-each/linked-list-for-each.js');
+const linkedListFromArray = require('./modules/linked-list-from-array/linked-list-from-array.js');
+const linkedListToArray = require('./modules/linked-list-to-array/linked-list-to-array.js');
+
+const map = require('./modules/map/map.js');
+const mapObjIndexed = require('./modules/map-obj-indexed/map-obj-indexed.js');
+const memoize = require('./modules/memoize/memoize.js');
+const merge = require('./modules/merge/merge.js');
+const mergeLists = require('./modules/merge-lists/merge-lists.js');
+const mergeSort = require('./modules/merge-sort/merge-sort.js');
+const mergeWith = require('./modules/merge-with/merge-with.js');
+const monkeySort = require('./modules/monkey-sort/monkey-sort.js');
+
+const nAry = require('./modules/n-ary/n-ary.js');
+const omit = require('./modules/omit/omit.js');
+const objectEntries = require('./modules/object-entries/object-entries.js');
+const objectValues = require('./modules/object-values/object-values.js');
+
+const partition = require('./modules/partition/partition.js');
+const path = require('./modules/path/path.js');
+const pathOr = require('./modules/path-or/path-or.js');
+const pathSatisfies = require('./modules/path-satisfies/path-satisfies.js');
+const pick = require('./modules/pick/pick.js');
+const pluck = require('./modules/pluck/pluck.js');
+const project = require('./modules/project/project.js');
+
+const quickSort = require('./modules/quick-sort/quick-sort.js');
+const quickSortBy = require('./modules/quick-sort-by/quick-sort-by.js');
+const quickSortWith = require('./modules/quick-sort-with/quick-sort-with.js');
+
+const radixSort = require('./modules/radix-sort/radix-sort.js');
+const range = require('./modules/range/range.js');
+const reduce = require('./modules/reduce/reduce.js');
+const reduceWhile = require('./modules/reduce-while/reduce-while.js');
+const reverse = require('./modules/reverse/reverse.js');
+
+const selectionSort = require('./modules/selection-sort/selection-sort.js');
+const some = require('./modules/some/some.js');
+const splitEvery = require('./modules/split-every/split-every.js');
+const splitWhen = require('./modules/split-when/split-when.js');
+const strPaddEnd = require('./modules/str-pad-end/str-pad-end.js');
+const strPaddStart = require('./modules/str-pad-start/str-pad-start.js');
+const symetricDifference = require('./modules/symetric-difference/symetric-difference.js');
+
+const take = require('./modules/take/take.js');
+const takeWhile = require('./modules/take-while/take-while.js');
+const tap = require('./modules/tap/tap.js');
+const timSort = require('./modules/tim-sort/tim-sort.js');
+const trampoline = require('./modules/trampoline/trampoline.js');
+const transduce = require('./modules/transduce/transduce.js');
+const transpose = require('./modules/transpose/transpose.js');
+const traverseTree = require('./modules/traverse-tree/traverse-tree.js');
+
+
+const uncurryN = require('./modules/uncurry-n/uncurry-n.js');
+const uniqueBy = require('./modules/unique-by/unique-by.js');
+const unfold = require('./modules/unfold/unfold.js');
+const union = require('./modules/union/union.js');
+const unless = require('./modules/unless/unless.js');
+const until = require('./modules/until/until.js');
+const whyBird = require('./modules/why-bird/why-bird.js');
+
+const xprod = require('./modules/xprod/xprod.js');
+
+const Ycombinator = require('./modules/y-combinator/y-combinator.js');
+
+const zip = require('./modules/zip/zip.js');
+const zipObj = require('./modules/zip-obj/zip-obj.js');
+
+
+// TODO: refactor export
 const RecursiveJS = [
   adjust, allAnagrams, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
   bubbleSort, bisectSearch, buildTrie,
@@ -19,7 +147,7 @@ const RecursiveJS = [
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
   radixSort, range, reduce, reduceWhile, reverse,
-  selectionSort, some, sortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
+  selectionSort, some, quickSortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, timSort, trampoline, transduce, transpose, traverseTree,
   uncurryN, unfold, union, uniqueBy, unless, until,
 	whyBird,
@@ -29,1203 +157,3 @@ const RecursiveJS = [
 ];
 
 module.exports = map(fn => fn.length > 1 && fn.name !== 'equals' ? curry(fn) : fn, RecursiveJS);
-
-// adjust :: (a -> a) -> Number -> [a] -> [a]
-function adjust(fn, index, xs) {
-  return (function adjust([x, ...xs], currentIndex = 0, acc = []) {
-    return currentIndex === index ? [...acc, fn(x), ...(xs ? xs : [])] : adjust(xs, currentIndex + 1, [...acc, x])
-  })(xs);
-}
-
-// allAnagrams :: String -> [String]
-function allAnagrams(word) {
-  let acc = [];
-  (function allAnagrams(word, anagram = '') {
-    if(length(word) === 0) { acc = [...acc, anagram]; return; }
-    (function forEachLetter(word, index = 0) {
-      if(length(word) - 1 < index) return;
-      let wordMinusCurrentLetter = ([...take(index, word), ...drop(index + 1, word)]).join('');
-      let anagramPlusCurrentLetter = `${anagram}${word[index]}`;
-
-      allAnagrams(wordMinusCurrentLetter, anagramPlusCurrentLetter);
-      return forEachLetter(word, index + 1);
-    })(word);
-  })(word);
-  return acc;
-}
-
-// allPass :: ([* -> Boolean], [*]) -> Boolean
-function allPass([p, ...ps], xs) {
-  return (
-    p === undefined ? true :
-    !p(xs) ? false :
-    allPass(ps, xs)
-  );
-}
-
-// allPermutations :: [a] -> [[a]]
-function allPermutations(xs) {
-  return (function allPermutations(xs, permutations = []) {
-    if(length(xs) < 2) return xs;
-
-    return (function loopList(xs, i = 0) {
-      if(i < length(xs)) {
-        let x = xs[i];
-        let rest = [...take(i, xs), ...drop(i + 1, xs)];
-        let nextPermutations = map(subPermutation => [
-          x, ...(Array.isArray(subPermutation) ? subPermutation : [subPermutation])
-        ], allPermutations(rest));
-
-        permutations = [...permutations, ...nextPermutations];
-
-        return loopList(xs, i + 1)
-      } else {
-        return permutations;
-      }
-    })(xs);
-  })(xs);
-}
-
-// anyPass :: ([* -> Boolean], [*]) -> Boolean
-function anyPass([p, ...ps], xs) {
-  return (
-    p === undefined ? false :
-    p(xs) ? true :
-    anyPass(ps, xs)
-  );
-}
-
-// aperture :: (Number, [a]) -> [[a]]
-function aperture(n, xs) {
-  return (function aperture([x, ...xs], acc = []) {
-    return n - 1 > xs.length ? acc : aperture(xs, [...acc, [x, ...take(n - 1, xs)]])
-  })(xs);
-}
-
-// applySpec :: {Key: ((a, b ...) -> v)} -> ((a, b ...) -> {Key: v})
-function applySpec(xo) {
-  return (...args) => {
-    return (function applySpec([x, ...xs], acc = {}) {
-      return (
-        x === undefined ? acc :
-          typeof x[1] !== 'function' ?
-            applySpec(xs, (acc[x[0]] = applySpec(objectEntries(x[1])), acc)) :
-            applySpec(xs, (acc[x[0]] = x[1](args), acc))
-      );
-    })(objectEntries(xo));
-  }
-}
-
-// applyTo :: a -> (a -> b) -> b
-function applyTo(x) {
-  return fn => fn(x);
-}
-
-// assoc :: String -> a -> {Key: v} -> {Key: v}
-function assoc(k, v, xo) {
-  return (function assoc(k, v, [x, ...xo], acc = {}) {
-    return x === undefined ? acc : assoc(k, v, xo, (acc[x[0]] = x[1], acc[k] = v, acc));
-  })(k, v, objectEntries(xo));
-}
-
-// assocPath :: [String] -> a -> {Key: v} -> {Key: v}
-function assocPath(xs, v, xo) {
-  return (function assocShallowCopy([x, ...xo], acc = {}) {
-    return x === undefined ? (function applyPath([x, ...xs], path) {
-      return length(xs) === 0 ? (path[x] = v, acc) : (!path[x] && (path[x] = {}), applyPath(xs, path[x]));
-    })(xs, acc) : assocShallowCopy(xo, (acc[x[0]] = x[1], acc));
-  })(objectEntries(xo));
-}
-
-// Ord a => [a] -> [a]
-function bubbleSort(xs) {
-  return (function bubbleSort(
-    [x, ...xs],
-    acc = [],
-    modified = false
-  ) {
-    if(x === undefined) return !modified ? acc : bubbleSort(acc);
-
-    if(acc.length !== 0 && acc[acc.length - 1] > x) {
-      let tail = acc[acc.length - 1];
-      acc[acc.length - 1] = x;
-      acc = [...acc, tail];
-      modified = true;
-    } else acc = [...acc, x];
-
-    return bubbleSort(xs, acc, modified);
-  })(xs);
-}
-
-// Ord a => (a -> a, [a]) -> [a]
-function bubbleSortBy(fn, xs) {
-  return (function bubbleSort(
-    [x, ...xs],
-    acc = [],
-    modified = false
-  ) {
-    if(x === undefined) return !modified ? acc : bubbleSort(acc);
-
-    if(acc.length !== 0 && fn(acc[acc.length - 1]) > fn(x)) {
-      let tail = acc[acc.length - 1];
-      acc[acc.length - 1] = x;
-      acc = [...acc, tail];
-      modified = true;
-    } else acc = [...acc, x];
-
-    return bubbleSort(xs, acc, modified);
-  })(xs);
-}
-
-// Ord a, Sorted [a] => a -> [a] -> Boolean
-function bisectSearch(el, xs) {
-  if(length(xs) === 0) return false;
-
-  let left = take(Math.ceil(length(xs) / 2) - 1, xs);
-  let middle = xs[Math.ceil(length(xs) / 2) - 1];
-  let right = drop(Math.ceil(length(xs) / 2), xs);
-
-  return middle === el || bisectSearch(el, middle > el ? left : right);
-}
-
-// // "pointer" version
-// // Ord a, Sorted [a] => a -> [a] -> Boolean
-// function bisectSearch(el, xs) {
-//   return (function bisectSearch(start, end) {
-//     if(end === start) return false;
-//
-//     let middle = Math.ceil((end + start)/2) - 1;
-//     if(xs[middle] === el) return true;
-//     if(xs[middle] > el) return bisectSearch(start, middle);
-//     if(xs[middle] < el) return bisectSearch(middle + 1, end);
-//   })(0, length(xs) - 1);
-// }
-
-// buildTrie :: Trie T => [String] | () -> T
-function buildTrie(words = []) {
-  function Trie() {
-    this.root = {children: {}};
-
-    this.insert = function(word) {
-      let currentNode = this.root;
-
-      forEach((letter, i) => {
-        let key = `${word.slice(0, i)}${word[i]}`;
-        if(currentNode.children[key]) {
-          currentNode = currentNode.children[key];
-          if(i === length(word) - 1)  currentNode.children[key].endWord = true;
-        } else {
-          let newNode = {children: {}};
-          currentNode.children[key] = newNode;
-          if(i === length(word) - 1) currentNode.children[key].endWord = true;
-          currentNode = newNode;
-        }
-      }, [...word]);
-    }
-
-    this.hasWord = function(word) {
-      return (function findWord(currentNode, i = 0) {
-        let key = `${word.slice(0, i)}${word[i]}`;
-        return (
-          !currentNode.children[key]
-            ? false
-            : key === word
-              ? true
-              : findWord(currentNode.children[key], i + 1)
-        );
-      })(this.root);
-    }
-
-    // TODO
-    this.remove = function() {}
-  }
-
-  let trie = new Trie();
-  if(length(words) > 0) forEach(word => { trie.insert(word); }, words);
-  return trie;
-}
-
-// this is a small variation of bubbleSort
-// cocktailSort :: Ord a -> [a] -> [a]
-function cocktailSort(xs) {
-  return (function cocktailSort(
-    [x, ...xs],
-    reversed = false,
-    acc = [],
-    modified = false
-  ) {
-    if(x === undefined) return !modified ? reversed ? reverse(acc) : acc : cocktailSort(reverse(acc), !reversed);
-
-    if(acc.length !== 0 && (
-      !reversed && acc[acc.length - 1] > x ||
-      reversed && acc[acc.length - 1] < x
-    )) {
-      let tail = acc[acc.length - 1];
-      acc[acc.length - 1] = x;
-      acc = [...acc, tail];
-      modified = true;
-    } else acc = [...acc, x];
-
-    return cocktailSort(xs, reversed, acc, modified);
-  })(xs);
-}
-
-// compose :: (c -> d, ..., b -> c, a -> b) -> (x -> (a -> b -> c -> d))
-function compose(...fns) {
-  return value => reduce((acc, fn) => fn(acc), reverse(fns), value);
-}
-
-// composeP :: ((y -> Promise z), (x -> Promise y), ..., (a -> Promise b)) -> (a -> Promise z)
-function composeP(...fns) {
-  return initialValue =>
-    (async function applyFunc([fn, ...fns], value) {
-      return fn ? applyFunc(fns, await (fn(value))) : value;
-    })(reverse(fns), initialValue);
-}
-
-// concat :: ([a], [a]) -> [a]
-function concat(xs, ys) {
-  return [...xs, ...(Array.isArray(ys) && ys || [ys])];
-}
-
-// construct :: (* -> {*}) -> (* -> {*})
-function construct(constructorFn) {
-  return (...args) => new constructorFn(...args);
-}
-
-// converge :: todo
-function converge(cFn, fns) {
-  return v => cFn(...map(fn => fn(v), fns));
-}
-
-// countBy :: (a -> String) -> [a] -> {*}
-function countBy(fn) {
-  return xs => (function countBy([x, ...xs], acc = {}) {
-    return x === undefined ? acc : countBy(xs, (acc[fn(x[1])] ? acc[fn(x[1])]++ : acc[fn(x[1])] = 1, acc));
-  })(objectEntries(xs));
-}
-
-// countSort :: Ord a => [a] -> [a]
-function countSort(unsortedList, [start, end]) {
-  let range = (function buildRange(index = start, acc = []) {
-    return index === end ? [...acc, [index, 0]] : buildRange(index + 1, [...acc, [index, 0]]);
-  })();
-
-  (function countValues([x, ...xs]) {
-    if(x === undefined) return;
-
-    (function addCount([c, ...cs]) {
-      if(c === undefined) return void 0;
-      if(x === c[0]) return (c[1] = c[1] + 1), void 0;
-      return addCount(cs);
-    })(range);
-
-    return countValues(xs);
-  })(unsortedList);
-
-  (function addPreviousCounts(range, index = 0) {
-    if(index === length(range)) return void 0;
-    if(index) range[index][1] = Number(range[index][1]) + Number(range[index - 1][1]);
-    return addPreviousCounts(range, index + 1);
-  })(range)
-
-  return (function updateFinalList([x, ...xs], range, finalList) {
-    if(x === undefined) return finalList;
-
-    (function getValueIndex(range, index = 0) {
-      if(index === length(range)) return void 0;
-        if(x === range[index][0]) {
-          finalList[range[index][1] - 1] = x;
-          range[index][1] = range[index][1] - 1;
-        }
-        return getValueIndex(range, index + 1);
-    })(range);
-
-    return updateFinalList(xs, range, finalList);
-  })(unsortedList, range, []);
-}
-
-// createStore :: (State -> State) -> Store
-function createStore(reducer) {
-  let subscribers = [];
-  let STORE = new Proxy({
-      state: reducer()
-    }, {
-      set(obj, prop, value) {
-        const oldState = obj[prop];
-        obj[prop] = value;
-        forEach(subscriber => { subscriber(deepClone(oldState), deepClone(obj[prop])); }, subscribers);
-        return true;
-      }
-  });
-
-  return {
-    getState: () => STORE.state,
-    dispatch: action => {
-      STORE.state = reducer(STORE.state, action);
-    },
-    subscribe: fn => {
-      subscribers = [...subscribers, fn]
-    }
-  };
-}
-
-// curry :: (* -> a) → (* -> a)
-function curry(fn) {
-  const arity = fn.length;
-  return function applyArgs(...args) {
-    return length(args) === arity ? fn(...args) : (...nextArgs) => applyArgs(...args, ...nextArgs);
-  };
-}
-
-// cycleSort :: Int a -> [a] -> [a]
-function cycleSort(list) {
-  return (function cycleSort([x, ...xs], cycles = {}) {
-    if(x === undefined) return (function writeToList([x, ...xs]) {
-      if(x === undefined) return list;
-      let [value, indexes] = x;
-
-      (function writeAtIndex([x, ...xs], count) {
-        if(x === undefined) return void 0;
-        list[x + count] = Number(value); // <- here's where we write, once for every element
-        writeAtIndex(xs, count - 1);
-      })(indexes, length(indexes) - 1);
-
-      return writeToList(xs);
-    })(objectEntries(cycles));
-
-    let startIndex = (function smallerThanX([y, ...ys], startIndex = 0) {
-      return y === undefined ? startIndex : smallerThanX(ys, y < x ? startIndex + 1 : startIndex);
-    })(list);
-
-    cycles[x] = [...(cycles[x] || []), startIndex];
-    return cycleSort(xs, cycles);
-  })(list);
-}
-
-// deepClone :: Object a => a -> a
-function deepClone(obj) {
-  return (function deepClone([[k, v] = [], ...kvs], acc = {}) {
-    if(k === undefined) return acc;
-
-    acc[k] = (
-      Array.isArray(v)
-        ? (function cloneArray(xs) {
-          return map(x => (
-            Array.isArray(x)
-              ? cloneArray(x)
-              : x instanceof Object
-                ? deepClone(objectEntries(x))
-                : x
-          ), xs);
-        })(v)
-        : v instanceof Object
-          ? deepClone(objectEntries(v), acc[k])
-          : v
-    );
-
-    return deepClone(kvs, acc);
-  })(objectEntries(obj));
-}
-
-// deepFlat :: [[[*]]] -> [*]
-function deepFlat(xs) {
-  return (function deepFlat([x, ...xs], acc = []) {
-    return (
-      x === undefined ?
-        acc :
-        Array.isArray(x) && deepFlat([...x, ...xs], acc) || deepFlat(xs, [...acc, x])
-    );
-  })(xs);
-}
-
-// deepFreeze :: a -> a
-function deepFreeze(obj) {
-  const getReducer = obj => Array.isArray(obj) ? range(0, obj.length) : Object.keys(obj);
-
-  (function deepFreeze([x, ...xs], obj) {
-    Object.freeze(obj);
-    typeof obj[x] === 'object' && deepFreeze(getReducer(obj[x]), obj[x]);
-    return x === undefined ? x : deepFreeze(xs, obj);
-  })(getReducer(obj), obj);
-
-  return obj;
-}
-
-// defaultTo :: a -> b -> a | b
-function defaultTo(dflt) {
-  return x => x !== undefined && x !== null && !Number.isNaN(x) ? x : dflt;
-}
-
-// dijkstraShortestPath :: Object -> [String]
-function dijkstraShortestPath(graph) {
-  const buildPathsTable = graph => reduce((acc, [key, _]) => (
-    (acc[key] = {
-      distToStart: key === 'start' ? 0 : Infinity,
-      through: key === 'start' ? 'start' : null,
-      visited: false
-    }), acc
-  ), objectEntries(graph), {});
-
-  const getShortestUnvisitedKey = Table => reduce((acc, v) => (
-    !v[1].visited && (acc === 'ALL_VISITED' || v[1].distToStart < acc[1].distToStart) ? v : acc
-  ), objectEntries(Table), 'ALL_VISITED');
-
-  const updateShortestPathsTable = Table => {
-    let nextKey = getShortestUnvisitedKey(Table);
-    if(nextKey === 'ALL_VISITED') return Table;
-
-    (function updateDistanceToStart([key, ...xs]) {
-      if(key === undefined) return;
-      if(key[1] + Table[nextKey[0]].distToStart < Table[key[0]].distToStart) {
-        Table[key[0]].distToStart = key[1] + Table[nextKey[0]].distToStart;
-        Table[key[0]].through = nextKey[0];
-      }
-      return updateDistanceToStart(xs);
-    })(objectEntries(graph[nextKey[0]]));
-    Table[nextKey[0]].visited = true;
-
-    return updateShortestPathsTable(Table);
-  };
-
-  const computeFinishToStartPath = Table => function compute(path = []) {
-    if(path[length(path) - 1] === 'start') return path;
-    else if(length(path) === 0) return compute(['finish', Table['finish'].through]);
-    else return compute([...path, Table[path[length(path) - 1]].through])
-  };
-
-  return compose(
-    finishToStartPath => reverse(finishToStartPath),
-    updatedTable => computeFinishToStartPath(updatedTable)(),
-    Table => updateShortestPathsTable(Table),
-    () => buildPathsTable(graph)
-  )();
-}
-
-// dissoc :: (String, {Key: v}) -> {Key: v}
-function dissoc(prop, xo) {
-  return reduce((acc, [key, value]) => key === prop ? acc : (acc[key] = value, acc), objectEntries(xo), {});
-}
-
-// drop :: (Number, [a]) -> [a]
-function drop(count, xs) {
-  const isString = typeof xs === 'string';
-  return (function drop(count, [x, ...xs]) {
-  	return count - 1 === 0 ? isString ? xs.join('') : xs : drop(count - 1, xs);
-  })(count, xs);
-}
-
-// dropRepeatsWith :: ((a, a) -> Boolean) -> [a] -> [a]
-function dropRepeatsWith(pred, xs) {
-  return (function dropRepeatsWith(pred, [x, ...xs], last, acc = []) {
-    return x === undefined ? acc : dropRepeatsWith(
-      pred, xs, x, last === undefined ? [x] : pred(x, last) ? acc : [...acc, x]
-    );
-  })(pred, xs);
-}
-
-// eqBy :: (a -> b) -> a -> a -> Boolean
-function eqBy(fn, a, b) {
-  return fn(a) === fn(b);
-}
-
-function equals(a, b) {
-  const isValueType = a => includes(typeof a, ['null', 'undefined', 'boolean', 'number', 'string', 'symbol']);
-  const isObject = x => typeof x === 'object';
-  const isArray = x => Array.isArray(x);
-  const isFunction = x => typeof x === 'function';
-  const getObjectType = x => isArray(x) && 'array' || (x && x.has && 'm-s-wm-ws' || 'object');
-  const isHomogenousWithValueTypes = xs => every(x => isValueType(x) && typeof xs[0] === typeof x, xs);
-
-  if(typeof a !== typeof b) return false;
-  else if(isValueType(a) || isValueType(b)) return a === b;
-  else if(isObject(a) && isObject(b) && getObjectType(a) !== getObjectType(b)) return false;
-  else if(
-    getObjectType(a) === 'array' &&
-    getObjectType(b) === 'array' &&
-    isHomogenousWithValueTypes(a) &&
-    isHomogenousWithValueTypes(b)
-  ) return `${quickSort(a)}` === `${quickSort(b)}`;
-  else if(isFunction(a) && isFunction(b)) return a.toString() === b.toString();
-  else return 'to be continued';
-}
-
-// every :: (a -> Boolean, [a]) -> Boolean
-function every(fn, xs) {
-  return (function every([x, ...xs]) {
-    return x === undefined || (!fn(x) ? false : every(xs));
-  })(xs);
-}
-
-// fill :: (a, Number) -> [a]
-function fill(element, count) {
-  return (function fill(count, acc = []) {
-    return count === 0 && acc || fill(count - 1, [...acc, element]);
-  })(count);
-}
-
-// filter :: (a -> Boolean, [a]) -> [a]
-function filter(fn, xs) {
-  return (function filter([x, ...xs], acc = []) {
-    return x === undefined ? acc : filter(xs, fn(x) ? [...acc, x] : acc);
-  })(xs);
-}
-
-// find :: (a -> Boolean, [a]) -> a | false
-function find(fn, xs) {
-  return (function find(fn, [x, ...xs]) {
-    return x === undefined ? false : fn(x) ? x : find(fn, xs);
-  })(fn, xs);
-}
-
-// forEach :: (a -> b, [a]) -> ()
-function forEach(fn, xs) {
-  return (function forEach(xs, index = 0) {
-    if(index < length(xs)) {
-      fn(xs[index], index);
-      return forEach(xs, index + 1);
-    }
-  })(xs);
-}
-
-// groupBy :: (a -> String) -> [a] -> {String: [a]}
-function groupBy(groupFn, xo) {
-  return (function groupBy([x, ...xo], acc = {}) {
-    return (
-      x === undefined ? acc :
-        groupBy(xo, (acc[groupFn(x)] = acc[groupFn(x)] ? [...acc[groupFn(x)], x] : [x], acc))
-    );
-  })(xo);
-}
-
-// includes :: (a, [a]) -> Boolean
-function includes(a, [x, ...xs]) {
-  return x === undefined ? false : a === x ? true : includes(a, xs);
-}
-
-// innerJoin :: (((a, b) -> Boolean), [a], [b]) -> [a]
-function innerJoin(fn, xs, ys) {
-  return (function innerJoin(xs, [y, ...ys], acc = []) {
-    return (
-      y === undefined && acc || innerJoin(xs, ys, [...acc, ...filter(x => fn(x, y), xs)])
-    );
-  })(xs, ys);
-}
-
-// insertionSort :: Ord a => [a] -> [a]
-function insertionSort(xs) {
-  return (function insertionSort([x, ...xs], sorted = []) {
-    return x === undefined ? sorted : insertionSort(xs, (function addToSorted([y, ...ys], acc = []) {
-      if(y === undefined) return [...acc, x];
-      if(x < y) return [...acc, x, y, ...ys];
-      return addToSorted(ys, [...acc, y]);
-    })(sorted));
-  })(xs);
-}
-
-// intersection :: ([*], [*]) -> [*]
-function intersection(xs, ys) {
-  return (function intersection([x, ...xs], ys, acc = []) {
-    return (
-      x === undefined && compose(quickSort, curry(uniqueBy)(x => x))(acc) || intersection(
-        xs, ys,
-        find(y => y === x, ys) && [...acc, x] || acc
-      )
-    );
-  })(xs, ys);
-}
-
-// intersperse (a, [a]) -> [a]
-function intersperse(n, xs) {
-  return (
-    function intersperse([x, ...xs], acc = []) {
-      return x === undefined ? acc : intersperse(xs, length(acc) > 0 ? [...acc, n, x] : [...acc, x])
-    }
-  )(xs);
-}
-
-
-// invoker :: Number -> String -> (a -> b ... -> Object -> *)
-function invoker(arity, method) {
-  return function invoker(...args) {
-    return (
-      arity === length(args) - 1 ?
-        args[length(args) - 1][method](...(take(length(args) - 1, args))) :
-        (...nextArgs) => invoker(...args, ...nextArgs)
-    );
-  }
-}
-
-// juxt :: ([* -> a], [*]) -> [a]
-function juxt(fns, xs) {
-  return (function juxt([fn, ...fns], acc = []) {
-    return fn === undefined && acc || juxt(fns, [...acc, fn(...xs)]);
-  })(fns);
-}
-
-// length :: [a] -> Number
-function length(xs) {
-  return (function length([x, ...xs], count = 0) {
-    return x === undefined ? count : length(xs, count + 1);
-  })(xs);
-}
-
-// levenshteinDistance :: String -> String -> Number
-function levenshteinDistance(xs, ys) {
-  let rowsLength = length(ys) + 1;
-  let colsLength = length(xs) + 1;
-  let data = xs => range(0, length(xs) + 1);
-  let strTable = curry(map)(row => curry(map)(() => null)(data(xs)))(data(ys));
-
-  (function fillFirstRow(index = 0) { return index >= colsLength ? void 0 : (strTable[0][index] = index, fillFirstRow(index+1)); })();
-  (function fillFirstCol(index = 0) { return index >= rowsLength ? void 0 : (strTable[index][0] = index, fillFirstCol(index+1)); })();
-
-  (function forEachRow(rowIndex = 1) {
-    if(rowIndex >= rowsLength) return;
-    (function forEachRowCol(colIndex = 1) {
-      if(colIndex >= colsLength) return;
-      strTable[rowIndex][colIndex] = Math.min(
-        strTable[rowIndex - 1][colIndex] + 1, // insertion
-        strTable[rowIndex][colIndex - 1] + 1, // deletion
-        strTable[rowIndex - 1][colIndex - 1] + (xs[colIndex - 1] === ys[rowIndex - 1] ? 0 : 1), // substitution
-      );
-      return forEachRowCol(colIndex+1);
-    })();
-    return forEachRow(rowIndex+1);
-  })();
-
-  return strTable[rowsLength-1][colsLength-1];
-}
-
-// linkedListForEach :: Singly linked list L => (a -> *) -> L{a} -> L{a}
-function linkedListForEach(fn, {head}) {
-  return (function forEachNode(node) {
-    fn(node);
-    return node.next ? forEachNode(node.next) : undefined;
-  })(head);
-}
-
-function ListNode(value) {
-  this.value = value;
-  this.next = undefined;
-}
-function LinkedList(name) {
-  this.name = name;
-  this.head = undefined;
-  this.length = 0;
-}
-
-// linkedListFromArray :: Singly linked list L => [a] -> L{a}
-function linkedListFromArray(name, xs) {
-  return (function buildList([x, ...xs], list = new LinkedList(name), nextNode) {
-    if(x === undefined) return list;
-    if(!list.head) return buildList(xs, (list.head = new ListNode(x), list.length++, list), list.head);
-    return buildList(xs, (list.length++, list), (nextNode.next = new ListNode(x), nextNode.next));
-  })(xs);
-}
-
-// linkedListToArray :: Singly linked list L => L{a} -> [a]
-function linkedListToArray({head}) {
-  return (function forEachNode(node, acc = []) {
-    return node.next ? forEachNode(node.next, [...acc, node.value]) : [...acc, node.value];
-  })(head);
-}
-
-// map :: (a -> b, [a]) -> [b]
-function map(fn, xs) {
-  return (function map([x, ...xs], acc = []) {
-    return x === undefined && acc || map(xs, [...acc, fn(x)]);
-  })(xs);
-}
-
-// mapObjIndexed :: ((*, String, Object) -> *) -> Object -> Object
-function mapObjIndexed(fn, xo) {
-  return (function mapObjIndexed([kv, ...kvs], acc = {}) {
-    return kv === undefined ? acc : mapObjIndexed(kvs, (acc[kv[0]] = fn(kv[1], kv[0], xo), acc));
-  })(objectEntries(xo));
-}
-
-// memoize :: (* -> a) -> a
-function memoize(fn) {
-  return (function memoize(fn, dataStore = new Map()) {
-    return function getValue(...args) {
-      let dataKey = JSON.stringify(args);
-      return (
-        dataStore.get(dataKey) ||
-        dataStore.set(dataKey, fn(...args)) && getValue(...args)
-      );
-    };
-  })(fn);
-}
-
-// merge :: ({Key: v}, {Key: v}) -> {Key: v}
-function merge(xo, yo) {
-  return (
-    reduce(
-      (acc, v) => (acc[v[0]] = v[1], acc),
-      uniqueBy(
-        (x) => x[0], [...objectEntries(yo), ...objectEntries(xo)]
-      ), {})
-  );
-}
-
-// mergeLists :: Ord a => ([a], [a]) -> [a]
-function mergeLists(left, right, acc = []) {
-  let [x, ...xs] = left;
-  let [y, ...ys] = right;
-
-  if(x === undefined && y === undefined) return acc;
-
-  if(length(left) === 0) return [...acc, ...right];
-  if(length(right) === 0) return [...acc, ...left];
-
-  if(x === undefined) return [...acc, y];
-  if(y === undefined) return [...acc, x];
-
-  if(left[length(left) - 1] < right[0]) return [...acc, ...left, ...right];
-  if(left[length(right) - 1] < left[0]) return [...acc, ...right, ...left];
-
-  if(x < y) return mergeLists(xs, right, [...acc, x]);
-  else return mergeLists(left, ys, [...acc, y]);
-}
-
-// mergeSort :: Ord a => [a] -> [a]
-function mergeSort(xs) {
-  if(length(xs) === 1) return xs;
-
-  let left = mergeSort(take(Math.ceil(length(xs) / 2), xs));
-  let right = mergeSort(drop(Math.ceil(length(xs) / 2), xs));
-
-  return mergeLists(left, right);
-}
-
-// mergeWith :: (((a, a) -> a), {a}, {a}) -> {a}
-function mergeWith(fn, xo, yo) {
-  return (
-    reduce(
-      (acc, v) => (acc[v[0]] = acc[v[0]] ? fn(v[1], acc[v[0]]) : v[1], acc), [...objectEntries(yo), ...objectEntries(xo)], {})
-  );
-}
-
-// monkeySort :: Ord a => [a] -> [a]
-function monkeySort(xs) {
-  // this is an unoptimized version of monkeySort
-  // it's better than random order generation but still bad
-  // then again, monkeySort isn't the smartest sorting algorithm
-  const isSorted = ([x, ...xs], prev) => x === undefined ? true : prev && x < prev ? false : isSorted(xs, x);
-
-  return find(isSorted, allPermutations(xs));
-}
-
-// nAry :: Number -> (* -> a) -> (* -> a)
-function nAry(arity, fn) {
-  // TODO: find another way to restrict function length
-  const nAry = (...args) => (args.length = arity, fn(...args));
-  Object.defineProperty(nAry, 'length', {value: arity});
-
-  return nAry;
-}
-
-// omit :: ([String], {String: *}) -> {String: *}
-function omit(xs, xo) {
-  return objectEntries(xo).reduce(
-    (acc, v) => find(x => x === v[0], xs) && acc || (acc[v[0]] = v[1], acc), {}
-  );
-}
-
-// objectValues :: {Key: *} -> [[Key, *]]
-function objectEntries(xo) {
-  return (function objectEntries(xo, index = 0, acc = []) {
-    return Object.keys(xo)[index] === undefined ? acc : objectEntries(
-      xo,
-      index + 1,
-      [...acc, [Object.keys(xo)[index], xo[Object.keys(xo)[index]]]]);
-  })(xo);
-}
-
-// objectValues :: {Key: *} -> [*]
-function objectValues(xo) {
-  return (function objectValues(xo, index = 0, acc = []) {
-    return Object.keys(xo)[index] === undefined ? acc : objectValues(
-      xo,
-      index + 1,
-      [...acc, xo[Object.keys(xo)[index]]]);
-  })(xo);
-}
-
-
-// partition :: ((a -> Boolean), [a]) -> [[a], [a]]
-function partition(pred, xs) {
-  return (function partition([x, ...xs], acc = [[], []]) {
-    return x === undefined && acc || partition(
-      xs, pred(x) && [
-        [...acc[0], x], acc[1]
-      ] || [acc[0],
-        [...acc[1], x]
-      ]
-    );
-  })(xs);
-}
-
-// path :: ([Key], {a}) -> a | Undefined
-function path([x, ...xs], xo) {
-  return (
-    length(xs) === 0 && (xo[x] || undefined) ||
-    xo[x] !== undefined && path(xs, xo[x]) ||
-    undefined
-  );
-}
-
-// pathOr :: (a, [Key], {a}) -> a
-function pathOr(dflt, xs, xo) {
-  return path(xs, xo) || dflt;
-}
-
-// pathSatisfies :: ((a -> Boolean), [Key], {a}) -> Boolean
-function pathSatisfies(fn, xs, xo) {
-  const data = path(xs, xo);
-  return data && fn(data);
-}
-
-// pick :: ([Key], {Key: v}) -> {Key: v}
-function pick(xs, xo) {
-  return objectEntries(xo).reduce(
-    (acc, v) => !find(x => x === v[0], xs) && acc || (acc[v[0]] = v[1], acc), {}
-  );
-}
-
-// pluck :: Functor f => (Key, f {Key: v}) -> f v
-function pluck(prop, xs) {
-  return (function pluck([x, ...xs], acc = []) {
-    return x === undefined && acc || pluck(xs, x[prop] && [...acc, x[prop]] || acc);
-  })(xs);
-}
-
-// project :: ([Key], [{Key: v}]) -> [{Key: v}]
-function project(xs, yss) {
-  return (function project([ys, ...yss], acc = []) {
-    return ys === undefined ? acc : project(yss, [
-      ...acc, reduce((acc, x) => {
-        if (ys[x]) acc[x] = ys[x];
-        return acc;
-      }, xs, {})
-    ]);
-  })(yss);
-}
-
-// quickSort :: Filterable f => f a -> f a
-function quickSort([x, ...xs]) {
-  return x === undefined && [] || [
-    ...quickSort(filter(y => y <= x, xs)),
-    x,
-    ...quickSort(filter(y => y > x, xs))
-  ];
-}
-
-// quickSortBy :: Filterable f => (a -> a, f a) -> f a
-function quickSortBy(fn, [x, ...xs]) {
-  return x === undefined && [] || [
-    ...quickSortBy(fn, filter(y => fn(y) <= fn(x), xs)),
-    x,
-    ...quickSortBy(fn, filter(y => fn(y) > fn(x), xs))
-  ];
-}
-
-// radixSort :: Ord a => [a] -> [a]
-function radixSort(xs) {
-  let xss = map(String, xs);
-  let largestIndex = reduce((acc, v) => length(v) > acc ? length(v) : acc, xss, 0);
-
-  const bubbleSortByIndex = (xs, index) =>
-    bubbleSortBy(x => reverse(x)[index - 1] ? Number(reverse(x)[index - 1]) : -Infinity, xs);
-
-  return (function updateList(xs, index = 0) {
-    return index > largestIndex ? map(Number, xs) : updateList(bubbleSortByIndex(xs, index), index + 1);
-  })(xss);
-}
-
-// range :: Number -> Number -> [Number]
-function range(from, to) {
-  return (function range(from, to, acc = []) {
-    return from === to ? acc : range(from + 1, to, [...acc, from]);
-  })(from, to)
-}
-
-// reduce :: ((a, b) -> a, [b], a) -> a
-function reduce(fn, xs, acc) {
-  return (function reduce(fn, [x, ...xs], acc, index = 0) {
-    return x === undefined ? acc : reduce(fn, xs, fn(acc, x, index + 1));
-  })(fn, xs, acc);
-}
-
-// reduceWhile :: (((a, b) -> Boolean), ((a, b) -> a), [b]) -> a
-function reduceWhile(pred, fn, [x, ...xs], acc) {
-  return x === undefined || !pred(x) ? acc : reduceWhile(pred, fn, xs, fn(acc, x));
-}
-
-// reverse :: [a] -> [a]
-function reverse(xs) {
-  return (function reverse([x, ...xs], acc = []) {
-    return x === undefined ? acc : reverse(xs, [x, ...acc]);
-  })(xs);
-}
-
-// selectionSort :: Ord a => [a] -> [a]
-function selectionSort(xs) {
-  // getMin :: Ord a => [a] -> a
-  const getMin = xs => (function getMin([x, ...xs], min) {
-    return x === undefined ? min : getMin(xs, x < min ? x : min);
-  })(xs, xs[0]);
-
-  // removeElem :: (a, [a]) -> [a]
-  const removeElem = (xs, el) => (function removeElem([x, ...xs], acc = [], found = false) {
-    return x === undefined ? acc : removeElem(xs, found || x !== el ? [...acc, x] : acc, found || x === el);
-  })(xs);
-
-  return (function selectionSort(xs, sorted = []) {
-    if(length(xs) === 0) return sorted;
-    return  selectionSort(compose(curry(removeElem)(xs), getMin)(xs), [...sorted, getMin(xs)]);
-  })(xs);
-}
-// some :: (a -> Boolean, [a]) -> Boolean
-function some(fn, xs) {
-  return (function some([x, ...xs]) {
-    return x === undefined ? false : fn(x) || some(xs);
-  })(xs);
-}
-
-// sortWith :: ((a, a) -> 1 | -1 | 0, [a]) -> [a]
-function sortWith(fn, [x, ...xs]) {
-  return x === undefined && [] || [
-  	...quickSort(filter(y => fn(x, y) === 1, xs)),
-  	x,
-  	...quickSort(filter(y => fn(x, y) === -1, xs))
-  ];
-}
-
-// splitEvery :: Number → [a] → [[a]]
-function splitEvery(n, xs) {
-  const type = typeof xs;
-  return (function splitEvery([x, ...xs], count = 0, acc = []) {
-    return x === undefined ? acc : splitEvery(
-      xs,
-      count + 1 === n ? 0 : count + 1,
-      type !== 'string' ?
-        count === 0 ? [...acc, [x]] : (acc[length(acc) - 1] = [...acc[length(acc) - 1], x], acc) :
-        count === 0 ? [...acc, x] : (acc[length(acc) - 1] = `${acc[length(acc) - 1]}${x}`, acc)
-    );
-  })(xs);
-}
-
-// splitWhen :: (a -> Boolean) -> [a] -> [[a], [a]]
-function splitWhen(pred, xs) {
-  const type = typeof xs;
-  return (function splitWhen([x, ...xs], acc = []) {
-    return x === undefined ? acc : splitWhen(
-      xs,
-      type !== 'string' ?
-        pred(x) || length(acc) === 0 ? [...acc, [x]] : (acc[length(acc) - 1] = [...acc[length(acc) - 1], x], acc) :
-        pred(x) || length(acc) === 0 ? [...acc, x] : (acc[length(acc) - 1] = `${acc[length(acc) - 1]}${x}`, acc)
-    );
-  })(xs);
-}
-
-// strPaddEnd :: (String, Number, String) -> String
-function strPaddEnd(elem, count, xs) {
-  return length(xs) >= count ? xs : strPaddEnd(elem, count, `${xs}${elem}`);
-}
-
-// strPaddStart :: (String, Number, String) -> String
-function strPaddStart(elem, count, xs) {
-  return length(xs) >= count ? xs : strPaddStart(elem, count, `${elem}${xs}`);
-}
-
-
-// symetricDifference :: [*] -> [*] -> [*]
-function symetricDifference(__xs, __ys) {
-  return (function diff([x, ...xs], ys, acc = [], done = false) {
-    return (
-      x === undefined && done && acc ||
-      x === undefined && !done && diff(__ys, __xs, acc, true) ||
-      diff(xs, ys, !find(y => y === x, ys) && [...acc, x] || acc, done)
-    );
-  })(__xs, __ys);
-}
-
-// take :: (Number, [a]) -> [a]
-function take(count, xs) {
-  return (function take(count, [x, ...xs], acc = []) {
-    return count === 0 && acc || take(count - 1, xs, [...acc, x]);
-  })(count, xs);
-}
-
-// takeWhile :: (a -> Boolean, [a]) -> [a]
-function takeWhile(fn, xs) {
-  return (function takeWhile([x, ...xs], acc = [], index = 0) {
-    return (x === undefined || !fn(x, index)) && acc || takeWhile(xs, [...acc, x], index + 1);
-  })(xs);
-}
-
-// tap :: ((a → *), a) -> a
-function tap(fn, x) {
-  return (fn(x), x);
-}
-
-// timSort :: Ord a => [a] -> [a]
-function timSort(xs) {
-  // this is not a totally accurrate timSort
-  const RUN = 2;
-  if(length(xs) <= RUN) return insertionSort(xs);
-
-  // sortAndMerge :: Ord a => [[a]] -> [a]
-  const sortAndMerge = (acc, v) => compose(v => mergeLists(acc, v), insertionSort)(v);
-  const runs = splitEvery(RUN, xs);
-
-  return reduce(sortAndMerge, runs, []);
-}
-
-// trampoline :: (a -> b) -> a -> b
-function trampoline(fn) {
-  return (...args) => {
-    let result = fn(...args);
-    while(typeof result === 'function') result = result();
-    return result;
-  };
-}
-
-// Functor F => transduce :: [F* -> F*, F* -> F*, ...] -> F* -> F*
-// TODO: this doesn't seem to be a classic transduce, will revisit it
-function transduce(ops, xs) {
-  return (function transduce(ops, [x, ...xs], acc = []) {
-    const applyOps = ([op, ...ops], x) => op === undefined ? x : !op(x) ? undefined : applyOps(ops, op(x));
-
-    return x === undefined ? acc : transduce(ops, xs, [...acc, ...(applyOps(reverse(ops), [x]) || [])]);
-  })(ops, xs);
-}
-
-// transpose :: [[a]] -> [[a]]
-function transpose(xs) {
-  let maxIndex = reduce((acc, v) => length(v) > acc ? length(v) : acc, xs, 0) - 1;
-
-  return (function transpose(index = 0, acc = []) {
-    // TODO: after forEach fix, use it instead of map
-    map(x => acc[index] = acc[index] ? [...acc[index], x[index] || null] : [x[index] || null], xs);
-
-    return index === maxIndex ? map(xs => filter(x => x !== null, xs), acc) : transpose(index + 1, acc);
-  })();
-}
-
-// traverseTree :: Tree -> [a] TODO: revisit this signature
-function traverseTree(type, node) {
-  return (
-    type === 'preOrder' && (function preOrder(node) {
-      return [
-        node.data,
-        ...(node.left ? preOrder(node.left) : []),
-        ...(node.right ? preOrder(node.right) : [])
-      ];
-    })(node) ||
-    type === 'inOrder' && (function inOrder(node) {
-      return [
-        ...(node.left ? inOrder(node.left) : []),
-        node.data,
-        ...(node.right ? inOrder(node.right) : [])
-      ];
-    })(node) ||
-    type === 'postOrder' && (function postOrder(node) {
-      return [
-        ...(node.left ? postOrder(node.left) : []),
-        ...(node.right ? postOrder(node.right) : []),
-        node.data
-      ];
-    })(node)
-  );
-}
-
-// uncurryN :: (Number, (a -> b)) -> (a -> c | throw)
-function uncurryN(arity, fn) {
-  return (...args) => {
-    if (length(args) !== arity)
-      throw `the function ${fn.name} expects ${arity} arguments and it was called with only ${length(args)}`;
-    else
-      return reduce((fn, x) => fn(x), args, fn);
-  };
-}
-
-// unfold :: (a -> [b]) -> a -> [b]
-function unfold(fn, seed, acc = []) {
-  const nextValue = fn(seed);
-  return nextValue ? unfold(fn, nextValue[1], [...acc, nextValue[0]]) : acc;
-}
-
-// union :: [*] -> [*] -> [*]
-function union(xs, ys) {
-  return (function union([x,  ...xs], ys, acc = []) {
-    return (
-      x === undefined && ys === undefined ? acc :
-        x === undefined && ys !== undefined ? union(ys, undefined, acc) :
-          union(xs, ys, [...(find(y => y === x, acc) ? acc : [...acc, x])])
-    );
-  })(xs, ys);
-}
-
-// uniqueBy :: (a -> a, [a]) -> [a]
-function uniqueBy(fn, xs) {
-  return (function uniqueBy([x, ...xs], acc = [x]) {
-    return (
-      x === undefined && acc || uniqueBy(
-        xs, !find(y => fn(y) === fn(x), acc) && [...acc, x] || acc
-      )
-    );
-  })(xs);
-}
-
-// unless :: (a -> Boolean, a -> a) -> a -> a | null
-function unless(pred, fn) {
-  return x => pred(x) ? fn(x) : null;
-}
-
-// until :: (a -> Boolean, a -> a, a) -> a
-function until(pred, fn, x) {
-  return pred(x) ? x : until(pred, fn, fn(x));
-}
-
-// whyBird :: whyform fn => fn -> *
-function whyBird(fn) {
-  return (
-    (rec => (...args) => fn(rec(rec), ...args))
-    (rec => (...args) => fn(rec(rec), ...args))
-  );
-}
-
-// xprod :: ([a], [b])-> [[a, b]]
-function xprod(xs, ys) {
-  return (function xprod([x, ...xs], acc = []) {
-    return x === undefined ? acc : xprod(xs, [...acc, ...map(y => [x, y], ys)]);
-  })(xs);
-}
-
-// Ycombinator :: Y form fn => fn -> *
-function Ycombinator(fn) {
-  return (
-    (rec => arg => fn(rec(rec))(arg))
-    (rec => arg => fn(rec(rec))(arg))
-  );
-}
-
-// zip :: ([a], [b]) -> [a, b]
-function zip(xs, ys) {
-  return (function zip([x, ...xs], [y, ...ys], acc = []) {
-    return (
-      (x === undefined || y === undefined) && acc ||
-      zip(xs, ys, [...acc, [x, y]])
-    );
-  })(xs, ys);
-}
-
-// zipObj :: ([String], [*]) -> {String: *}
-function zipObj(xs, ys) {
-  return (function zipObj([x, ...xs], [y, ...ys], acc = {}) {
-    return x === undefined || y === undefined ? acc : zipObj(xs, ys, (acc[x] = y, acc))
-  })(xs, ys);
-}

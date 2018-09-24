@@ -19,7 +19,7 @@ const [
   partition, path, pathOr, pathSatisfies, pick, pluck, project,
   quickSort,
   radixSort, range, reduce, reduceWhile, reverse,
-  selectionSort, some, sortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
+  selectionSort, some, quickSortWith, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
   take, takeWhile, tap, timSort, trampoline, transduce, transpose, traverseTree,
   uncurryN, unfold, union, uniqueBy, unless, until,
 	whyBird,
@@ -1237,27 +1237,27 @@ async function runTests() {
     () => expect('some', true, some(x => x === true, someArrayTrue))
   )();
 
-  // sortWith test
+  // quickSortWith test
   compose(
     () => expect(
-      'sortWith test 1',
+      'quickSortWith test 1',
       [1, 2, 3, 4],
-      sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [2, 1, 4, 3])
+      quickSortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [2, 1, 4, 3])
     ),
     () => expect(
-      'sortWith test 2',
+      'quickSortWith test 2',
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
+      quickSortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
     ),
     () => expect(
-      'sortWith test 3',
+      'quickSortWith test 3',
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [2, 9, 8, 1, 6, 5, 4, 3, 10, 7])
+      quickSortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, [2, 9, 8, 1, 6, 5, 4, 3, 10, 7])
     ),
     () => expect(
-      'sortWith test 4',
+      'quickSortWith test 4',
       ['a', 'b', 'c', 'd'],
-      sortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, ['d', 'a', 'c', 'b'])
+      quickSortWith((a, b) => a > b ? 1 : a < b ? -1 : 0, ['d', 'a', 'c', 'b'])
     )
   )();
 
