@@ -11,7 +11,7 @@ require('./../src/recursive.js')().then(modules => {
     deepClone, deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
     eqBy, equals, every,
     fill, filter, find, forEach,
-    groupBy,
+    gnomeSort, groupBy,
     includes, innerJoin, insertionSort, intersection, intersperse, invoker,
     juxt,
     length, levenshteinDistance, linkedListForEach, linkedListFromArray, linkedListToArray,
@@ -21,7 +21,7 @@ require('./../src/recursive.js')().then(modules => {
     partition, path, pathOr, pathSatisfies, pick, pluck, project,
     quickSort, quickSortWith,
     radixSort, range, reduce, reduceWhile, reverse,
-    selectionSort, some, splitEvery, splitWhen, strPaddEnd, strPaddStart, symetricDifference,
+    selectionSort, some, splitEvery, splitWhen, strPaddEnd, strPaddStart, swap, symetricDifference,
     take, takeWhile, tap, timSort, trampoline, transduce, transpose, traverseTree,
     uncurryN, unfold, union, uniqueBy, unless, until,
     whyBird,
@@ -257,7 +257,7 @@ require('./../src/recursive.js')().then(modules => {
       () => expect(`${sortType.name}`, [1, 2, 3, 4, 5, 6, 7, 8, 9], sortType([9, 8, 7, 6, 5, 4, 3, 2, 1])),
       () => expect(`${sortType.name}`, [1, 2, 3, 4, 5, 6, 7, 8, 9], sortType([7, 2, 1, 3, 5, 4, 6, 9, 8])),
       () => expect(`${sortType.name}`, [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], sortType([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
-    )(), [bubbleSort, selectionSort, insertionSort, mergeSort, quickSort, timSort, radixSort, cycleSort, cocktailSort]);
+    )(), [bubbleSort, selectionSort, insertionSort, mergeSort, quickSort, timSort, radixSort, cycleSort, cocktailSort, gnomeSort]);
 
     expect('monkeySort', [1, 2, 3, 4], monkeySort([4, 2, 1, 3]));
 
@@ -1292,6 +1292,15 @@ require('./../src/recursive.js')().then(modules => {
       () => expect('strPaddStart', '###1', strPaddStart('#', 4, '1')),
       () => expect('strPaddStart', '01', strPaddStart(0)(2, '1'))
     )();
+
+  // swap test
+  let swapList = [1, 2, 3, 4, 5, 6];
+  compose(
+    () => expect('swapList test', [6, 2, 3, 4, 5, 1], swap(swapList)(0)(42)),
+    () => expect('swapList test', [1, 3, 2, 4, 5, 6], swap(swapList)(1, 2)),
+    () => expect('swapList test', [1, 6, 3, 4, 5, 2], swap(swapList)(1, 5)),
+    () => expect('swapList test', [6, 2, 3, 4, 5, 1], swap(swapList, 0, 5))
+  )();
 
     // symetricDifference test
     expect(
