@@ -1,9 +1,11 @@
+const length = require('../length/length.js');
+
 // Queue :: () -> Object
 function Queue() {
   this.elements = [];
 
   // isEmpty :: () -> Boolean
-  this.isEmpty = () => !this.elements.length;
+  this.isEmpty = () => !length(this.elements);
   // put :: (String, Int) -> ()
   this.put = (element, priority) => {
     this.elements[0] && this.elements[0].priority > priority
