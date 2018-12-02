@@ -5,7 +5,7 @@
 
 require('./../src/recursive.js')().then(modules => {
   const {
-    adjust, allAnagrams, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
+    adjust, allAnagrams, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath, aStar,
     bubbleSort, bisectSearch, buildTrie,
     cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, createStore, curry, cycleSort,
     deepClone, deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dijkstraShortestPathV2, dissoc, drop, dropRepeatsWith,
@@ -648,6 +648,7 @@ require('./../src/recursive.js')().then(modules => {
     )();
 
     // dijkstraShortestPathV2 test
+    // aStar test
 
     // SquareGrid :: Object -> Object
     function SquareGrid({width = 10, height = 10, walls = []}) {
@@ -694,17 +695,22 @@ require('./../src/recursive.js')().then(modules => {
         const myGrid = new SquareGrid({width: 15, height: 15, walls: ['10#0', '12#1']});
         const [start, goal] = ['5#0', '12#2'];
         const path = dijkstraShortestPathV2(myGrid, start, goal);
+        const aStarPath = aStar(myGrid, start, goal);
         const expectedPath = ['5#0', '6#0', '7#0', '8#0', '9#0', '9#1', '10#1', '11#1', '11#2', '12#2'];
+        const aStarExpectedPath = ['5#0', '5#1', '5#2', '6#2', '7#2', '8#2', '9#2', '10#2', '11#2', '12#2'];
 
         expect('dijkstraShortestPathV2', expectedPath, path);
+        expect('aStar', aStarExpectedPath, aStarPath);
       },
       () => {
         const myGrid = new SquareGrid({width: 15, height: 15, walls: ['4#1', '4#0',  '3#1', '3#0', '2#0', '2#2', '1#0', '1#1']});
         const [start, goal] = ['0#0', '4#2'];
         const path = dijkstraShortestPathV2(myGrid, start, goal);
+        const aStarPath = aStar(myGrid, start, goal);
         const expectedPath = ['0#0', '0#1', '0#2', '1#2', '1#3', '2#3', '3#3', '3#2', '4#2'];
 
         expect('dijkstraShortestPathV2', expectedPath, path);
+        expect('aStar', expectedPath, aStarPath);
       }
     )();
 
