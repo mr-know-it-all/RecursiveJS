@@ -8,7 +8,7 @@ require('./../src/recursive.js')().then(modules => {
     adjust, allAnagrams, allPass, allPermutations, anyPass, aperture, applySpec, applyTo, assoc, assocPath,
     bubbleSort, bisectSearch, buildTrie,
     cocktailSort, compose, composeP, concat, construct, converge, countBy, countSort, createStore, curry, cycleSort,
-    deepClone, deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dissoc, drop, dropRepeatsWith,
+    deepClone, deepFlat, deepFreeze, defaultTo, dijkstraShortestPath, dijkstraShortestPathV2, dissoc, drop, dropRepeatsWith,
     eqBy, equals, every,
     fill, filter, find, forEach,
     gnomeSort, groupBy,
@@ -78,7 +78,7 @@ require('./../src/recursive.js')().then(modules => {
 
     // allAnagrams test
     compose(
-      () => expect('allAnagrams', ["ABC", "ACB","BAC","BCA","CAB","CBA"], allAnagrams('ABC'))
+      () => expect('allAnagrams', ['ABC', 'ACB','BAC','BCA','CAB','CBA'], allAnagrams('ABC'))
     )();
 
     // allPass test
@@ -274,40 +274,40 @@ require('./../src/recursive.js')().then(modules => {
 
     // buildTrie test
     let expectedTrie = {
-      "root": {
-        "children": {
-        "a": {
-          "children": {
-            "ab": {
-              "children": {
-                "abc": {
-                  "children": {
-                    "abcd": {
-                      "children": {
-                        "abcde": {
-                          "children": {
-                            "abcdef": {
-                              "children": {},
-                                "endWord": true
+      'root': {
+        'children': {
+        'a': {
+          'children': {
+            'ab': {
+              'children': {
+                'abc': {
+                  'children': {
+                    'abcd': {
+                      'children': {
+                        'abcde': {
+                          'children': {
+                            'abcdef': {
+                              'children': {},
+                                'endWord': true
                               }
                             }
                           }
                         },
-                        "endWord": true
+                        'endWord': true
                       }
                     }
                   }
                 }
               },
-              "as": {
-                "children": {
-                  "asd": {
-                    "children": {
-                      "asdf": {
-                        "children": {
-                          "asdfg": {
-                            "children": {},
-                            "endWord": true
+              'as': {
+                'children': {
+                  'asd': {
+                    'children': {
+                      'asdf': {
+                        'children': {
+                          'asdfg': {
+                            'children': {},
+                            'endWord': true
                           }
                         }
                       }
@@ -647,6 +647,67 @@ require('./../src/recursive.js')().then(modules => {
       }
     )();
 
+    // dijkstraShortestPathV2 test
+
+    // SquareGrid :: Object -> Object
+    function SquareGrid({width = 10, height = 10, walls = []}) {
+      this.width = width;
+      this.height = height;
+      this.walls = walls;
+      this.weights = {};
+
+      // inBounds :: String -> Boolean
+      this.inBounds = id => {
+        const [x, y] = id.split('#');
+
+        return (
+          0 <= x && x < this.width &&
+          0 <= y && y < this.height
+        );
+      }
+
+      // passable :: String -> Boolean
+      this.passable = id => !this.walls.includes(id);
+
+      // getNeighbors :: String -> [Strings]
+      this.getNeighbors = id => {
+        const [x, y] = id.split('#');
+        const neighbors = [
+          `${x}#${Number(y) - 1}`,
+          `${Number(x) + 1}#${y}`,
+          `${x}#${Number(y) + 1}`,
+          `${Number(x) - 1}#${y}`
+        ];
+
+        return neighbors.filter(x => this.inBounds(x) && this.passable(x));
+      }
+
+      // cost :: (String, String) -> Int
+      this.cost = (from, to) => {
+        // standard cost for grid
+        return 1;
+      }
+    }
+
+    compose(
+      () => {
+        const myGrid = new SquareGrid({width: 15, height: 15, walls: ['10#0', '12#1']});
+        const [start, goal] = ['5#0', '12#2'];
+        const path = dijkstraShortestPathV2(myGrid, start, goal);
+        const expectedPath = ['5#0', '6#0', '7#0', '8#0', '9#0', '9#1', '10#1', '11#1', '11#2', '12#2'];
+
+        expect('dijkstraShortestPathV2', expectedPath, path);
+      },
+      () => {
+        const myGrid = new SquareGrid({width: 15, height: 15, walls: ['4#1', '4#0',  '3#1', '3#0', '2#0', '2#2', '1#0', '1#1']});
+        const [start, goal] = ['0#0', '4#2'];
+        const path = dijkstraShortestPathV2(myGrid, start, goal);
+        const expectedPath = ['0#0', '0#1', '0#2', '1#2', '1#3', '2#3', '3#3', '3#2', '4#2'];
+
+        expect('dijkstraShortestPathV2', expectedPath, path);
+      }
+    )();
+
     // dissoc test
     expect(
       'dissoc test', {
@@ -770,7 +831,7 @@ require('./../src/recursive.js')().then(modules => {
     forEach((x, index) => {
       x.a = x.a * 2;
     }, arrayForEach);
-    expect("forEach", [{a: 2}, {a: 4}, {a: 6}], arrayForEach);
+    expect('forEach', [{a: 2}, {a: 4}, {a: 6}], arrayForEach);
 
     // groupBy test
     const getExp = ({points}) => points > 1000 ? 'master' : points > 500 ? 'craftsman' : 'novice';
@@ -928,11 +989,11 @@ require('./../src/recursive.js')().then(modules => {
     expect('linkedListForEach', expectedListOfPoints, listOfPoints);
 
     // linkedListFromArray test
-    expect('linkedListFromArray', expectedListOfPoints, linkedListFromArray('list of points', ["A-modified", "B-modified", "C-modified", "D-modified"]));
+    expect('linkedListFromArray', expectedListOfPoints, linkedListFromArray('list of points', ['A-modified', 'B-modified', 'C-modified', 'D-modified']));
 
     // linkedListToArray test
     expect('linkedListToArray', [
-      "A-modified", "B-modified", "C-modified", "D-modified"
+      'A-modified', 'B-modified', 'C-modified', 'D-modified'
     ], linkedListToArray(expectedListOfPoints));
 
     // mapObjIndexed test
