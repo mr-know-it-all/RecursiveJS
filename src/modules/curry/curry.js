@@ -7,5 +7,5 @@ function curry(fn) {
     return length(args) === arity ? fn(...args) : (...nextArgs) => applyArgs(...args, ...nextArgs);
   };
 }
-
+// TODO: oignore function's default args
 module.exports = curry;
