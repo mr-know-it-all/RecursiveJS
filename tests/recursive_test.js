@@ -12,6 +12,7 @@ require('./../src/recursive.js')().then(modules => {
     eqBy, equals, every,
     fill, filter, find, forEach,
     gnomeSort, groupBy,
+    heapSort,
     includes, innerJoin, insertionSort, intersection, intersperse, invoker,
     juxt,
     length, levenshteinDistance, linkedListForEach, linkedListFromArray, linkedListToArray,
@@ -251,13 +252,14 @@ require('./../src/recursive.js')().then(modules => {
 
     // sorting test
     map(sortType => compose(
-      () => expect(`${sortType.name}`, [1, 1, 1, 2, 3, 4, 4, 42, 42], sortType([42, 42, 1, 2, 4, 1, 3, 4, 1])),
+      () => expect(`${sortType.name}`, [0, 1, 1, 1, 2, 3, 4, 4, 42, 42, 219], sortType([0, 42, 42, 219, 1, 2, 4, 1, 3, 4, 1])),
       () => expect(`${sortType.name}`, [1324, 2122, 3540, 4000, 5251, 6001, 7901, 8234, 9111, 11400], sortType([3540, 7901, 8234, 9111, 11400, 4000, 5251, 6001, 1324, 2122])),
       () => expect(`${sortType.name}`, [1, 2, 3, 4, 5, 6, 7, 8, 9, 23, 1400], sortType([7, 1400, 2, 1, 3, 5, 4, 23, 6, 9, 8])),
       () => expect(`${sortType.name}`, [1, 2, 3, 4, 5, 6, 7, 8, 9], sortType([9, 8, 7, 6, 5, 4, 3, 2, 1])),
       () => expect(`${sortType.name}`, [1, 2, 3, 4, 5, 6, 7, 8, 9], sortType([7, 2, 1, 3, 5, 4, 6, 9, 8])),
+      () => sortType.name !== 'radixSort' /* TODO: update for negative numbers */ && expect(`${sortType.name}`, [-2, 1, 10, 25, 34, 55, 67, 523], sortType([55, 67, 10, 34, 25, 523, 1, -2])),
       () => expect(`${sortType.name}`, [12345, 21234, 33452, 41235, 53454, 65431, 73456, 81234, 94323], sortType([94323, 21234, 65431, 41235, 53454, 81234, 73456, 33452, 12345]))
-    )(), [bubbleSort, selectionSort, insertionSort, mergeSort, quickSort, timSort, radixSort, cycleSort, cocktailSort, gnomeSort]);
+    )(), [bubbleSort, selectionSort, insertionSort, mergeSort, quickSort, timSort, radixSort, cycleSort, cocktailSort, gnomeSort, heapSort]);
 
     expect('monkeySort', [1, 2, 3, 4], monkeySort([4, 2, 1, 3]));
 
