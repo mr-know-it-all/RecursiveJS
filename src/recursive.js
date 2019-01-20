@@ -6,7 +6,7 @@ const hasJsExt = /\.js$/;
 function readFiles(path, modules = {}, count = {}) {
   fs.readdir(path, function(err, filenames) {
     if(err) return;
-    if(count.toLoad === null) count.toLoad = filenames.length;
+    if(count.toLoad === null) count.toLoad = filenames.length * 2;
 
     (function forEachFileName([filename, ...xs]) {
       if(filename === undefined) return;
