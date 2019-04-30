@@ -1,6 +1,6 @@
 const length = require('../length/length.js');
 const compose = require('../compose/compose.js');
-const insertionSort = require('..//insertion-sort/insertion-sort.js');
+const insertionSort = require('../insertion-sort/insertion-sort.js');
 const mergeLists = require('../merge-lists/merge-lists.js');
 const reduce = require('../reduce/reduce.js');
 const splitEvery = require('../split-every/split-every.js');
