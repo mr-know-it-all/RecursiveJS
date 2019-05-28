@@ -1,5 +1,6 @@
 const forEach = require('../for-each/for-each.js');
 
+// nPermutations :: Int -> [a] -> [[a]]
 function nPermutations(n) {
   return xs => {
     // implement and use state monad to store common state
