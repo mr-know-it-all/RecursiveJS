@@ -4,7 +4,7 @@ The functions implemented here are naive implementations that serve absolutely n
 
 Almost every looping mechanism implemented here is either self recursive or it uses another function from the same library. Spread is used for pattern matching or array destructuring. Also, we get the function's arity with function.prototype.length etc.
 
-How to use: Clone the repo and run the recursiveJS_test.js file with the latest version of node or import the src file (src/recursive.js) in your project. At this point, the tests are the only available documentation.
+How to use: clone the repo and run `node tests/tests.js`.
 
 You'll find implementations of built in methods (like map, filter, reduce), standard utils library methods (like curry, compose, deepClone), a selection of sorting algorithms, path finding algorithms, tree traversal and more. See the full list of modules below.
 
