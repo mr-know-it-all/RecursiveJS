@@ -54,6 +54,7 @@ List of modules:
 - fill - creates an array filled with n specified elements
 - filter - implementation of the standard Array.prototype method
 - find - implementation of the standard Array.prototype method
+- floyd-warshall - [Floyd-Warshall algorithm](https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm)
 - for-each - implementation of the standard Array.prototype method
 - gnome-sort - [Gnome sort algorithm](https://en.wikipedia.org/wiki/Gnome_sort)
 - group-by - [ramda docs](https://ramdajs.com/docs/#groupBy)
