@@ -14,7 +14,7 @@ function mergeLists(left, right, acc = []) {
   if(y === undefined) return [...acc, x];
 
   if(left[length(left) - 1] < right[0]) return [...acc, ...left, ...right];
-  if(left[length(right) - 1] < left[0]) return [...acc, ...right, ...left];
+  if(right[length(right) - 1] < left[0]) return [...acc, ...right, ...left];
 
   if(x < y) return mergeLists(xs, right, [...acc, x]);
   else return mergeLists(left, ys, [...acc, y]);
