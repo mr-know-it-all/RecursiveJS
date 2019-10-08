@@ -123,6 +123,7 @@ List of modules:
 - unique-by - [ramda docs](https://ramdajs.com/docs/#uniqBy)
 - unless - [ramda docs](https://ramdajs.com/docs/#unless)
 - until - [ramda docs](https://ramdajs.com/docs/#until)
+- validate-parens - function that validates proper parenthesizing based on provided custom tokens
 - why-bird - [a variation on the Y combinator](https://en.wikipedia.org/wiki/Fixed-point_combinator#Fixed_point_combinators_in_lambda_calculus)
 - xprod - [ramda docs](https://ramdajs.com/docs/#xprod)
 - y-combinator - [the famous Y combinator](https://en.wikipedia.org/wiki/Fixed-point_combinator#Fixed_point_combinators_in_lambda_calculus)
