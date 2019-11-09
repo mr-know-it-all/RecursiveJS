@@ -85,6 +85,7 @@ List of modules:
 - object-entries - implementation of Object.entries
 - object-values - implementation of Object.values
 - omit - [ramda docs](https://ramdajs.com/docs/#omit)
+- pancake-sort - [Pancake sort algorithm](https://en.wikipedia.org/wiki/Pancake_sorting)
 - partition - [ramda docs](https://ramdajs.com/docs/#partition)
 - path-or - [ramda docs](https://ramdajs.com/docs/#pathOr)
 - path-satisfies - [ramda docs](https://ramdajs.com/docs/#pathSatisfies)
