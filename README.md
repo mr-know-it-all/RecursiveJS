@@ -18,6 +18,7 @@ List of modules:
 - all-anagrams - finds all character permutations in a given string
 - all-pass - [ramda docs](https://ramdajs.com/docs/#allPass)
 - all-permutations - finds all permutations of a given array
+- all-split-groups - finds all possible ways in which you can split a string
 - any-pass - [ramda docs](https://ramdajs.com/docs/#anyPass)
 - aperture - [ramda docs](https://ramdajs.com/docs/#aperture)
 - apply-spec - [ramda docs](https://ramdajs.com/docs/#applySpec)
