@@ -80,6 +80,7 @@ List of modules:
 - merge-sort - [Merge sort algorithm](https://ro.wikipedia.org/wiki/Merge_sort)
 - merge-with - [ramda docs](https://ramdajs.com/docs/#mergeWith)
 - merge - utility that merges two objects
+- miller-rabin - [Miller-Rabin primality test algorithm](https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test)
 - monkey-sort - [Bogosort algorithm](https://en.wikipedia.org/wiki/Bogosort)
 - n-ary - [ramda docs](https://ramdajs.com/docs/#nAry)
 - n-permutations - builds a list of n permutations of items in a given array
