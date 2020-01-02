@@ -31,7 +31,7 @@ function millerRabin(n, k = 10) {
     // continue to next kth probability test
     if(x === 1 || x === n - 1) return () => computeProbabilityK(countK + 1);
 
-    // while d !== 1 || n - 1, max r - 1 times, decompose x as x ** 2 mod n
+    // while x !== 1 || n - 1, max r - 1 times, decompose x as x ** 2 mod n
     return trampoline(function decomposeX(countDX = 0) {
       // if x doesn't become n - 1 and we are above r - 1
       if(countDX === r) return false;
