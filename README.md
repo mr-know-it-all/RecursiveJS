@@ -97,7 +97,8 @@ List of modules:
 - project - [ramda docs](https://ramdajs.com/docs/#project)
 - quick-sort-by - quick sort algorithm with custom predicate
 - quick-sort-with - quick sort with custom comparator function
-- quick-sort - [Quick sort algorithm](https://ro.wikipedia.org/wiki/Quicksort)
+- quick-select - [Quickselect algorithm](https://en.wikipedia.org/wiki/Quickselect)
+- quick-sort - [Quicksort algorithm](https://ro.wikipedia.org/wiki/Quicksort)
 - radix-sort - [Radix sort algorithm](https://en.wikipedia.org/wiki/Radix_sort)
 - range - [ramda docs](https://ramdajs.com/docs/#range)
 - reduce-while - [ramda docs](https://ramdajs.com/docs/#reduceWhile)
