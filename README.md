@@ -1,6 +1,6 @@
 RecursiveJS - an educational library
 
-The functions implemented here are naive implementations that serve absolutely no use in production code. Even more, JavaScript doesn't have yet TCO available in all major browsers, so a recursive looping approach is not scalable. This library is not meant to be used, but to be read and tried out. It shows how beautiful and powerful recursion is, and how good is JavaScript at showing that.
+The functions implemented here are naive implementations that serve absolutely no use in production code. Even more, JavaScript doesn't have yet PTC and TCO available in all major browsers, so a recursive looping approach is not scalable. This library is not meant to be used, but to be read and tried out. It shows how beautiful and powerful recursion is, and how good is JavaScript at showing that.
 
 Almost every looping mechanism implemented here is either self recursive or it uses another function from the same library. Spread is used for pattern matching or array destructuring. Also, we get the function's arity with function.prototype.length etc.
 
