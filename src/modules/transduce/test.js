@@ -1,40 +1,38 @@
 const transduce = require('./transduce.js');
 const compose = require('../compose/compose.js');
-const map = require('../map/map.js');
-const curry = require('../curry/curry.js');
-const filter = require('../filter/filter.js');
-const range = require('../range/range.js');
+const concat = require('../concat/concat.js');
 const { expect } = require('../../../tests/tests.js');
 
-const isEven = x => x % 2 === 0;
-const isOdd = x => !isEven(x);
+const mapping   = mappingFn => reducingFn => (acc, val) => reducingFn(acc, mappingFn(val));
+const filtering = predFn    => reducingFn => (acc, val) => predFn(val) ? reducingFn(acc, val) : acc;
+const sum = (a, b) => a + b;
 
 function transduce_test() {
   compose(
-    () => expect(
-      'transduce test 3',
-      ['-0-', '-4-', '-8-'],
-      transduce(
-        [curry(map)(x => `-${x}-`), curry(filter)(x => x < 12), curry(filter)(x => x / 2 % 2 === 0)],
-        range(0, 200)
-      )
-    ),
-    () => expect(
-      'transduce test 2',
-      [0, 2, 4],
-      transduce(
-        [curry(map)(x => x - 1), curry(filter)(x => x < 7), curry(filter)(isOdd)],
-        [1, 2, 3, 4, 5, 6, 7, 8, 9]
-      )
-    ),
-    () => expect(
-      'transduce test 1',
-      [4, 6],
-      transduce(
-        [curry(map)(x => x + 2), curry(filter)(x => x + 1 < 7), curry(filter)(isEven)],
-        [1, 2, 3, 4, 5, 6, 7, 8, 9]
-      )
-    )
+    () => {
+      const filterFn = x => x % 2 === 0;
+      const mappingFn = x => x * x;
+      const transducers = compose(filtering(filterFn), mapping(mappingFn));
+
+      const result = transduce(transducers, sum, 12, [1, 22, 3])
+      expect('transduce test 1', 496, result)
+    },
+    () => {
+      const filterFn = x => x < 10;
+      const mappingFn = x => x + 3;
+      const transducers = compose(filtering(filterFn), mapping(mappingFn));
+
+      const result = transduce(transducers, concat, [], [1, 20])
+      expect('transduce test 1', [4], result)
+    },
+    () => {
+      const filterFn = x => x !== 1;
+      const mappingFn = x => `hello: ${x}!`;
+      const transducers = compose(filtering(filterFn), mapping(mappingFn));
+
+      const result = transduce(transducers, concat, [], [1, 2, 3])
+      expect('transduce test 1', ['hello: 2!', 'hello: 3!'], result)
+    }
   )();
 }
 
