@@ -68,6 +68,7 @@ List of modules:
 - intersperse - [ramda docs](https://ramdajs.com/docs/#intersperse)
 - invoker - [ramda docs](https://ramdajs.com/docs/#invoker)
 - juxt - [ramda docs](https://ramdajs.com/docs/#juxt)
+- kadane - [Kadane's algorithm, maximum subarray sum](https://en.wikipedia.org/wiki/Maximum_subarray_problem#Kadane's_algorithm)
 - length - implementation of the standard Array.prototype method
 - levenshtein-distance - [Levenshtein distance algorithm](https://en.wikipedia.org/wiki/Levenshtein_distance)
 - linked-list-for-each - iterates through a linked list
