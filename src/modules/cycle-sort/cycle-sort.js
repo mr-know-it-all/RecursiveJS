@@ -1,29 +1,82 @@
 const length = require('../length/length.js');
 const objectEntries = require('../object-entries/object-entries.js');
 
-// cycleSort :: Int a -> [a] -> [a]
+// cycleSort :: Ord a => [a] -> ()
 function cycleSort(list) {
-  return (function cycleSort([x, ...xs], cycles = {}) {
-    if(x === undefined) return (function writeToList([x, ...xs]) {
-      if(x === undefined) return list;
-      let [value, indexes] = x;
+  let N = length(list);
+  (function forEveryIndexButTheLast(eIndex) {
+    if(eIndex === N - 1) return;
 
-      (function writeAtIndex([x, ...xs], count) {
-        if(x === undefined) return void 0;
-        list[x + count] = Number(value); // <- here's where we write, once for every element
-        writeAtIndex(xs, count - 1);
-      })(indexes, length(indexes) - 1);
+    let item = list[eIndex];
+    let pos = eIndex;
 
-      return writeToList(xs);
-    })(objectEntries(cycles));
+    (function forEveryIndexToTheRight(index) {
+      if(index === N) return;
+      if(list[index] < item) pos++;
+      forEveryIndexToTheRight(index + 1);
+    })(eIndex + 1);
 
-    let startIndex = (function smallerThanX([y, ...ys], startIndex = 0) {
-      return y === undefined ? startIndex : smallerThanX(ys, y < x ? startIndex + 1 : startIndex);
-    })(list);
+    if(pos === eIndex) {
+      forEveryIndexButTheLast(eIndex + 1);
+      return;
+    }
 
-    cycles[x] = [...(cycles[x] || []), startIndex];
-    return cycleSort(xs, cycles);
-  })(list);
+    (function whileDuplicates() {
+      if(item !== list[pos]) return;
+      pos++;
+      whileDuplicates();
+    })();
+
+    [list[pos], item] = [item, list[pos]];
+
+    (function whileCycleIsNotComplete() {
+      if(pos === eIndex) return;
+
+      pos = eIndex;
+      (function forEveryIndexToTheRight(index) {
+        if(index === N) return;
+        if(list[index] < item) pos++;
+        forEveryIndexToTheRight(index + 1);
+      })(pos + 1);
+
+      (function whileDuplicates() {
+        if(item !== list[pos]) return;
+        pos++;
+        whileDuplicates();
+      })();
+
+      [list[pos], item] = [item, list[pos]];
+
+      whileCycleIsNotComplete();
+    })();
+
+    forEveryIndexButTheLast(eIndex + 1);
+  })(0)
 }
 
 module.exports = cycleSort;
+
+// standard_cycleSort :: Ord a => [a] -> ()
+function standard_cycleSort(list) {
+  // let writes = 0;
+  for(let i = 0; i < list.length - 1; i++) {
+    let item = list[i];
+    let pos = i;
+    for(let j = i + 1; j < list.length; j++) if(list[j] < item) pos++;
+    if(pos === i) continue;
+    while(item === list[pos]) { pos++; }
+
+    [list[pos], item] = [item, list[pos]];
+    // writes++;
+
+    while(pos !== i) {
+      pos = i;
+      for(let  j = i + 1; j < list.length; j++) if(list[j] < item) pos++;
+      while(item === list[pos]) { pos++; }
+
+      [list[pos], item] = [item, list[pos]];
+      // writes++;
+    }
+  }
+  // return writes
+}
